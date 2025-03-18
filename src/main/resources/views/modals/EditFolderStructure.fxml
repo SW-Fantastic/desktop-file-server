@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="490.0" prefWidth="444.0" styleClass="stage-dialog" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.swdc.rmdisk.views.modals.FolderStructureController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="410.0" spacing="8.0">
+               <padding>
+                  <Insets bottom="8.0" top="24.0" />
+               </padding>
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="458.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="label-title" text="默认目录结构" />
+                     </children>
+                     <padding>
+                        <Insets left="6.0" />
+                     </padding>
+                  </HBox>
+                  <Button id="addTemplate" minHeight="36.0" minWidth="36.0" mnemonicParsing="false" onAction="#onActionAddFolder" prefHeight="36.0" prefWidth="36.0" styleClass="tool-button" text="+" />
+               </children>
+            </HBox>
+            <TreeView fx:id="folderTree" prefHeight="440.0" prefWidth="402.0" VBox.vgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets bottom="24.0" left="24.0" right="24.0" />
+         </padding>
+      </VBox>
+   </center>
+</BorderPane>

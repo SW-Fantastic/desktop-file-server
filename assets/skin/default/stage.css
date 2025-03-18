@@ -1,0 +1,621 @@
+.slider-bar .track {
+  -fx-background-radius: 8;
+  -fx-background-color: #e9eaec;
+  -fx-border-radius: 8;
+  -fx-border-color: #cfd1dc;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-padding: 2;
+}
+.slider-bar .thumb {
+  -fx-background-color: #4ea3f4;
+}
+.prop-sheets {
+  -fx-background: rgba(255, 255, 255, 0);
+}
+.prop-sheets .label {
+  -fx-font-size: 14;
+}
+.prop-sheets .text-field {
+  -fx-background-color: #e9eaec;
+  -fx-background-radius: 8;
+}
+.combo-box {
+  -fx-background-color: #e9eaec;
+  -fx-border-radius: 8;
+  -fx-background-radius: 8;
+  -fx-text-fill: #4ea3f4;
+}
+.combo-box .list-view {
+  -fx-background-radius: 8;
+  -fx-border-radius: 8;
+  -fx-border-color: #e9eaec;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-padding: 4 0 4 0;
+}
+.combo-box .list-view .list-cell {
+  -fx-background-color: #ffffff;
+}
+.combo-box .list-view .list-cell:hover:selected {
+  -fx-text-fill: #ffffff;
+  -fx-background-color: #4ea3f4;
+}
+.combo-box .list-view .list-cell:hover {
+  -fx-background-color: #4ea3f4;
+  -fx-text-fill: #ffffff;
+}
+.combo-box .list-view .list-cell:selected {
+  -fx-text-fill: #4ea3f4;
+}
+.date-pane {
+  -fx-background-radius: 8;
+  -fx-background-color: #ffffff;
+  -fx-font-family: "Source Han Sans CN Normal";
+  -fx-font-size: 14;
+}
+.date-pane .arrow {
+  -fx-background-color: transparent;
+  -fx-text-fill: #4ea3f4;
+}
+.date-pane .arrow:hover {
+  -fx-text-fill: #0d70cf;
+}
+.date-pane .date-in-range {
+  -fx-background-color: #deeefd !important;
+  -fx-effect: none !important;
+}
+.date-pane .weekday {
+  -fx-background-color: transparent;
+  -fx-effect: dropshadow(three-pass-box, #cfd1dc, 6, 0, 0, 0);
+}
+.date-pane .weekday:selected {
+  -fx-background-color: #4ea3f4;
+  -fx-text-fill: #ffffff;
+}
+.date-pane .weekend {
+  -fx-background-color: transparent;
+  -fx-text-fill: #4ea3f4;
+  -fx-effect: dropshadow(three-pass-box, #cfd1dc, 6, 0, 0, 0);
+}
+.date-pane .weekend:selected {
+  -fx-background-color: #4ea3f4;
+  -fx-text-fill: #ffffff;
+}
+.pagination .arrow {
+  -fx-background-color: transparent;
+  -fx-text-fill: #4ea3f4;
+}
+.pagination .arrow:hover {
+  -fx-text-fill: #0d70cf;
+}
+.pagination .page-number {
+  -fx-background-color: transparent;
+  -fx-font-size: 14;
+  -fx-text-fill: #485b51;
+}
+.pagination .page-number:selected {
+  -fx-background-color: #4ea3f4;
+  -fx-background-radius: 999;
+  -fx-text-fill: #ffffff;
+}
+.notification-bar .pane {
+  -fx-background-color: #ffffff !important;
+  -fx-padding: 12;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 11, 0, 0, 3);
+  -fx-font-family: "Source Han Sans CN Normal";
+}
+.stage {
+  -fx-background-color: #ffffff;
+}
+.stage .tile-login {
+  -fx-background-color: #ffffff;
+  -fx-text-fill: #4ea3f4;
+  -fx-background-radius: 8;
+  -fx-border-radius: 8;
+  -fx-border-color: #4ea3f4;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+}
+.stage .tile-login .tile .label {
+  -fx-text-fill: #485b51;
+}
+.stage .tile-login .tile .title {
+  -fx-font-family: "Source Han Sans CN Normal";
+}
+.stage .tile-login .tile .bar {
+  -fx-background-color: #4ea3f4;
+  -fx-background-radius: 2;
+}
+.stage .tile-login:hover {
+  -fx-effect: dropshadow(three-pass-box, #4ea3f4, 6, 0, 0, 0);
+}
+.stage .tile-server {
+  -fx-background-color: #ffffff;
+  -fx-text-fill: #e68530;
+  -fx-background-radius: 8;
+  -fx-border-radius: 8;
+  -fx-border-color: #e68530;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+}
+.stage .tile-server .tile .label {
+  -fx-text-fill: #485b51;
+}
+.stage .tile-server .tile .title {
+  -fx-font-family: "Source Han Sans CN Normal";
+}
+.stage .tile-server .tile .bar {
+  -fx-background-color: #e68530;
+  -fx-background-radius: 2;
+}
+.stage .tile-server:hover {
+  -fx-effect: dropshadow(three-pass-box, #e68530, 6, 0, 0, 0);
+}
+.stage .tile-help {
+  -fx-background-color: #ffffff;
+  -fx-text-fill: #a7d07c;
+  -fx-background-radius: 8;
+  -fx-border-radius: 8;
+  -fx-border-color: #a7d07c;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+}
+.stage .tile-help .tile .label {
+  -fx-text-fill: #485b51;
+}
+.stage .tile-help .tile .title {
+  -fx-font-family: "Source Han Sans CN Normal";
+}
+.stage .tile-help .tile .bar {
+  -fx-background-color: #a7d07c;
+  -fx-background-radius: 2;
+}
+.stage .tile-help:hover {
+  -fx-effect: dropshadow(three-pass-box, #a7d07c, 6, 0, 0, 0);
+}
+.media-wrapper {
+  -fx-background-color: black;
+}
+.stage-dialog,
+.dialog-pane {
+  -fx-background-color: #ffffff;
+  -fx-font-family: "Source Han Sans CN Normal";
+  -fx-font-size: 14;
+}
+.stage-dialog .label-title,
+.dialog-pane .label-title {
+  -fx-font-size: 16;
+}
+.stage-dialog .field,
+.dialog-pane .field {
+  -fx-background-color: #e9eaec;
+  -fx-background-radius: 8;
+}
+.stage-dialog .avatar,
+.dialog-pane .avatar {
+  -fx-background-radius: 8;
+  -fx-background-color: #e9eaec;
+  -fx-effect: dropshadow(three-pass-box, #cfd1dc, 6, 0, 0, 0);
+}
+.stage-dialog .button-accept,
+.dialog-pane .button-accept,
+.stage-dialog .button:default,
+.dialog-pane .button:default {
+  -fx-background-color: #a7d07c;
+  -fx-background-radius: 8;
+  -fx-text-fill: #ffffff;
+}
+.stage-dialog .button-accept:hover,
+.dialog-pane .button-accept:hover,
+.stage-dialog .button:default:hover,
+.dialog-pane .button:default:hover {
+  -fx-background-color: #74a93d;
+}
+.stage-dialog .button-cancel,
+.dialog-pane .button-cancel,
+.stage-dialog .button:cancel,
+.dialog-pane .button:cancel {
+  -fx-background-color: #ffffff;
+  -fx-border-color: #4ea3f4;
+  -fx-text-fill: #4ea3f4;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8;
+}
+.stage-dialog .button-cancel:hover,
+.dialog-pane .button-cancel:hover,
+.stage-dialog .button:cancel:hover,
+.dialog-pane .button:cancel:hover {
+  -fx-text-fill: #0d70cf;
+  -fx-border-color: #0d70cf;
+}
+.stage-dialog .tool-button,
+.dialog-pane .tool-button {
+  -fx-background-color: #ffffff;
+  -fx-border-radius: 8;
+  -fx-background-radius: 8;
+  -fx-text-fill: #4ea3f4;
+}
+.stage-dialog .tool-button:hover,
+.dialog-pane .tool-button:hover {
+  -fx-effect: dropshadow(three-pass-box, #cfd1dc, 6, 0, 0, 0);
+}
+.stage-dialog .tab-pane .tab-header-background,
+.dialog-pane .tab-pane .tab-header-background {
+  -fx-background-color: #ffffff;
+  -fx-border-color: #e9eaec;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+}
+.stage-dialog .tab-pane .tab,
+.dialog-pane .tab-pane .tab {
+  -fx-font-size: 14;
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 8 8 0 0;
+  -fx-padding: 6 12;
+  -fx-border-color: #cfd1dc;
+  -fx-border-width: 1 1 0 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8 8 0 0;
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
+}
+.stage-dialog .tab-pane .tab .tab-label,
+.dialog-pane .tab-pane .tab .tab-label {
+  -fx-text-fill: #485b51;
+}
+.stage-dialog .tab-pane .tab:selected,
+.dialog-pane .tab-pane .tab:selected {
+  -fx-border-color: #4ea3f4;
+}
+.stage-dialog .tab-pane .tab:selected .tab-label,
+.dialog-pane .tab-pane .tab:selected .tab-label {
+  -fx-text-fill: #4ea3f4;
+}
+.stage-dialog .tree-view,
+.dialog-pane .tree-view {
+  -fx-background-color: #ffffff;
+  -fx-border-color: #e9eaec;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8;
+}
+.stage-dialog .tree-view .cell:selected,
+.dialog-pane .tree-view .cell:selected {
+  -fx-background-color: #4ea3f4;
+  -fx-text-background-color: #ffffff;
+}
+.stage-dialog .context-menu,
+.dialog-pane .context-menu {
+  -fx-font-size: 14;
+}
+.stage-dialog .context-menu .menu-item,
+.dialog-pane .context-menu .menu-item {
+  -fx-padding: 6 12;
+}
+.stage-dialog .context-menu .menu-item:focused,
+.dialog-pane .context-menu .menu-item:focused {
+  -fx-background-color: #4ea3f4;
+}
+.stage-client {
+  -fx-font-family: "Source Han Sans CN Normal";
+  -fx-background-color: #ffffff;
+  -fx-font-size: 14;
+}
+.stage-client .task-popover {
+  -fx-background-color: #ffffff;
+}
+.stage-client .task-popover .list-view {
+  -fx-background-color: #ffffff;
+}
+.stage-client .task-popover .list-view .cell {
+  -fx-background-color: transparent;
+}
+.stage-client .task-popover .list-view .cell:filled {
+  -fx-border-width: 0 0 1 0;
+  -fx-border-style: solid;
+  -fx-border-color: #e9eaec;
+}
+.stage-client .task-popover .list-view .cell:selected {
+  -fx-background-color: #ffffff;
+  -fx-text-background-color: #4ea3f4;
+}
+.stage-client .progress-bar .track {
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 8;
+  -fx-border-color: #e9eaec;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8;
+}
+.stage-client .progress-bar .bar {
+  -fx-background-color: #a7d07c;
+  -fx-background-radius: 8;
+}
+.stage-client .tool-button {
+  -fx-background-color: #ffffff;
+  -fx-border-radius: 8;
+  -fx-background-radius: 8;
+  -fx-text-fill: #4ea3f4;
+}
+.stage-client .tool-button:hover {
+  -fx-effect: dropshadow(three-pass-box, #cfd1dc, 6, 0, 0, 0);
+}
+.stage-client .field {
+  -fx-background-color: #e9eaec;
+  -fx-background-radius: 8;
+}
+.stage-client .primary-button {
+  -fx-background-color: #ffffff;
+  -fx-border-color: #4ea3f4;
+  -fx-text-fill: #4ea3f4;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8;
+}
+.stage-client .primary-button:hover {
+  -fx-text-fill: #0d70cf;
+  -fx-border-color: #0d70cf;
+}
+.stage-client .button-accept {
+  -fx-background-color: #a7d07c;
+  -fx-background-radius: 8;
+  -fx-text-fill: #ffffff;
+}
+.stage-client .button-accept:hover {
+  -fx-background-color: #74a93d;
+}
+.stage-client .split-pane {
+  -fx-background-color: #ffffff;
+}
+.stage-client .split-pane .split-pane-divider {
+  -fx-padding: 0 1 0 0;
+  -fx-background-color: #e9eaec;
+}
+.stage-client .sidepanel {
+  -fx-border-width: 0 0 1 0;
+  -fx-border-color: #e9eaec;
+  -fx-border-style: solid;
+}
+.stage-client .sidepanel .avatar {
+  -fx-background-radius: 8;
+  -fx-background-color: #e9eaec;
+  -fx-effect: dropshadow(three-pass-box, #cfd1dc, 6, 0, 0, 0);
+}
+.stage-client .sidepanel .options-list {
+  -fx-background-color: transparent;
+}
+.stage-client .gridView {
+  -fx-border-width: 1 0 0 0;
+  -fx-border-color: #e9eaec;
+  -fx-border-style: solid;
+}
+.stage-client .gridView .icon {
+  -fx-text-fill: #798299;
+}
+.stage-client .gridView .file-name {
+  -fx-font-size: 12;
+}
+.stage-client .gridView .selected {
+  -fx-background-color: #e9eaec;
+  -fx-background-radius: 8;
+}
+.stage-client .context-menu {
+  -fx-font-size: 14;
+}
+.stage-client .context-menu .menu-item {
+  -fx-padding: 6 12;
+}
+.stage-client .context-menu .menu-item:focused {
+  -fx-background-color: #4ea3f4;
+}
+.stage-server {
+  -fx-font-family: "Source Han Sans CN Normal";
+  -fx-background-color: #ffffff;
+}
+.stage-server .tool-button {
+  -fx-background-color: #ffffff;
+  -fx-border-radius: 8;
+  -fx-background-radius: 8;
+  -fx-text-fill: #4ea3f4;
+}
+.stage-server .tool-button:hover {
+  -fx-effect: dropshadow(three-pass-box, #cfd1dc, 6, 0, 0, 0);
+}
+.stage-server .check-box .box {
+  -fx-padding: 6;
+  -fx-background-color: #e9eaec;
+  -fx-background-radius: 8;
+}
+.stage-server .check-box:selected .mark {
+  -fx-background-color: #4ea3f4;
+}
+.stage-server .field {
+  -fx-background-color: #e9eaec;
+  -fx-background-radius: 8;
+}
+.stage-server .main-tab .tab-header-background {
+  -fx-background-color: #ffffff;
+  -fx-border-color: #e9eaec;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+}
+.stage-server .main-tab .tab {
+  -fx-font-size: 14;
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 8 8 0 0;
+  -fx-padding: 6 12;
+  -fx-border-color: #cfd1dc;
+  -fx-border-width: 1 1 0 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8 8 0 0;
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
+}
+.stage-server .main-tab .tab .tab-label {
+  -fx-text-fill: #485b51;
+}
+.stage-server .main-tab .tab:selected {
+  -fx-border-color: #4ea3f4;
+}
+.stage-server .main-tab .tab:selected .tab-label {
+  -fx-text-fill: #4ea3f4;
+}
+.stage-server .context-menu .menu-item {
+  -fx-font-size: 14;
+  -fx-padding: 6 12;
+}
+.stage-server .context-menu .menu-item:focused {
+  -fx-background-color: #4ea3f4;
+}
+.stage-server .label-title {
+  -fx-font-size: 16;
+  -fx-font-bold: bold;
+  -fx-effect: dropshadow(three-pass-box, #e9eaec, 6, 0, 0, 0);
+}
+.stage-server .register-conf-pane {
+  -fx-font-size: 14;
+  -fx-border-color: #cfd1dc;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8;
+  -fx-background: #ffffff;
+  -fx-background-radius: 8;
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
+}
+.stage-server .primary-button {
+  -fx-background-color: #ffffff;
+  -fx-border-color: #4ea3f4;
+  -fx-text-fill: #4ea3f4;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8;
+}
+.stage-server .primary-button:hover {
+  -fx-text-fill: #0d70cf;
+  -fx-border-color: #0d70cf;
+}
+.stage-server .button-accept {
+  -fx-background-color: #a7d07c;
+  -fx-background-radius: 8;
+  -fx-text-fill: #ffffff;
+}
+.stage-server .button-accept:hover {
+  -fx-background-color: #74a93d;
+}
+.stage-server .avatar {
+  -fx-background-radius: 8;
+  -fx-background-color: #e9eaec;
+  -fx-effect: dropshadow(three-pass-box, #cfd1dc, 6, 0, 0, 0);
+}
+.stage-server .split-pane {
+  -fx-background-color: transparent;
+  -fx-border-color: #e9eaec;
+  -fx-border-width: 1 0 0 0;
+  -fx-border-style: solid;
+}
+.stage-server .split-pane .split-pane-divider {
+  -fx-background-color: #e9eaec;
+  -fx-padding: 0 1 0 0;
+}
+.stage-server .split-pane .group-toggle {
+  -fx-background-color: #ffffff;
+  -fx-border-radius: 8;
+  -fx-background-radius: 8;
+  -fx-text-fill: #4ea3f4;
+}
+.stage-server .split-pane .group-toggle:hover {
+  -fx-effect: dropshadow(three-pass-box, #cfd1dc, 6, 0, 0, 0);
+}
+.stage-server .split-pane .group-toggle:selected {
+  -fx-background-color: #e9eaec;
+}
+.stage-server .split-pane .group-list {
+  -fx-background-color: transparent;
+  -fx-border-color: #cfd1dc;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8;
+  -fx-font-size: 14;
+}
+.stage-server .split-pane .group-list .list-cell {
+  -fx-background-color: #ffffff;
+}
+.stage-server .split-pane .group-list .list-cell .accepted {
+  -fx-text-fill: #485b51;
+}
+.stage-server .split-pane .group-list .list-cell .rejected {
+  -fx-text-fill: #e68530;
+}
+.stage-server .split-pane .group-list .list-cell:selected {
+  -fx-text-fill: #ffffff;
+  -fx-background-color: #4ea3f4;
+  -fx-text-background-color: #ffffff;
+}
+.stage-server .split-pane .group-list .list-cell:selected .accepted,
+.stage-server .split-pane .group-list .list-cell:selected .rejected {
+  -fx-text-fill: #ffffff;
+}
+.stage-server .split-pane .user-table {
+  -fx-background-color: #ffffff;
+  -fx-border-color: #cfd1dc;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8;
+}
+.stage-server .split-pane .user-table .column-header-background {
+  -fx-background-color: rgba(255, 255, 255, 0);
+}
+.stage-server .split-pane .user-table .column-header-background .filler {
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 0;
+}
+.stage-server .split-pane .user-table .column-header {
+  -fx-font-size: 14;
+  -fx-background-color: transparent;
+  -fx-border-color: #cfd1dc;
+  -fx-border-width: 0 1 1 0;
+  -fx-border-style: solid;
+}
+.stage-server .split-pane .user-table .column-header .label {
+  -fx-text-fill: #485b51;
+}
+.stage-server .split-pane .user-table .table-row-cell {
+  -fx-background-color: #ffffff;
+  -fx-font-size: 14;
+}
+.stage-server .split-pane .user-table .table-row-cell .progress-bar .track {
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 8;
+  -fx-border-color: #e9eaec;
+  -fx-border-width: 1;
+  -fx-border-style: solid;
+  -fx-border-radius: 8;
+}
+.stage-server .split-pane .user-table .table-row-cell .progress-bar .bar {
+  -fx-background-color: #a7d07c;
+  -fx-background-radius: 8;
+}
+.stage-server .split-pane .user-table .table-row-cell .cell {
+  -fx-alignment: center;
+}
+.stage-server .split-pane .user-table .table-row-cell .cell .normal {
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 9999;
+}
+.stage-server .split-pane .user-table .table-row-cell .cell .normal .label {
+  -fx-text-fill: #a7d07c;
+}
+.stage-server .split-pane .user-table .table-row-cell .cell .trashed {
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 9999;
+}
+.stage-server .split-pane .user-table .table-row-cell .cell .trashed .label {
+  -fx-text-fill: #e68530;
+}
+.stage-server .split-pane .user-table .table-row-cell:selected {
+  -fx-background-color: #4ea3f4;
+  -fx-text-background-color: #ffffff;
+}

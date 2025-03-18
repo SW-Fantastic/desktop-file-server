@@ -1,0 +1,6 @@
+{
+  "ftp-port-range" : "20000-25535",
+  "server-address" : "127.0.0.1",
+  "ftp-port" : "8090",
+  "server-port" : "8080"
+}

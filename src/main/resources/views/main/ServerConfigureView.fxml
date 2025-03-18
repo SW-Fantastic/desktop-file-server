@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="388.0" prefWidth="555.0" styleClass="stage-dialog" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.swdc.rmdisk.views.ServerConfigureViewController">
+   <bottom>
+      <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="484.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button minHeight="36.0" minWidth="80.0" mnemonicParsing="false" onAction="#saveConfiguration" styleClass="button-accept" text="保存" />
+         </children>
+         <padding>
+            <Insets right="12.0" />
+         </padding></HBox>
+   </bottom>
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

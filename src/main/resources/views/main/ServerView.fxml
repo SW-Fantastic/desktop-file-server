@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="860.0" styleClass="stage-server" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.swdc.rmdisk.views.DiskServerController">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="860.0" spacing="8.0" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="8.0" left="18.0" right="18.0" top="8.0" />
+         </padding>
+         <children>
+            <Button id="loginButton" minHeight="28.0" minWidth="28.0" mnemonicParsing="false" onAction="#onLoginRequest" prefHeight="28.0" prefWidth="28.0" styleClass="tool-button" text="Button" />
+            <Button id="btnSetting" minHeight="28.0" minWidth="28.0" mnemonicParsing="false" onAction="#showServerConfig" prefHeight="28.0" prefWidth="28.0" styleClass="tool-button" text="Button" />
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label text="Web：" />
+            <TextField fx:id="portField" minHeight="30.0" prefHeight="30.0" prefWidth="60.0" styleClass="field" />
+            <Button id="startButton" minHeight="28.0" minWidth="28.0" mnemonicParsing="false" onAction="#serverDAVStartStop" prefHeight="28.0" prefWidth="28.0" styleClass="tool-button" text="Button" />
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label text="FTP：" />
+            <TextField fx:id="portFTPField" minHeight="30.0" prefHeight="30.0" prefWidth="60.0" styleClass="field" />
+            <Button id="ftpStartButton" minHeight="28.0" minWidth="28.0" mnemonicParsing="false" onAction="#serverFTPStartStop" prefHeight="28.0" prefWidth="28.0" styleClass="tool-button" text="Button" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <TabPane fx:id="tabContainer" prefHeight="200.0" prefWidth="200.0" side="BOTTOM" styleClass="main-tab" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
