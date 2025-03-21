@@ -63,7 +63,7 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="75.0" prefWidth="500.0" spacing="12.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="89.0" styleClass="button-cancel" text="修改密码" />
+            <Button mnemonicParsing="false" onAction="#resetPassword" prefHeight="35.0" prefWidth="89.0" styleClass="button-cancel" text="修改密码" />
             <Button defaultButton="true" layoutX="389.0" layoutY="30.0" mnemonicParsing="false" onAction="#close" prefHeight="35.0" prefWidth="89.0" styleClass="button-accept" text="关闭" />
          </children>
          <padding>

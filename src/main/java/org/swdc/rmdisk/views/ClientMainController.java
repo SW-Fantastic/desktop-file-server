@@ -21,6 +21,7 @@ import org.swdc.ours.common.network.CancelledException;
 import org.swdc.rmdisk.client.RemoteResource;
 import org.swdc.rmdisk.client.protocol.ClientFileProtocol;
 import org.swdc.rmdisk.views.cells.ClientUpDownloadCell;
+import org.swdc.rmdisk.views.events.ClientLogoutEvent;
 import org.swdc.rmdisk.views.events.ClientUserRefreshEvent;
 import org.swdc.rmdisk.views.modals.ClientNameEditModal;
 import org.swdc.rmdisk.views.modals.ClientPropertiesModal;
@@ -257,6 +258,11 @@ public class ClientMainController extends ViewController<ClientMainView> {
         ClientMainView clientMainView = getView();
         ClientUserProfileModal modal = clientMainView.getView(ClientUserProfileModal.class);
         modal.show(clientFiles,token);
+
+        if (clientFiles == null) {
+            clientMainView.hide();
+            return;
+        }
 
         try {
             clientMainView.updateInfo(clientFiles.getUserInfo(token));
@@ -562,12 +568,24 @@ public class ClientMainController extends ViewController<ClientMainView> {
     }
 
     public void serverDisconnected() {
-        this.token = null;
-        this.clientFiles = null;
-        ClientMainView view = getView();
-        Alert alert = view.alert("网络错误", "无法连接到服务器，请重新登录。", Alert.AlertType.ERROR);
-        alert.showAndWait();
-        view.hide();
+
+        this.onLogout(new ClientLogoutEvent("网络错误：无法链接到服务器！"));
+    }
+
+    @EventListener(type = ClientLogoutEvent.class)
+    public void onLogout(ClientLogoutEvent event) {
+
+        Platform.runLater(() -> {
+
+            ClientMainView view = getView();
+            Alert alert = view.alert("提示",event.getMessage(), Alert.AlertType.WARNING);
+            alert.showAndWait();
+            this.token = null;
+            this.clientFiles = null;
+            view.hide();
+
+        });
+
     }
 
 

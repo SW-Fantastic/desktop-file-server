@@ -9,8 +9,7 @@ import org.swdc.rmdisk.client.protocol.ClientFileProtocol;
         viewLocation = "views/modals/ClientUserProfileModal.fxml",
         title = "用户信息",
         dialog = true,
-        resizeable = false,
-        multiple = true
+        resizeable = false
 )
 public class ClientUserProfileModal extends AbstractView {
 

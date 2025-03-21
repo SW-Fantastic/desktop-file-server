@@ -1,7 +1,5 @@
 package org.swdc.rmdisk.core.ftp;
 
-import java.util.List;
-
 public class FTPClientMsg {
 
     private String action;

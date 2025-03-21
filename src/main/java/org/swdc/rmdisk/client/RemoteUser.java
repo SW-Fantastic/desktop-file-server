@@ -12,7 +12,6 @@ public class RemoteUser {
 
     private Long totalSize;
 
-
     public String getNickname() {
         return nickname;
     }

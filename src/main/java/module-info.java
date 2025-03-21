@@ -126,23 +126,9 @@ module swdc.rmdisk {
             ch.qos.logback.core,
             ch.qos.logback.classic;
 
-    opens org.swdc.rmdisk.core.entity;
-
-    opens org.swdc.rmdisk.service;
-
-    opens database to swdc.application.data;
-
-    opens icons;
-
-    opens views.main to
-            javafx.fxml,
-            javafx.graphics,
-            swdc.application.fx;
-
-    opens views.modals to
-            javafx.fxml,
-            javafx.graphics,
-            swdc.application.fx;
+    opens org.swdc.rmdisk.client.protocol to
+            com.fasterxml.jackson.core,
+            com.fasterxml.jackson.databind;
 
     opens org.swdc.rmdisk.core.xmlns to
             com.fasterxml.jackson.core,
@@ -155,5 +141,15 @@ module swdc.rmdisk {
     opens org.swdc.rmdisk.core.dav.multiple to
             com.fasterxml.jackson.core,
             com.fasterxml.jackson.databind;
+
+    opens org.swdc.rmdisk.core.entity;
+    opens org.swdc.rmdisk.service;
+
+    opens database to swdc.application.data;
+
+    opens icons;
+    opens views.main;
+    opens views.modals;
+
 
 }

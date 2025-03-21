@@ -1,5 +1,7 @@
 package org.swdc.rmdisk.views.modals;
 
+import jakarta.inject.Inject;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -7,18 +9,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
-import org.swdc.dependency.annotations.Prototype;
+import org.swdc.dependency.annotations.EventListener;
 import org.swdc.fx.view.ViewController;
 import org.swdc.rmdisk.client.RemoteUser;
 import org.swdc.rmdisk.client.protocol.ClientFileProtocol;
-import org.swdc.rmdisk.views.events.ClientUserRefreshEvent;
+import org.swdc.rmdisk.views.events.ClientLogoutEvent;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.ConnectException;
 import java.util.Base64;
 
-@Prototype
 public class ClientUserProfileModalController extends ViewController<ClientUserProfileModal> {
 
     @FXML
@@ -35,6 +36,9 @@ public class ClientUserProfileModalController extends ViewController<ClientUserP
 
     @FXML
     private ImageView avatar;
+
+    @Inject
+    private ClientResetPasswordModal resetPasswordModal;
 
     private ClientFileProtocol protocol;
 
@@ -72,6 +76,13 @@ public class ClientUserProfileModalController extends ViewController<ClientUserP
             return false;
         }
 
+    }
+
+    @EventListener(type = ClientLogoutEvent.class)
+    public void onLogout(ClientLogoutEvent event) {
+        Platform.runLater(() -> {
+            getView().hide();
+        });
     }
 
     @FXML
@@ -123,6 +134,11 @@ public class ClientUserProfileModalController extends ViewController<ClientUserP
             Alert alert = getView().alert("失败", "昵称更新失败，未知错误", Alert.AlertType.ERROR);
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    public void resetPassword() {
+        resetPasswordModal.show(protocol, token);
     }
 
     @FXML

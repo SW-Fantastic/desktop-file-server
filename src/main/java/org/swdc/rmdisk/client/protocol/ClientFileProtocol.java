@@ -45,6 +45,16 @@ public interface ClientFileProtocol {
      */
     RemoteUser updateUserInfo(String tokenOrSessionId, RemoteUser user) throws ConnectException;
 
+
+    /**
+     * 重置密码
+     * @param tokenOrSessionId 该协议需要的认证凭证
+     * @param passwordOld 旧密码
+     * @param passwordNew 新密码
+     * @throws ConnectException
+     */
+    RemoteUser resetPassword(String tokenOrSessionId, String passwordOld, String passwordNew) throws ConnectException;
+
     /**
      * 登出服务器
      * @param tokenOrSessionId 该协议需要的认证凭证

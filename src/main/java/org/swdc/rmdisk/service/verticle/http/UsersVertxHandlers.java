@@ -132,6 +132,54 @@ public class UsersVertxHandlers extends VertxHttpAbstractHandler {
 
     }
 
+    @RequestMapping(value = "/reset-pwd", method = "POST")
+    public void resetPassword(HttpServerRequest request, HttpServerResponse response) {
+
+        try {
+            User current = secureService.requestAuth(request, response);
+            if (current == null) {
+                return;
+            }
+
+            request.bodyHandler(buffer -> {
+
+                String body = buffer.toString();
+                ClientResetPassword updateInfo = SecureUtils.readString(body, ClientResetPassword.class);
+                if (updateInfo == null || updateInfo.password() == null || updateInfo.newPassword() == null) {
+                    response.setStatusCode(400).end(SecureUtils.writeString(
+                            new Resp(400, "Bad request")
+                    ));
+                    return;
+                }
+
+                String oldPassword = updateInfo.password();
+                String newPassword = updateInfo.newPassword();
+                if (oldPassword.isBlank() || newPassword.isBlank() || !current.getPassword().equals(oldPassword)) {
+                    response.setStatusCode(400).end(SecureUtils.writeString(
+                            new Resp(400, "Bad request")
+                    ));
+                    return;
+                }
+
+                User update = new User();
+                update.setPassword(newPassword);
+
+                update = manageService.updateUser(current.getId(),update);
+                update.setPassword(null);
+
+                secureService.logout(current.getId());
+                response.putHeader("content-type", "application/json");
+                response.end(SecureUtils.writeString(
+                        new Resp(200, update)
+                ));
+            });
+
+        } catch (Exception e) {
+            response.setStatusCode(500).end();
+        }
+
+    }
+
     /**
      * 获取所有可注册的群组
      * @param request

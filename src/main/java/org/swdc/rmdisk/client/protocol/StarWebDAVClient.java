@@ -99,7 +99,15 @@ public interface StarWebDAVClient {
     );
 
 
+    /**
+     * 更新用户信息
+     * @param user 用户信息
+     * @return 更新结果
+     */
     @EndPoint(method = Methods.POST, url = "/@api/user-info")
     Resp updateUserInfo(@HttpBody RemoteUser user);
+
+    @EndPoint(method = Methods.POST, url = "/@api/reset-pwd")
+    Resp resetPwd(@HttpBody StarWebResetPassword request);
 
 }

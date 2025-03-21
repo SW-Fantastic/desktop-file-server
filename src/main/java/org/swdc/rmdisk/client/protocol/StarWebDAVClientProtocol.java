@@ -49,7 +49,7 @@ public class StarWebDAVClientProtocol implements ClientFileProtocol {
     public boolean registerable() {
         try {
             Resp resp = client.registerSupport();
-            return Boolean.parseBoolean(resp.getData().toString());
+            return Boolean.parseBoolean(resp.data().toString());
         } catch (Exception e) {
             logger.error("Error while registering support", e);
             return false;
@@ -74,10 +74,31 @@ public class StarWebDAVClientProtocol implements ClientFileProtocol {
         try {
             this.token = tokenOrSessionId;
             Resp resp = client.updateUserInfo(user);
-            if (resp == null || resp.getCode() != 200) {
+            if (resp == null || resp.code() != 200) {
                 return null;
             }
-            return resp.getData(RemoteUser.class);
+            return resp.data(RemoteUser.class);
+        } catch (Exception e) {
+            if (e.getCause() instanceof ConnectException) {
+                throw (ConnectException) e.getCause();
+            }
+            if (e instanceof NetworkException) {
+                NetworkException ex = (NetworkException) e;
+                if (ex.getCode() == 401) {
+                    throw new ConnectException("Unauthorized");
+                }
+            }
+            logger.error("Error while getting user info", e);
+            return null;
+        }
+    }
+
+    @Override
+    public RemoteUser resetPassword(String tokenOrSessionId, String passwordOld, String passwordNew) throws ConnectException {
+        this.token = tokenOrSessionId;
+        try {
+            Resp resp = client.resetPwd(new StarWebResetPassword(passwordOld,passwordNew));
+            return resp.data(RemoteUser.class);
         } catch (Exception e) {
             if (e.getCause() instanceof ConnectException) {
                 throw (ConnectException) e.getCause();
@@ -99,16 +120,8 @@ public class StarWebDAVClientProtocol implements ClientFileProtocol {
         try {
 
             Resp resp = client.getUserInfo();
-            User user = resp.getData(User.class);
+            return resp.data(RemoteUser.class);
 
-            RemoteUser remoteUser = new RemoteUser();
-            remoteUser.setUsername(user.getUsername());
-            remoteUser.setNickname(user.getNickname());
-            remoteUser.setAvatar(user.getAvatar());
-            remoteUser.setTotalSize(user.getTotalSize());
-            remoteUser.setUsedSize(user.getUsedSize());
-
-            return remoteUser;
         } catch (Exception e) {
             if (e.getCause() instanceof ConnectException) {
                 throw (ConnectException) e.getCause();
