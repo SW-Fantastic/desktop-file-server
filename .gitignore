@@ -41,3 +41,4 @@ build/
 /assets/blocks/
 /assets/tmp/
 /.idea/
+/deploy/

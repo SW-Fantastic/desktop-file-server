@@ -1,12 +1,21 @@
 package org.swdc.rmdisk;
 
+import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import org.swdc.data.EMFProviderFactory;
 import org.swdc.dependency.DependencyContext;
 import org.swdc.dependency.EnvironmentLoader;
 import org.swdc.fx.FXApplication;
+import org.swdc.fx.FXResources;
 import org.swdc.fx.SWFXApplication;
 import org.swdc.rmdisk.core.EMFactory;
 import org.swdc.rmdisk.views.DiskStartView;
+import javafx.scene.image.Image;
+import org.swdc.rmdisk.views.TrayView;
+
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @SWFXApplication(
         splash = SplashView.class,
@@ -28,6 +37,32 @@ public class RmDiskServiceApplication extends FXApplication {
         factory.create();
 
         DiskStartView diskStartView = dependencyContext.getByClass(DiskStartView.class);
+
+        SystemTray tray = SystemTray.getSystemTray();
+        try {
+
+            TrayView trayView = dependencyContext.getByClass(TrayView.class);
+
+            FXResources resources = dependencyContext.getByClass(FXResources.class);
+            Image image = resources.getIcons().get(0);
+            TrayIcon icon = new TrayIcon(SwingFXUtils.fromFXImage(image, null));
+            icon.setToolTip("繁星云服务");
+            icon.setImageAutoSize(true);
+            icon.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON3) {
+                        trayView.show(e);
+                    } else {
+                        Platform.runLater(diskStartView::show);
+                    }
+                }
+            });
+            tray.add(icon);
+            Platform.setImplicitExit(false);
+        } catch (AWTException e) {
+        }
+
         diskStartView.show();
 
     }

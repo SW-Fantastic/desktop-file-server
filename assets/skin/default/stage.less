@@ -214,6 +214,20 @@
     }
  }
 
+.stage-tray {
+
+    -fx-background-color: @background;
+    .button-accept {
+        .default-button(@success)
+    }
+    .button-danger {
+        .default-button(@warn)
+    }
+    .button-info {
+        .border-button(@info)
+    }
+}
+
 .stage {
 
     -fx-background-color: @background;
