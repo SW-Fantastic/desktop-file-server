@@ -8,10 +8,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.swdc.fx.FXResources;
 import org.swdc.fx.font.FontSize;
 import org.swdc.fx.font.Fontawsome5Service;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
+import org.swdc.rmdisk.core.LanguageKeys;
+
+import java.util.ResourceBundle;
 
 /**
  * 本云盘的启动窗口。
@@ -19,12 +23,15 @@ import org.swdc.fx.view.View;
  */
 @View(
         viewLocation = "/views/main/StartView.fxml",
-        title = "繁星云"
+        title = LanguageKeys.UI_APP_NAME
 )
 public class DiskStartView extends AbstractView {
 
     @Inject
     private Fontawsome5Service fontawsome5Service;
+
+    @Inject
+    private FXResources resources;
 
     @PostConstruct
     public void init() {
@@ -33,9 +40,11 @@ public class DiskStartView extends AbstractView {
         stage.setMinWidth(550);
         stage.setMinHeight(400);
 
-        setupButton(findById("login-button"), "登录", "hdd");
-        setupButton(findById("server-button"), "启动服务", "server");
-        setupButton(findById("help-button"), "帮助", "book");
+        ResourceBundle bundle = resources.getResourceBundle();
+
+        setupButton(findById("login-button"), bundle.getString(LanguageKeys.STAR_LOGIN), "hdd");
+        setupButton(findById("server-button"), bundle.getString(LanguageKeys.STAR_SERVER), "server");
+        setupButton(findById("help-button"), bundle.getString(LanguageKeys.STAR_HELP), "book");
 
     }
 

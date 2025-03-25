@@ -10,7 +10,7 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="484.0" BorderPane.alignment="CENTER">
          <children>
-            <Button minHeight="36.0" minWidth="80.0" mnemonicParsing="false" onAction="#saveConfiguration" styleClass="button-accept" text="保存" />
+            <Button minHeight="36.0" minWidth="80.0" mnemonicParsing="false" onAction="#saveConfiguration" styleClass="button-accept" text="%disk.save" />
          </children>
          <padding>
             <Insets right="12.0" />

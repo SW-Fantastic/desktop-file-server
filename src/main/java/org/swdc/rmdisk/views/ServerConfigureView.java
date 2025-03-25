@@ -12,12 +12,14 @@ import org.swdc.fx.config.ConfigViews;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
 import org.swdc.rmdisk.RmDiskApplicationConfig;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.core.ServerConfigure;
+
+import java.util.ResourceBundle;
 
 @View(
         viewLocation = "views/main/ServerConfigureView.fxml",
-        title = "配置设置",
-        dialog = true,
+        title = LanguageKeys.UI_CONFIG_TITLE,
         resizeable = false
 )
 public class ServerConfigureView extends AbstractView {
@@ -38,6 +40,8 @@ public class ServerConfigureView extends AbstractView {
     @PostConstruct
     public void init() {
 
+        ResourceBundle bundle = resources.getResourceBundle();
+
         BorderPane root = (BorderPane) getView();
         TabPane tabPane = (TabPane) root.getCenter();
 
@@ -47,7 +51,7 @@ public class ServerConfigureView extends AbstractView {
         generalConfSheet.setSearchBoxVisible(false);
         generalConfSheet.getStyleClass().add("prop-sheets");
 
-        Tab tab = new Tab("常规配置");
+        Tab tab = new Tab(bundle.getString(LanguageKeys.SERVER_CONFIG_TAB_GENERAL));
         tab.setContent(generalConfSheet);
         tabPane.getTabs().add(tab);
 
@@ -57,7 +61,7 @@ public class ServerConfigureView extends AbstractView {
         serverConfSheet.setSearchBoxVisible(false);
         serverConfSheet.getStyleClass().add("prop-sheets");
 
-        Tab tabServer = new Tab("服务器配置");
+        Tab tabServer = new Tab(bundle.getString(LanguageKeys.SERVER_CONFIG_TAB_SERVER));
         tabServer.setContent(serverConfSheet);
         tabPane.getTabs().add(tabServer);
 

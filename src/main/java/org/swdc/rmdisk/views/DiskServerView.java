@@ -11,6 +11,7 @@ import org.swdc.fx.font.FontSize;
 import org.swdc.fx.font.Fontawsome5Service;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
+import org.swdc.rmdisk.core.LanguageKeys;
 
 /**
  * 云服务器的主窗口。
@@ -18,7 +19,7 @@ import org.swdc.fx.view.View;
  */
 @View(
         viewLocation = "views/main/ServerView.fxml",
-        title = "繁星云服务"
+        title = LanguageKeys.UI_APP_NAME
 )
 public class DiskServerView extends AbstractView {
 

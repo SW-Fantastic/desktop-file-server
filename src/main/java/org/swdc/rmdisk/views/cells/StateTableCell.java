@@ -7,8 +7,11 @@ import javafx.scene.control.TableCell;
 import javafx.scene.layout.HBox;
 import org.swdc.fx.font.FontSize;
 import org.swdc.fx.font.Fontawsome5Service;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.core.entity.State;
 import org.swdc.rmdisk.core.entity.User;
+
+import java.util.ResourceBundle;
 
 public class StateTableCell extends TableCell<User,Void> {
 
@@ -22,8 +25,11 @@ public class StateTableCell extends TableCell<User,Void> {
 
     private Fontawsome5Service fontawsome5Service = null;
 
-    public StateTableCell(Fontawsome5Service fontawsome5Service) {
+    private ResourceBundle bundle = null;
 
+    public StateTableCell(ResourceBundle bundle, Fontawsome5Service fontawsome5Service) {
+
+        this.bundle = bundle;
         container = new HBox();
         this.label = new Label();
         this.icon = new Label();
@@ -58,10 +64,10 @@ public class StateTableCell extends TableCell<User,Void> {
         container.getStyleClass().clear();
         User user = getTableRow().getItem();
         if (user.getState() == State.NORMAL) {
-            label.setText("正常");
+            label.setText(bundle.getString(LanguageKeys.STATE_NORMAL));
             container.getStyleClass().add("normal");
         } else {
-            label.setText("注销");
+            label.setText(bundle.getString(LanguageKeys.STATE_DISABLE));
             container.getStyleClass().add("trashed");
         }
         root.prefWidthProperty().unbind();

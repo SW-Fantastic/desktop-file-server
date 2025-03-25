@@ -7,7 +7,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.swdc.dependency.annotations.EventListener;
+import org.swdc.fx.FXResources;
 import org.swdc.fx.view.ViewController;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.core.ServerConfigure;
 import org.swdc.rmdisk.service.FTPVertxService;
 import org.swdc.rmdisk.service.HttpVertxService;
@@ -81,6 +83,9 @@ public class DiskServerController extends ViewController<DiskServerView> {
     @Inject
     private ClientLoginView clientLoginView;
 
+    @Inject
+    private FXResources resources;
+
     /**
      * 当视图准备就绪时调用此方法，本方法用于初始化视图。
      *
@@ -94,8 +99,8 @@ public class DiskServerController extends ViewController<DiskServerView> {
         portFTPField.setText(config.getFtpServerPort().toString());
 
         ObservableList<Tab> tabs = tabContainer.getTabs();
-        tabs.add(new Tab("用户管理", serverUserTabView.getView()));
-        tabs.add(new Tab("注册管理", serverRegisterTabView.getView()));
+        tabs.add(new Tab(resourceBundle.getString(LanguageKeys.SERVER_USER_MGR), serverUserTabView.getView()));
+        tabs.add(new Tab(resourceBundle.getString(LanguageKeys.SERVER_USER_REG), serverRegisterTabView.getView()));
     }
 
     @EventListener(type = ConfigureUpdateEvent.class)
@@ -124,6 +129,9 @@ public class DiskServerController extends ViewController<DiskServerView> {
 
     @FXML
     public void serverFTPStartStop() {
+
+        ResourceBundle bundle = resources.getResourceBundle();
+
         try {
             Integer port = Integer.parseInt(portFTPField.getText());
             config.setFtpServerPort(port.toString());
@@ -136,7 +144,12 @@ public class DiskServerController extends ViewController<DiskServerView> {
         if (ftpVertxService.isStarted()) {
             ftpVertxService.stopService(result -> {
                 if (!result){
-                    serverView.alert("错误", "无法停止FTP服务。", Alert.AlertType.ERROR);
+                    Alert alert = serverView.alert(
+                            bundle.getString(LanguageKeys.ERROR),
+                            bundle.getString(LanguageKeys.ERR_STOP_FTP_SERVER),
+                            Alert.AlertType.ERROR
+                    );
+                    alert.showAndWait();
                 } else {
                     serverView.switchFTPServerState(false);
                     portFTPField.setDisable(false);
@@ -145,7 +158,12 @@ public class DiskServerController extends ViewController<DiskServerView> {
         } else {
             ftpVertxService.startService(result -> {
                 if (!result) {
-                    getView().alert("错误", "无法启动FTP服务。", Alert.AlertType.ERROR);
+                    Alert alert = getView().alert(
+                            bundle.getString(LanguageKeys.ERROR),
+                            bundle.getString(LanguageKeys.ERR_START_FTP_SERVER),
+                            Alert.AlertType.ERROR
+                    );
+                    alert.showAndWait();
                     portFTPField.setDisable(false);
                 } else {
                     serverView.switchFTPServerState(true);
@@ -161,6 +179,8 @@ public class DiskServerController extends ViewController<DiskServerView> {
     @FXML
     public void serverDAVStartStop(){
 
+        ResourceBundle bundle = resources.getResourceBundle();
+
         try {
             Integer port = Integer.parseInt(portField.getText());
             config.setPort(port.toString());
@@ -173,7 +193,12 @@ public class DiskServerController extends ViewController<DiskServerView> {
         if (httpVertxService.isStarted()) {
             httpVertxService.stopService(result -> {
                 if (!result){
-                    serverView.alert("错误", "无法停止WebDAV服务。", Alert.AlertType.ERROR);
+                    Alert alert = serverView.alert(
+                            bundle.getString(LanguageKeys.ERROR),
+                            bundle.getString(LanguageKeys.ERR_STOP_HTTP_SERVER),
+                            Alert.AlertType.ERROR
+                    );
+                    alert.showAndWait();
                 } else {
                     serverView.switchServerState(false);
                     portField.setDisable(false);
@@ -182,7 +207,12 @@ public class DiskServerController extends ViewController<DiskServerView> {
         } else {
             httpVertxService.startService(result -> {
                 if (!result){
-                    getView().alert("错误", "无法启动WebDAV服务。", Alert.AlertType.ERROR);
+                    Alert alert = getView().alert(
+                            bundle.getString(LanguageKeys.ERROR),
+                            bundle.getString(LanguageKeys.ERR_START_HTTP_SERVER),
+                            Alert.AlertType.ERROR
+                    );
+                    alert.showAndWait();
                     portField.setDisable(false);
                 } else {
                     serverView.switchServerState(true);

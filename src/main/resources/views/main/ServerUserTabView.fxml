@@ -44,15 +44,15 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="groupLabel" styleClass="label-title" text="未选择分组">
+                        <Label fx:id="groupLabel" styleClass="label-title" text="%disk.server.no_selected_group">
                            <padding>
                               <Insets left="14.0" />
                            </padding>
                         </Label>
                      </children>
                   </HBox>
-                  <TextField fx:id="searchField" minWidth="30.0" prefHeight="30.0" prefWidth="120.0" promptText="查找用户.." styleClass="field" />
-                  <TextField fx:id="dateFilterField" editable="false" minHeight="30.0" prefHeight="30.0" prefWidth="148.0" promptText="按日期查找.." styleClass="field" />
+                  <TextField fx:id="searchField" minWidth="30.0" prefHeight="30.0" prefWidth="120.0" promptText="%disk.server.find_user" styleClass="field" />
+                  <TextField fx:id="dateFilterField" editable="false" minHeight="30.0" prefHeight="30.0" prefWidth="148.0" promptText="%disk.server.filter_by_date" styleClass="field" />
                   <Button id="editStructureButton" minHeight="28.0" minWidth="28.0" mnemonicParsing="false" onAction="#onActionEditStructure" prefHeight="28.0" prefWidth="28.0" styleClass="tool-button" text="+" />
                   <Button id="addUserButton" minHeight="28.0" minWidth="28.0" mnemonicParsing="false" onAction="#onActionAddUser" prefHeight="28.0" prefWidth="28.0" styleClass="tool-button" text="+" />
                </children>
@@ -61,12 +61,12 @@
          <center>
             <TableView fx:id="userTableView" prefHeight="200.0" prefWidth="200.0" styleClass="user-table" BorderPane.alignment="CENTER">
                <columns>
-                  <TableColumn fx:id="idColumn" maxWidth="80.0" minWidth="80.0" text="Id" />
-                  <TableColumn fx:id="usernameColumn" prefWidth="119.33331298828125" text="用户名" />
-                  <TableColumn fx:id="nameColumn" prefWidth="105.33334350585938" text="名称" />
-                  <TableColumn fx:id="spaceColumn" prefWidth="124.66668701171875" text="可用空间" />
-                  <TableColumn fx:id="stateColumn" maxWidth="80.0" minWidth="80.0" text="状态" />
-                  <TableColumn fx:id="onlineColumn" maxWidth="80.0" minWidth="80.0" text="在线" />
+                  <TableColumn fx:id="idColumn" maxWidth="80.0" minWidth="80.0" text="%disk.server.user_id" />
+                  <TableColumn fx:id="usernameColumn" prefWidth="119.33331298828125" text="%disk.server.user_name" />
+                  <TableColumn fx:id="nameColumn" prefWidth="105.33334350585938" text="%disk.server.nick_name" />
+                  <TableColumn fx:id="spaceColumn" prefWidth="106.66668701171875" text="%disk.server.space" />
+                  <TableColumn fx:id="stateColumn" maxWidth="124.6666259765625" minWidth="98.0" prefWidth="98.0" text="%disk.server.state" />
+                  <TableColumn fx:id="onlineColumn" maxWidth="80.0" minWidth="80.0" text="%disk.server.online" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

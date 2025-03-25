@@ -13,7 +13,6 @@ import org.swdc.rmdisk.core.entity.UserGroup;
 @View(
         viewLocation = "views/modals/EditFolderStructure.fxml",
         title = "编辑默认文件结构",
-        dialog = true,
         multiple = true
 )
 public class FolderStructureView extends AbstractView {

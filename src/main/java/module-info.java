@@ -148,6 +148,7 @@ module swdc.rmdisk {
     opens database to swdc.application.data;
 
     opens icons;
+    opens lang;
     opens views.main;
     opens views.modals;
 

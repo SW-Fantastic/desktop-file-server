@@ -14,32 +14,32 @@ public class ServerConfigure extends AbstractConfig {
 
     @PropEditor(
             editor = PortPropertyEditor.class,
-            name = "WebDAV端口",
-            description = "将会在此端口启动WebDAV服务。"
+            name = LanguageKeys.UI_SERVER_CONFIG_DAV_SERVER_PORT,
+            description = LanguageKeys.UI_SERVER_CONFIG_DAV_SERVER_DESC
     )
     @Property("server-port")
     private String port;
 
     @PropEditor(
             editor = PortPropertyEditor.class,
-            name = "FTP端口",
-            description = "将会在此端口启动FTP服务。"
+            name = LanguageKeys.UI_SERVER_CONFIG_FTP_SERVER_PORT,
+            description = LanguageKeys.UI_SERVER_CONFIG_FTP_SERVER_DESC
     )
     @Property("ftp-port")
     private String ftpServerPort;
 
     @PropEditor(
             editor = TextEditor.class,
-            name = "远程地址",
-            description = "服务器公开提供服务的IP地址。"
+            name = LanguageKeys.UI_SERVER_CONFIG_IP,
+            description = LanguageKeys.UI_SERVER_CONFIG_IP_DESC
     )
     @Property("server-address")
     private String serverAddress;
 
     @PropEditor(
             editor = PortRangePropertyEditor.class,
-            name = "FTP端口范围",
-            description = "此范围的端口将会用于FTP的被动模式。"
+            name = LanguageKeys.UI_SERVER_CONFIG_FTP_RANGE_PORT,
+            description = LanguageKeys.UI_SERVER_CONFIG_FTP_RANGE_DESC
     )
     @Property("ftp-port-range")
     private String ftpPortRange;

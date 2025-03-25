@@ -14,8 +14,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import org.controlsfx.control.PopOver;
 import org.swdc.dependency.annotations.EventListener;
+import org.swdc.fx.FXResources;
 import org.swdc.fx.font.Fontawsome5Service;
 import org.swdc.fx.view.ViewController;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.core.entity.State;
 import org.swdc.rmdisk.core.entity.User;
 import org.swdc.rmdisk.core.entity.UserGroup;
@@ -152,6 +154,9 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
     @Inject
     private UserManageService userManageService;
 
+    @Inject
+    private FXResources resources;
+
     private volatile boolean userTableRefreshing = false;
 
     private static final int RECORD_COUNT_PRE_PAGE = 80;
@@ -169,7 +174,7 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("nickname"));
         spaceColumn.setCellFactory(val -> new UsableSpaceTableCell());
-        stateColumn.setCellFactory(col -> new StateTableCell(fontawsome5Service));
+        stateColumn.setCellFactory(col -> new StateTableCell(resourceBundle,fontawsome5Service));
         onlineColumn.setCellFactory(col -> new OnlineTableCell(fontawsome5Service,secureService));
 
         initUserContextMenu();
@@ -284,19 +289,20 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
      */
     private void initUserContextMenu() {
 
+        ResourceBundle bundle = resources.getResourceBundle();
         ContextMenu userContextMenu = new ContextMenu();
-        MenuItem menuItemAdd = new MenuItem("添加用户");
+        MenuItem menuItemAdd = new MenuItem(bundle.getString(LanguageKeys.SERVER_MENU_ADD_USER));
         menuItemAdd.setOnAction(this::onActionAddUser);
 
-        MenuItem menuItemDelete = new MenuItem("注销用户");
+        MenuItem menuItemDelete = new MenuItem(bundle.getString(LanguageKeys.SERVER_MENU_TRASH_USER));
         menuItemDelete.setOnAction(this::onActionDeleteUser);
         menuItemDelete.disableProperty().bind(selectionUserDisabled);
 
-        MenuItem menuItemEdit = new MenuItem("编辑用户");
+        MenuItem menuItemEdit = new MenuItem(bundle.getString(LanguageKeys.SERVER_MENU_EDIT_USER));
         menuItemEdit.setOnAction(this::onActionEditUser);
         menuItemEdit.disableProperty().bind(selectionUserDisabled);
 
-        MenuItem menuItemPurge = new MenuItem("彻底删除用户");
+        MenuItem menuItemPurge = new MenuItem(bundle.getString(LanguageKeys.SERVER_MENU_PURGE_USER));
         menuItemPurge.setOnAction(this::onActionPurgeUser);
         menuItemPurge.disableProperty().bind(selectionUserPurgeDisabled);
 
@@ -318,32 +324,34 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
      */
     private void initGroupContextMenu() {
 
+        ResourceBundle bundle = resources.getResourceBundle();
+
         ContextMenu groupContextMenu = new ContextMenu();
 
-        MenuItem menuItemAdd = new MenuItem("添加组");
+        MenuItem menuItemAdd = new MenuItem(bundle.getString(LanguageKeys.SERVER_MENU_ADD_GROUP));
         menuItemAdd.setOnAction(this::onActionAddGroup);
         menuItemAdd.disableProperty().bind(
                 selectionGroupPurgeDisabled.not()
         );
 
-        MenuItem menuItemDelete = new MenuItem("删除组");
+        MenuItem menuItemDelete = new MenuItem(bundle.getString(LanguageKeys.SERVER_MENU_TRASH_GROUP));
         menuItemDelete.setOnAction(this::onActionDeleteGroup);
         menuItemDelete.disableProperty().bind(
                 selectionGroupDisabled
         );
 
-        MenuItem menuItemRename = new MenuItem("重命名组");
+        MenuItem menuItemRename = new MenuItem(bundle.getString(LanguageKeys.SERVER_MENU_EDIT_GROUP));
         menuItemRename.setOnAction(this::onActionEditGroup);
         menuItemRename.disableProperty().bind(
                 selectionGroupDisabled
         );
 
-        MenuItem menuItemPurge = new MenuItem("彻底删除组");
+        MenuItem menuItemPurge = new MenuItem(bundle.getString(LanguageKeys.SERVER_MENU_PURGE_GROUP));
         menuItemPurge.disableProperty().bind(
                 selectionGroupPurgeDisabled
         );
 
-        CheckMenuItem menuItemRegistrable = new CheckMenuItem("允许注册到该组");
+        CheckMenuItem menuItemRegistrable = new CheckMenuItem(bundle.getString(LanguageKeys.SERVER_MENU_REGISTERABLE));
         menuItemRegistrable.disableProperty().bind(
                 selectionGroupDisabled
         );
@@ -470,8 +478,15 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
         if (group == null) {
             return;
         }
+
+        ResourceBundle bundle = resources.getResourceBundle();
+
         ServerUserTabView view = getView();
-        Alert alert = view.alert("警告", "确定要删除该组吗？", Alert.AlertType.CONFIRMATION);
+        Alert alert = view.alert(
+                bundle.getString(LanguageKeys.WARN),
+                bundle.getString(LanguageKeys.SERVER_DLG_DELETE_GROUP),
+                Alert.AlertType.CONFIRMATION
+        );
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 userManageService.transGroup(group.getId());
@@ -492,9 +507,16 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
         if (newUser == null) {
             return;
         }
+
+        ResourceBundle bundle = resources.getResourceBundle();
+
         User user = userManageService.saveUser(newUser);
         if (user == null) {
-            Alert alert = view.alert("错误", "用户添加失败，这可能是由于您填写了无效的信息，或者是用户名出现了重复。", Alert.AlertType.ERROR);
+            Alert alert = view.alert(
+                    bundle.getString(LanguageKeys.ERROR),
+                    bundle.getString(LanguageKeys.SERVER_DLG_USER_ADD_FAILED),
+                    Alert.AlertType.ERROR
+            );
             alert.showAndWait();
         } else {
             refreshUserTable();
@@ -512,9 +534,16 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
         if (updated == null) {
             return;
         }
+
+        ResourceBundle bundle = resources.getResourceBundle();
+
         updated = userManageService.saveUser(updated);
         if (updated == null) {
-            Alert alert = view.alert("错误", "用户修改失败，未知错误。", Alert.AlertType.ERROR);
+            Alert alert = view.alert(
+                    bundle.getString(LanguageKeys.ERROR),
+                    bundle.getString(LanguageKeys.SERVER_DLG_USER_EDIT_FAILED),
+                    Alert.AlertType.ERROR
+            );
             alert.showAndWait();
             return;
         }
@@ -526,8 +555,14 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
         if (user == null) {
             return;
         }
+        ResourceBundle bundle = resources.getResourceBundle();
         ServerUserTabView view = getView();
-        Alert alert = view.alert("警告", "确定要删除：" + user.getUsername() + " 吗？", Alert.AlertType.CONFIRMATION);
+
+        String text = String.format(
+                bundle.getString(LanguageKeys.SERVER_DLG_DELETE_USER),
+                user.getUsername()
+        );
+        Alert alert = view.alert(bundle.getString(LanguageKeys.WARN), text, Alert.AlertType.CONFIRMATION);
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 if(userManageService.deleteUser(user)) {
@@ -542,8 +577,13 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
         if (user == null) {
             return;
         }
+        ResourceBundle bundle = resources.getResourceBundle();
         ServerUserTabView view = getView();
-        Alert alert = view.alert("警告", "确定要彻底删除: " + user.getUsername() + " 吗？", Alert.AlertType.CONFIRMATION);
+        String text = String.format(
+                bundle.getString(LanguageKeys.SERVER_DLG_PURGE_USER),
+                user.getUsername()
+        );
+        Alert alert = view.alert(bundle.getString(LanguageKeys.WARN), text, Alert.AlertType.CONFIRMATION);
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 if(userManageService.purgeUser(user)) {

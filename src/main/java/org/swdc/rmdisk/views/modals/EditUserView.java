@@ -35,7 +35,6 @@ import java.util.List;
 
 @View(
         viewLocation = "views/modals/EditUser.fxml",
-        dialog = true,
         multiple = true,
         resizeable = false,
         title = "编辑用户"
