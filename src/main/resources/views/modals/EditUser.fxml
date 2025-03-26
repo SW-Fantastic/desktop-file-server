@@ -34,9 +34,9 @@
             <RowConstraints maxHeight="42.0" minHeight="42.0" prefHeight="42.0" valignment="CENTER" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <Label text="密码：" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Label text="用户名：" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label text="可用空间：" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label text="%disk.server.password" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label text="%disk.server.user_name" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label text="%disk.server.space" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <TextField id="txtUsername" minHeight="30.0" prefHeight="30.0" styleClass="field" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="1" />
             <Slider id="sliderSpace" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" pickOnBounds="false" showTickLabels="true" showTickMarks="true" snapToTicks="true" styleClass="slider-bar" value="4.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                <GridPane.margin>
@@ -55,12 +55,12 @@
                         <ImageView id="avatar" fitHeight="82.0" fitWidth="82.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER" />
                      </children>
                   </VBox>
-                  <Button id="btnAvatar" minHeight="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" styleClass="button-cancel" text="选择头像" />
+                  <Button id="btnAvatar" minHeight="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" styleClass="button-cancel" text="%disk.server.dlg.edit_avatar" />
                </children>
             </VBox>
-            <Label text="昵称：" GridPane.columnIndex="2" />
+            <Label text="%disk.server.nick_name" GridPane.columnIndex="2" />
             <TextField id="txtNickName" minHeight="30.0" prefHeight="30.0" styleClass="field" GridPane.columnIndex="3" GridPane.columnSpan="2" />
-            <Label text="分组：" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label text="%disk.server.group" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <ComboBox id="cbxGroup" prefHeight="30.0" prefWidth="259.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
          </children>
       </GridPane>
@@ -68,7 +68,7 @@
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="469.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="请为用户填写合适的信息：" />
+            <Label text="%disk.server.dlg.edit_user.desc" />
          </children>
          <padding>
             <Insets left="34.0" />
@@ -78,8 +78,8 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="72.0" prefWidth="469.0" spacing="8.0" BorderPane.alignment="CENTER">
          <children>
-            <Button id="btnSubmit" defaultButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-accept" text="确定" />
-            <Button id="btnCancel" cancelButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-cancel" text="取消" />
+            <Button id="btnSubmit" defaultButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-accept" text="%disk.save" />
+            <Button id="btnCancel" cancelButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-cancel" text="%disk.cancel" />
          </children>
          <padding>
             <Insets right="42.0" />

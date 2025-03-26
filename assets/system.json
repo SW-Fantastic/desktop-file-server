@@ -1,5 +1,5 @@
 {
+  "server-default-space" : 4,
   "server-auto-register" : false,
-  "server-enable-register" : false,
-  "server-default-space" : 4
+  "server-enable-register" : false
 }

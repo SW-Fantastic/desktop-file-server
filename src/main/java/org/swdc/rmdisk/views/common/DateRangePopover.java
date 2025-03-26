@@ -11,6 +11,7 @@ import org.controlsfx.control.PopOver;
 import org.swdc.fx.font.Fontawsome5Service;
 
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 
 public class DateRangePopover extends PopOver {
 
@@ -19,10 +20,10 @@ public class DateRangePopover extends PopOver {
     private SimpleObjectProperty<LocalDate[]> dateRangeProperty = new SimpleObjectProperty<>();
 
 
-    public DateRangePopover() {
+    public DateRangePopover(ResourceBundle bundle) {
         super();
 
-        dateRangePane = new DateRangePane();
+        dateRangePane = new DateRangePane(bundle);
         HBox buttonBar = new HBox();
         buttonBar.setSpacing(8);
         buttonBar.setAlignment(Pos.CENTER_RIGHT);
@@ -35,7 +36,7 @@ public class DateRangePopover extends PopOver {
             dateRangePane.selectRange(null, null);
             hide();
         });
-        clearButton.setText("清除");
+        clearButton.setText(bundle.getString("date.clear"));
         clearButton.getStyleClass().add("primary-button");
         clearButton.setPadding(new Insets(4));
         clearButton.setPrefSize(80, 32);
@@ -46,7 +47,7 @@ public class DateRangePopover extends PopOver {
         HBox.setHgrow(layout, Priority.ALWAYS);
         buttonBar.getChildren().add(layout);
 
-        Button okButton = new Button("确定");
+        Button okButton = new Button(bundle.getString("date.ok"));
         okButton.setOnAction(e -> {
             dateRangeProperty.set(new LocalDate[]{
                     dateRangePane.getStartDate(), dateRangePane.getEndDate()
@@ -59,7 +60,7 @@ public class DateRangePopover extends PopOver {
         okButton.setDefaultButton(true);
 
 
-        Button cancelButton = new Button("取消");
+        Button cancelButton = new Button(bundle.getString("date.cancel"));
         cancelButton.setOnAction(e -> {
             hide();
         });

@@ -10,8 +10,8 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="69.0" prefWidth="529.0" spacing="8.0" BorderPane.alignment="CENTER">
          <children>
-            <Button id="btnSubmit" defaultButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-accept" text="确定" />
-            <Button id="btnCancel" cancelButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-cancel" text="取消" />
+            <Button id="btnSubmit" defaultButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-accept" text="%disk.save" />
+            <Button id="btnCancel" cancelButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-cancel" text="%disk.cancel" />
          </children>
          <BorderPane.margin>
             <Insets />

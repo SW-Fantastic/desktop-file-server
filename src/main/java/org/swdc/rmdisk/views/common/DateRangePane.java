@@ -18,6 +18,7 @@ import org.swdc.fx.font.Fontawsome5Service;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class DateRangePane extends BorderPane {
 
@@ -31,9 +32,12 @@ public class DateRangePane extends BorderPane {
 
     private Label labelRight;
 
+    private ResourceBundle bundle;
 
-    public DateRangePane() {
 
+    public DateRangePane(ResourceBundle bundle) {
+
+        this.bundle = bundle;
         FontAwesome awesome = new FontAwesome();
         Glyph glyphLeft = awesome.create(FontAwesome.Glyph.CHEVRON_LEFT);
         glyphLeft.setFontSize(16);
@@ -77,8 +81,8 @@ public class DateRangePane extends BorderPane {
 
         setTop(header);
 
-        startDatePane = new DatePane();
-        endDatePane = new DatePane();
+        startDatePane = new DatePane(bundle);
+        endDatePane = new DatePane(bundle);
 
         Bindings.bindContentBidirectional(
                 startDatePane.getSelectedDates(),
@@ -104,11 +108,11 @@ public class DateRangePane extends BorderPane {
         }
 
         labelLeft.setText(
-                startDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(startDatePane.getMonth())
+                startDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(this.bundle,startDatePane.getMonth())
         );
 
         labelRight.setText(
-                endDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(endDatePane.getMonth())
+                endDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(this.bundle,endDatePane.getMonth())
         );
 
         getStyleClass().add("date-pane");
@@ -134,11 +138,11 @@ public class DateRangePane extends BorderPane {
         }
 
         labelLeft.setText(
-                startDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(startDatePane.getMonth())
+                startDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(this.bundle,startDatePane.getMonth())
         );
 
         labelRight.setText(
-                endDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(endDatePane.getMonth())
+                endDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(this.bundle,endDatePane.getMonth())
         );
 
     }
@@ -164,11 +168,11 @@ public class DateRangePane extends BorderPane {
         }
 
         labelLeft.setText(
-                startDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(startDatePane.getMonth())
+                startDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(this.bundle,startDatePane.getMonth())
         );
 
         labelRight.setText(
-                endDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(endDatePane.getMonth())
+                endDatePane.getYear() + "  " + DateUIUtil.getMonthLabel(this.bundle,endDatePane.getMonth())
         );
     }
 

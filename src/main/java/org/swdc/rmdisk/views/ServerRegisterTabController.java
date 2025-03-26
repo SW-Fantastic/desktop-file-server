@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.swdc.fx.FXResources;
 import org.swdc.fx.view.Toast;
 import org.swdc.fx.view.ViewController;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.core.ManagedServerConfigure;
 import org.swdc.rmdisk.core.ServerConfigure;
 import org.swdc.rmdisk.core.entity.CommonState;
@@ -101,6 +102,9 @@ public class ServerRegisterTabController extends ViewController<ServerRegisterTa
     @FXML
     private TextField searchField;
 
+    @Inject
+    private FXResources resources;
+
     private static final int RECORD_COUNT_PRE_PAGE = 80;
 
     private DateRangePopover filterDateRangePopover;
@@ -134,7 +138,7 @@ public class ServerRegisterTabController extends ViewController<ServerRegisterTa
 
         requestTable.setOnMouseClicked(this::onRequestTableClicked);
 
-        filterDateRangePopover = new DateRangePopover();
+        filterDateRangePopover = new DateRangePopover(resourceBundle);
         filterDateRangePopover.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
         filterDateRangePopover.dateRangeProperty()
                 .addListener(observable -> refreshRequestTable());
@@ -170,13 +174,14 @@ public class ServerRegisterTabController extends ViewController<ServerRegisterTa
 
     private void initMenuContextMenu() {
 
+        ResourceBundle bundle = resources.getResourceBundle();
         ContextMenu contextMenu = new ContextMenu();
 
-        MenuItem itemAccept = new MenuItem("通过注册申请");
+        MenuItem itemAccept = new MenuItem(bundle.getString(LanguageKeys.SERVER_REG_MENU_ACCEPT));
         itemAccept.disableProperty().bind(requestSelectionProperty);
         itemAccept.setOnAction(this::onAcceptRequest);
 
-        MenuItem itemReject = new MenuItem("拒绝注册申请");
+        MenuItem itemReject = new MenuItem(bundle.getString(LanguageKeys.SERVER_REG_MENU_REJECT));
         itemReject.disableProperty().bind(requestSelectionProperty);
         itemReject.setOnAction(this::onRejectRequest);
 
@@ -278,11 +283,14 @@ public class ServerRegisterTabController extends ViewController<ServerRegisterTa
     @FXML
     private void selectDefaultAvatar() {
 
+        ResourceBundle bundle = resources.getResourceBundle();
         EditAvatarView editAvatarView = getView().getView(EditAvatarView.class);
 
         FileChooser chooser = new FileChooser();
-        chooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("图片文件", "*.png", "*.jpg", "*.jpeg"));
-        chooser.setTitle("选择头像");
+        chooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(bundle.getString(LanguageKeys.SERVER_DLG_EDIT_AVATAR_FILTER), "*.png", "*.jpg", "*.jpeg")
+        );
+        chooser.setTitle(bundle.getString(LanguageKeys.SERVER_DLG_EDIT_AVATAR_TITLE));
         File file = chooser.showOpenDialog(getView().getStage());
         if (file == null) {
             return;

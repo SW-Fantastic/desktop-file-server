@@ -19,7 +19,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="458.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="label-title" text="默认目录结构" />
+                        <Label styleClass="label-title" text="%disk.server.dlg.folder_structure.title" />
                      </children>
                      <padding>
                         <Insets left="6.0" />

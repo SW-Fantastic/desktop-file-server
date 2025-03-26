@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.swdc.fx.FXResources;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.core.ManagedServerConfigure;
 import org.swdc.rmdisk.core.ServerConfigure;
 import org.swdc.rmdisk.core.entity.State;
@@ -31,13 +32,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Base64;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
 @View(
         viewLocation = "views/modals/EditUser.fxml",
         multiple = true,
         resizeable = false,
-        title = "编辑用户"
+        title = LanguageKeys.UI_SERVER_DLG_EDIT_USER
 )
 public class EditUserView extends AbstractView {
 
@@ -336,9 +338,13 @@ public class EditUserView extends AbstractView {
     }
 
     private void onSelectAvatar(ActionEvent event) {
+
+        ResourceBundle bundle = resources.getResourceBundle();
         FileChooser chooser = new FileChooser();
-        chooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("图片文件", "*.png", "*.jpg", "*.jpeg"));
-        chooser.setTitle("选择头像");
+        chooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(bundle.getString(LanguageKeys.SERVER_DLG_EDIT_AVATAR_FILTER), "*.png", "*.jpg", "*.jpeg")
+        );
+        chooser.setTitle(bundle.getString(LanguageKeys.SERVER_DLG_EDIT_AVATAR_TITLE));
         File file = chooser.showOpenDialog(getStage());
         if (file == null) {
             return;

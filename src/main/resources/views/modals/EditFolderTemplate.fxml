@@ -11,7 +11,7 @@
    <top>
       <HBox alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="410.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="请输入文件夹名称：" />
+            <Label text="%disk.server.dlg.folder_template.text" />
          </children>
          <padding>
             <Insets left="42.0" />
@@ -21,8 +21,8 @@
    <bottom>
       <HBox alignment="TOP_RIGHT" prefHeight="53.0" prefWidth="410.0" spacing="8.0" BorderPane.alignment="CENTER">
          <children>
-            <Button id="btnSubmit" defaultButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-accept" text="确定" />
-            <Button id="btnCancel" cancelButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-cancel" text="取消" />
+            <Button id="btnSubmit" defaultButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-accept" text="%disk.save" />
+            <Button id="btnCancel" cancelButton="true" minHeight="32.0" minWidth="84.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="84.0" styleClass="button-cancel" text="%disk.cancel" />
          </children>
          <padding>
             <Insets right="42.0" />

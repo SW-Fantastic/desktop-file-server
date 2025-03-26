@@ -8,11 +8,12 @@ import org.swdc.fx.font.FontSize;
 import org.swdc.fx.font.Fontawsome5Service;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.core.entity.UserGroup;
 
 @View(
         viewLocation = "views/modals/EditFolderStructure.fxml",
-        title = "编辑默认文件结构",
+        title = LanguageKeys.UI_SERVER_DLG_FOLDER_STRUCTURE_TITLE,
         multiple = true
 )
 public class FolderStructureView extends AbstractView {

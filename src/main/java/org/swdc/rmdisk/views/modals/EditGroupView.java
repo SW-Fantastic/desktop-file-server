@@ -7,11 +7,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.core.entity.State;
 import org.swdc.rmdisk.core.entity.UserGroup;
 
 @View(
-        title = "编辑分组",
+        title = LanguageKeys.UI_SERVER_DLG_EDIT_GROUP_TITLE,
         dialog = true,
         multiple = true,
         resizeable = false,

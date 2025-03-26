@@ -10,6 +10,8 @@ public interface LanguageKeys {
 
     String UI_CONFIG_TITLE = "%disk.config.name";
 
+    String UI_SERVER_DLG_EDIT_USER = "%disk.server.dlg.edit_user";
+
     String UI_SERVER_CONFIG_DAV_SERVER_PORT = "%disk.config.dav_server.port";
 
     String UI_SERVER_CONFIG_DAV_SERVER_DESC = "%disk.config.dav_server.desc";
@@ -25,6 +27,14 @@ public interface LanguageKeys {
     String UI_SERVER_CONFIG_IP = "%disk.config.server_ip";
 
     String UI_SERVER_CONFIG_IP_DESC = "%disk.config.server_ip.desc";
+
+    String UI_SERVER_DLG_EDIT_GROUP_TITLE = "%disk.server.dlg.edit_group.title";
+
+    String UI_SERVER_DLG_FOLDER_STRUCTURE_TITLE = "%disk.server.dlg.folder_structure.title";
+
+    String UI_SERVER_DLG_FOLDER_TEMPLATE_TITLE = "%disk.server.dlg.folder_template.title";
+
+    String UI_SERVER_DLG_EDIT_AVATAR_TITLE = "%disk.server.dlg.edit_avatar.title";
 
     String APP_NAME = "disk.app.name";
 
@@ -69,6 +79,26 @@ public interface LanguageKeys {
     String SERVER_CONFIG_TAB_GENERAL = "disk.config.tab.general";
 
     String SERVER_CONFIG_TAB_SERVER = "disk.config.tab.server";
+
+    String SERVER_CONFIG_DLG_SAVE_CONFIG = "disk.config.dlg.save_config";
+
+    String SERVER_CONFIG_DLG_SAVE_FAIL = "disk.config.dlg_save_fail";
+
+    String SERVER_DLG_FOLDER_TEMPLATE_MENU_ADD_ROOT = "disk.server.dlg.folder_template.menu.add_root";
+
+    String SERVER_DLG_FOLDER_TEMPLATE_MENU_ADD_FOLDER = "disk.server.dlg.folder_template.menu.add_folder";
+
+    String SERVER_DLG_FOLDER_TEMPLATE_MENU_RENAME = "disk.server.dlg.folder_template.menu.rename";
+
+    String SERVER_DLG_FOLDER_TEMPLATE_MENU_REMOVE = "disk.server.dlg.folder_template.menu.remove";
+
+    String SERVER_DLG_EDIT_AVATAR_TITLE = "disk.server.dlg.edit_avatar.title";
+
+    String SERVER_DLG_EDIT_AVATAR_FILTER = "disk.server.dlg.edit_avatar.filter";
+
+    String SERVER_REG_MENU_ACCEPT = "disk.server.reg.menu.accept";
+
+    String SERVER_REG_MENU_REJECT = "disk.server.reg.menu.reject";
 
     String ERROR = "disk.error";
 

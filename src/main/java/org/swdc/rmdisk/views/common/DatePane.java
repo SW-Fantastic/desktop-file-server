@@ -46,8 +46,11 @@ public class DatePane extends BorderPane {
 
     private Label monthLabel;
 
+    private ResourceBundle bundle;
 
-    public DatePane() {
+    public DatePane(ResourceBundle bundle) {
+
+        this.bundle = bundle;
 
         FontAwesome awesome = new FontAwesome();
         Glyph glyphLeft = awesome.create(FontAwesome.Glyph.CHEVRON_LEFT);
@@ -76,7 +79,7 @@ public class DatePane extends BorderPane {
         leftContainer.getChildren().add(left);
 
         monthLabel = new Label();
-        monthLabel.setText(DateUIUtil.getMonthLabel(month.getValue()));
+        monthLabel.setText(DateUIUtil.getMonthLabel(bundle,month.getValue()));
 
         HBox rightContainer = new HBox();
         rightContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -103,7 +106,7 @@ public class DatePane extends BorderPane {
 
         this.month.addListener(obs-> {
             refreshDatePane();
-            monthLabel.setText(DateUIUtil.getMonthLabel(month.getValue()));
+            monthLabel.setText(DateUIUtil.getMonthLabel(bundle,month.getValue()));
             refreshSelectState();
         });
 
@@ -237,7 +240,7 @@ public class DatePane extends BorderPane {
         int startWeekDay = DateUIUtil.getDayOfWeek(year.getValue(), month.getValue(), 1);
 
         for (int i = 0; i < 7; ++i) {
-            Label label = new Label(DateUIUtil.getWeekDayLabel(i));
+            Label label = new Label(DateUIUtil.getWeekDayLabel(bundle,i));
             label.setPadding(new Insets(8,4,8,4));
             grid.add(label, i, 0);
         }

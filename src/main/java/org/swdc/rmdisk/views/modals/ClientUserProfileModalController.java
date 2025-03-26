@@ -91,7 +91,7 @@ public class ClientUserProfileModalController extends ViewController<ClientUserP
         ClientUserProfileModal modal = getView();
 
         FileChooser chooser = new FileChooser();
-        chooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("图片", "*.png", "*.jpg","*.jpeg"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("图片", "*.png", "*.jpg","*.jpeg"));
         File avatarFile = chooser.showOpenDialog(modal.getStage());
         if (avatarFile == null) {
             return;

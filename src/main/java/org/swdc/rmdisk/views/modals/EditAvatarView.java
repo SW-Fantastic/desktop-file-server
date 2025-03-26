@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
+import org.swdc.rmdisk.core.LanguageKeys;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -23,7 +24,7 @@ import java.io.FileInputStream;
 @View(
         viewLocation = "views/modals/EditAvatar.fxml",
         dialog = true,
-        title = "头像编辑",
+        title = LanguageKeys.UI_SERVER_DLG_EDIT_AVATAR_TITLE,
         multiple = true,
         resizeable = false
 )

@@ -1,9 +1,6 @@
 package org.swdc.rmdisk.views.common;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class DateUIUtil {
 
@@ -11,35 +8,16 @@ public class DateUIUtil {
 
     static final Map<Locale, String[]> MONTHS = new HashMap<>();
 
-    static  {
+    static final String[] MONTH_LABELS = new String[]{
+            "date.jan", "date.feb", "date.mar", "date.apr", "date.may",
+            "date.jun", "date.jul", "date.aug", "date.sep",
+            "date.oct", "date.nov", "date.dec"
+    };
 
-        WEEK_DAYS.put(Locale.ENGLISH, new String[]{
-                "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
-        });
-
-        String[] CNDays = new String[]{
-                "一", "二", "三", "四", "五", "六", "日"
-        };
-        WEEK_DAYS.put(Locale.SIMPLIFIED_CHINESE, CNDays);
-        WEEK_DAYS.put(Locale.TRADITIONAL_CHINESE, CNDays);
-        WEEK_DAYS.put(Locale.CHINESE, CNDays);
-
-        String[] CN = new String[]{
-                "一月", "二月", "三月", "四月", "五月", "六月",
-                "七月", "八月", "九月", "十月", "十一月", "十二月"
-        };
-
-        MONTHS.put(Locale.CHINESE, CN);
-        MONTHS.put(Locale.SIMPLIFIED_CHINESE,CN);
-        MONTHS.put(Locale.TRADITIONAL_CHINESE, CN);
-
-        MONTHS.put(Locale.ENGLISH, new String[]{
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-        });
-
-
-    }
+    static final String[] WEEK_DAY_LABELS = new String[]{
+            "date.mon", "date.tue", "date.wed", "date.thu", "date.fri",
+            "date.sat", "date.sun"
+    };
 
 
     /**
@@ -48,13 +26,8 @@ public class DateUIUtil {
      * @param weekDay 星期几的数字，0代表星期一，1代表星期二，以此类推。
      * @return 返回对应的星期标签，标签的语言根据系统默认语言环境或默认为英语。
      */
-    public static String getWeekDayLabel(int weekDay) {
-        Locale locale = Locale.getDefault();
-        if (locale == null) {
-            locale = Locale.ENGLISH;
-        }
-        String[] labelWeekDays = DateUIUtil.WEEK_DAYS.get(locale);
-        return labelWeekDays[weekDay];
+    public static String getWeekDayLabel(ResourceBundle bundle, int weekDay) {
+        return bundle.getString(WEEK_DAY_LABELS[weekDay]);
     }
 
 
@@ -64,13 +37,8 @@ public class DateUIUtil {
      * @param month 月份的数字，范围从1到12。
      * @return 返回对应的月份标签，标签的语言根据系统默认语言环境或默认为英语。
      */
-    public static String getMonthLabel(int month) {
-        Locale locale = Locale.getDefault();
-        if (locale == null) {
-            locale = Locale.ENGLISH;
-        }
-        String[] monthLabels = DateUIUtil.MONTHS.get(locale);
-        return monthLabels[month - 1];
+    public static String getMonthLabel(ResourceBundle bundle,int month) {
+        return bundle.getString(MONTH_LABELS[month - 1]);
     }
 
     /**

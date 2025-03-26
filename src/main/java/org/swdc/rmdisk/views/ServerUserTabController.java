@@ -188,7 +188,7 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
         groupListView.getSelectionModel().selectedItemProperty()
                 .addListener(this::userGroupChange);
 
-        filterDateRangePopover = new DateRangePopover();
+        filterDateRangePopover = new DateRangePopover(resourceBundle);
         filterDateRangePopover.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
 
         dateFilterField.setOnMouseClicked(

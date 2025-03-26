@@ -5,13 +5,14 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.core.entity.TemplateFolder;
 import javafx.scene.control.Button;
 
 @View(
         viewLocation = "views/modals/EditFolderTemplate.fxml",
         dialog = true,
-        title = "编辑目录",
+        title = LanguageKeys.UI_SERVER_DLG_FOLDER_TEMPLATE_TITLE,
         resizeable = false
 )
 public class EditTemplateView extends AbstractView {

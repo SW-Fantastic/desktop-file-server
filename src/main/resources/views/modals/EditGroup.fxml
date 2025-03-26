@@ -14,7 +14,7 @@
             <Insets left="42.0" />
          </padding>
          <children>
-            <Label text="输入用户组的名称：" />
+            <Label text="%disk.server.dlg.edit_group.text" />
          </children>
       </HBox>
    </top>
@@ -35,8 +35,8 @@
    <bottom>
       <HBox alignment="TOP_RIGHT" prefHeight="50.0" prefWidth="394.0" spacing="8.0" BorderPane.alignment="CENTER">
          <children>
-            <Button id="submit" defaultButton="true" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" styleClass="button-accept" text="确定" />
-            <Button id="cancel" cancelButton="true" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" styleClass="button-cancel" text="取消" />
+            <Button id="submit" defaultButton="true" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" styleClass="button-accept" text="%disk.save" />
+            <Button id="cancel" cancelButton="true" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" styleClass="button-cancel" text="%disk.cancel" />
          </children>
          <padding>
             <Insets right="42.0" />

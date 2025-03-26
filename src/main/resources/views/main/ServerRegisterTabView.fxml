@@ -61,14 +61,14 @@
                               <Insets right="12.0" />
                            </GridPane.margin>
                         </CheckBox>
-                        <Label text="允许注册" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="新用户审核" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="%disk.server.reg.allow_reg" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="%disk.server.reg.user_review" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <CheckBox fx:id="chkNewUserVerify" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets right="12.0" />
                            </GridPane.margin>
                         </CheckBox>
-                        <Label text="默认容量" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="%disk.server.reg.default_space" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Slider fx:id="sliderSpaceSize" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" styleClass="slider-bar" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
                            <GridPane.margin>
                               <Insets right="12.0" />
@@ -79,8 +79,8 @@
                               <Insets right="12.0" />
                            </GridPane.margin>
                         </TextField>
-                        <Label text="默认头像" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <Button maxHeight="28.0" minHeight="28.0" mnemonicParsing="false" onAction="#selectDefaultAvatar" prefHeight="23.0" prefWidth="68.0" styleClass="primary-button" text="选择" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                        <Label text="%disk.server.reg.default_avatar" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Button maxHeight="28.0" minHeight="28.0" mnemonicParsing="false" onAction="#selectDefaultAvatar" prefHeight="28.0" prefWidth="77.0" styleClass="primary-button" text="%disk.server.dlg.edit_avatar" GridPane.columnIndex="2" GridPane.rowIndex="7">
                            <GridPane.margin>
                               <Insets right="12.0" />
                            </GridPane.margin>
@@ -116,18 +116,18 @@
                         <ToggleButton id="btnRejected" minHeight="28.0" minWidth="28.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="28.0" styleClass="group-toggle" text="ToggleButton" />
                      </children>
                   </HBox>
-                  <TextField fx:id="searchField" minHeight="30.0" prefHeight="30.0" prefWidth="120.0" promptText="查找用户" styleClass="field" />
-                  <TextField fx:id="dateFilterField" editable="false" minHeight="30.0" prefHeight="30.0" prefWidth="146.0" promptText="按日期筛选..." styleClass="field" />
+                  <TextField fx:id="searchField" minHeight="30.0" prefHeight="30.0" prefWidth="120.0" promptText="%disk.server.find_user" styleClass="field" />
+                  <TextField fx:id="dateFilterField" editable="false" minHeight="30.0" prefHeight="30.0" prefWidth="146.0" promptText="%disk.server.filter_by_date" styleClass="field" />
                </children></HBox>
          </top>
          <center>
             <TableView fx:id="requestTable" prefHeight="200.0" prefWidth="200.0" styleClass="user-table" BorderPane.alignment="CENTER">
               <columns>
-                <TableColumn fx:id="columnId" prefWidth="75.0" text="Id" />
-                <TableColumn fx:id="columnName" prefWidth="75.0" text="用户名" />
-                  <TableColumn fx:id="columnNickname" prefWidth="75.0" text="名称" />
-                  <TableColumn fx:id="columnGroup" prefWidth="75.0" text="分组" />
-                  <TableColumn fx:id="columnState" prefWidth="75.0" text="状态" />
+                <TableColumn fx:id="columnId" prefWidth="75.0" text="%disk.server.user_id" />
+                <TableColumn fx:id="columnName" prefWidth="75.0" text="%disk.server.user_name" />
+                  <TableColumn fx:id="columnNickname" prefWidth="75.0" text="%disk.server.nick_name" />
+                  <TableColumn fx:id="columnGroup" prefWidth="75.0" text="%disk.server.group" />
+                  <TableColumn fx:id="columnState" prefWidth="75.0" text="%disk.server.state" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
