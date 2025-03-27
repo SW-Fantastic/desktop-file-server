@@ -16,13 +16,14 @@ import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
 import org.swdc.rmdisk.client.RemoteUser;
 import org.swdc.rmdisk.client.protocol.ClientFileProtocol;
+import org.swdc.rmdisk.core.LanguageKeys;
 
 import java.io.ByteArrayInputStream;
 import java.util.Base64;
 
 @View(
         viewLocation = "views/main/ClientView.fxml",
-        title = "繁星云"
+        title = LanguageKeys.UI_APP_NAME
 )
 public class ClientMainView extends AbstractView {
 
@@ -85,13 +86,10 @@ public class ClientMainView extends AbstractView {
     public void updateInfo(RemoteUser user) {
         ImageView avatarView = findById("avatar");
         String avatar = user.getAvatar();
-        if (avatar.contains("://")) {
-            // TODO: load avatar from URL
-        } else {
-            byte[] avatarData = Base64.getDecoder().decode(avatar);
-            Image image = new Image(new ByteArrayInputStream(avatarData));
-            avatarView.setImage(image);
-        }
+
+        byte[] avatarData = Base64.getDecoder().decode(avatar);
+        Image image = new Image(new ByteArrayInputStream(avatarData));
+        avatarView.setImage(image);
 
         Label nicknameLabel = findById("lblnickname");
         nicknameLabel.setText(user.getNickname());

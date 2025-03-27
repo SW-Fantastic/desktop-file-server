@@ -2,10 +2,11 @@ package org.swdc.rmdisk.views;
 
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
+import org.swdc.rmdisk.core.LanguageKeys;
 
 @View(
         viewLocation = "views/main/ClientLoginView.fxml",
-        title = "登录到繁星云",
+        title = LanguageKeys.UI_CLIENT_LOGIN_TITLE,
         resizeable = false
 )
 public class ClientLoginView extends AbstractView {

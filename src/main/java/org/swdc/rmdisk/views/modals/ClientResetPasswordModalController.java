@@ -1,14 +1,17 @@
 package org.swdc.rmdisk.views.modals;
 
+import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
+import org.swdc.fx.FXResources;
 import org.swdc.fx.view.ViewController;
 import org.swdc.rmdisk.client.RemoteUser;
 import org.swdc.rmdisk.client.protocol.ClientFileProtocol;
-import org.swdc.rmdisk.views.ClientMainController;
-import org.swdc.rmdisk.views.ClientMainView;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.views.events.ClientLogoutEvent;
+
+import java.util.ResourceBundle;
 
 public class ClientResetPasswordModalController extends ViewController<ClientResetPasswordModal> {
 
@@ -20,6 +23,9 @@ public class ClientResetPasswordModalController extends ViewController<ClientRes
 
     @FXML
     private PasswordField txtPasswordNewConfirm;
+
+    @Inject
+    private FXResources resources;
 
     private ClientFileProtocol protocol = null;
 
@@ -50,29 +56,47 @@ public class ClientResetPasswordModalController extends ViewController<ClientRes
 
         var modal = getView();
 
+        ResourceBundle bundle = resources.getResourceBundle();
+
         String txtPwdOld = txtPasswordOld.getText();
         String txtPwdNew = txtPasswordNew.getText();
         String txtPwdRep = txtPasswordNewConfirm.getText();
 
         if (txtPwdOld.isBlank()) {
-            Alert alert = modal.alert("提示", "旧密码不能为空！", Alert.AlertType.ERROR);
+            Alert alert = modal.alert(
+                    bundle.getString(LanguageKeys.ERROR),
+                    bundle.getString(LanguageKeys.CLIENT_DLG_PWD_RST_OLD_PWD_EMPTY),
+                    Alert.AlertType.ERROR
+            );
             alert.showAndWait();
             return;
         }
         if (txtPwdNew.isBlank()) {
-            Alert alert = modal.alert("提示","新密码不能为空！", Alert.AlertType.ERROR);
+            Alert alert = modal.alert(
+                    bundle.getString(LanguageKeys.ERROR),
+                    bundle.getString(LanguageKeys.CLIENT_DLG_PWD_RST_NEW_PWD_EMPTY),
+                    Alert.AlertType.ERROR
+            );
             alert.showAndWait();
             return;
         }
 
         if (txtPwdNew.equals(txtPwdOld)) {
-            Alert alert = modal.alert("提示","新密码不应与旧密码一致", Alert.AlertType.ERROR);
+            Alert alert = modal.alert(
+                    bundle.getString(LanguageKeys.ERROR),
+                    bundle.getString(LanguageKeys.CLIENT_DLG_PWD_RST_OLD_NEW_EQ),
+                    Alert.AlertType.ERROR
+            );
             alert.showAndWait();
             return;
         }
 
         if (!txtPwdNew.equals(txtPwdRep)) {
-            Alert alert = modal.alert("提示","您输入的新密码和重复密码不一致。", Alert.AlertType.ERROR);
+            Alert alert = modal.alert(
+                    bundle.getString(LanguageKeys.ERROR),
+                    bundle.getString(LanguageKeys.CLIENT_DLG_PWD_RST_PWD_MISMATCH),
+                    Alert.AlertType.ERROR
+            );
             alert.showAndWait();
             return;
         }
@@ -81,13 +105,17 @@ public class ClientResetPasswordModalController extends ViewController<ClientRes
             RemoteUser user = protocol.resetPassword(token,txtPwdOld,txtPwdNew);
             if (user != null) {
 
-                modal.emit(new ClientLogoutEvent("密码已经重置，你需要重新登录。"));
+                modal.emit(new ClientLogoutEvent(bundle.getString(LanguageKeys.CLIENT_DLG_PWD_RST_COMPLETE)));
                 modal.hide();
 
             }
         } catch (Exception e) {
 
-            Alert alert = modal.alert("提示","未知错误，修改失败", Alert.AlertType.ERROR);
+            Alert alert = modal.alert(
+                    bundle.getString(LanguageKeys.ERROR),
+                    bundle.getString(LanguageKeys.CLIENT_DLG_PWD_RST_FAILED),
+                    Alert.AlertType.ERROR
+            );
             alert.showAndWait();
 
         }

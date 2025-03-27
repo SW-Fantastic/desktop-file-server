@@ -3,6 +3,7 @@ package org.swdc.rmdisk.views;
 import jakarta.annotation.PostConstruct;
 import javafx.stage.StageStyle;
 import org.swdc.fx.view.AbstractSwingDialogView;
+import org.swdc.fx.view.AbstractSwingView;
 import org.swdc.fx.view.View;
 
 import javax.swing.*;
@@ -10,12 +11,12 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 
-@View(viewLocation = "views/main/TrayView.fxml",windowStyle = StageStyle.UNDECORATED)
-public class TrayView extends AbstractSwingDialogView {
+@View(viewLocation = "views/main/TrayView.fxml",windowStyle = StageStyle.TRANSPARENT)
+public class TrayView extends AbstractSwingView {
 
     @PostConstruct
     public void init() {
-        JDialog stage = getStage();
+        JFrame stage = getStage();
         stage.setSize(200,168);
         stage.setAlwaysOnTop(true);
         getView().setOnMouseExited(e -> {
@@ -24,7 +25,7 @@ public class TrayView extends AbstractSwingDialogView {
     }
 
     public void show(MouseEvent e) {
-        JDialog frame = getStage();
+        JFrame frame = getStage();
         GraphicsConfiguration configuration = frame.getGraphicsConfiguration();
         AffineTransform transform = configuration.getDefaultTransform();
 

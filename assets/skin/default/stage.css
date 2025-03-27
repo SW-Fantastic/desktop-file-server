@@ -106,25 +106,30 @@
   -fx-font-family: "Source Han Sans CN Normal";
 }
 .stage-tray {
-  -fx-background-color: #ffffff;
+  -fx-background-color: transparent;
 }
-.stage-tray .button-accept {
+.stage-tray .content {
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 8;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 11, 0, 0, 3);
+}
+.stage-tray .content .button-accept {
   -fx-background-color: #a7d07c;
   -fx-background-radius: 8;
   -fx-text-fill: #ffffff;
 }
-.stage-tray .button-accept:hover {
+.stage-tray .content .button-accept:hover {
   -fx-background-color: #74a93d;
 }
-.stage-tray .button-danger {
+.stage-tray .content .button-danger {
   -fx-background-color: #e68530;
   -fx-background-radius: 8;
   -fx-text-fill: #ffffff;
 }
-.stage-tray .button-danger:hover {
+.stage-tray .content .button-danger:hover {
   -fx-background-color: #9d5313;
 }
-.stage-tray .button-info {
+.stage-tray .content .button-info {
   -fx-background-color: #ffffff;
   -fx-border-color: #4ea3f4;
   -fx-text-fill: #4ea3f4;
@@ -132,7 +137,7 @@
   -fx-border-style: solid;
   -fx-border-radius: 8;
 }
-.stage-tray .button-info:hover {
+.stage-tray .content .button-info:hover {
   -fx-text-fill: #0d70cf;
   -fx-border-color: #0d70cf;
 }

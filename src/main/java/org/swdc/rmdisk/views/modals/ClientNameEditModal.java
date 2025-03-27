@@ -6,8 +6,14 @@ import javafx.scene.control.TextField;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
 import org.swdc.rmdisk.client.RemoteResource;
+import org.swdc.rmdisk.core.LanguageKeys;
 
-@View(viewLocation = "views/modals/ClientEditName.fxml",dialog = true,title = "编辑", multiple = true)
+@View(
+        viewLocation = "views/modals/ClientEditName.fxml",
+        dialog = true,
+        title = LanguageKeys.UI_CLIENT_DLG_EDIT,
+        multiple = true
+)
 public class ClientNameEditModal extends AbstractView {
 
     private boolean cancel = false;

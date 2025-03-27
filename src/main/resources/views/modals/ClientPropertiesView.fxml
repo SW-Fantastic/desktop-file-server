@@ -24,9 +24,9 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="类型：" GridPane.rowIndex="1" />
-            <Label text="占用空间：" GridPane.rowIndex="2" />
-            <Label text="名称：" />
+            <Label text="%disk.client.dlg.prop.type" GridPane.rowIndex="1" />
+            <Label text="%disk.client.dlg.prop.size" GridPane.rowIndex="2" />
+            <Label text="%disk.client.dlg.prop.name" />
             <TextField id="txtName" editable="false" minHeight="28.0" styleClass="field" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="24.0" right="48.0" />

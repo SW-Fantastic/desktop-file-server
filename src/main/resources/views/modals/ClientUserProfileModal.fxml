@@ -28,22 +28,22 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="昵称：" GridPane.columnIndex="1">
+            <Label text="%disk.client.nick_name" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets right="18.0" />
                </GridPane.margin>
             </Label>
-            <Label text="分组：" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label text="%disk.client.group" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="18.0" />
                </GridPane.margin>
             </Label>
-            <Label text="总可用空间：" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label text="%disk.client.total_space" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="18.0" />
                </GridPane.margin>
             </Label>
-            <Label text="用户Id：" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Label text="%disk.client.user_name" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="18.0" />
                </GridPane.margin>
@@ -54,7 +54,7 @@
             <TextField fx:id="userIdField" editable="false" minHeight="28.0" styleClass="field" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                <children>
-                  <Button minHeight="28.0" mnemonicParsing="false" onAction="#updateNickName" prefHeight="28.0" prefWidth="69.0" styleClass="button-cancel" text="修改" />
+                  <Button minHeight="28.0" mnemonicParsing="false" onAction="#updateNickName" prefHeight="28.0" prefWidth="69.0" styleClass="button-cancel" text="%disk.client.dlg.edit" />
                </children>
             </HBox>
          </children>
@@ -63,8 +63,8 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" prefHeight="75.0" prefWidth="500.0" spacing="12.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#resetPassword" prefHeight="35.0" prefWidth="89.0" styleClass="button-cancel" text="修改密码" />
-            <Button defaultButton="true" layoutX="389.0" layoutY="30.0" mnemonicParsing="false" onAction="#close" prefHeight="35.0" prefWidth="89.0" styleClass="button-accept" text="关闭" />
+            <Button mnemonicParsing="false" onAction="#resetPassword" prefHeight="35.0" prefWidth="136.0" styleClass="button-cancel" text="%disk.client.reset_password" />
+            <Button defaultButton="true" layoutX="389.0" layoutY="30.0" mnemonicParsing="false" onAction="#close" prefHeight="35.0" prefWidth="109.0" styleClass="button-accept" text="%disk.close" />
          </children>
          <padding>
             <Insets right="32.0" />

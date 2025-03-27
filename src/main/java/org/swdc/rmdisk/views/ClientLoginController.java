@@ -5,9 +5,11 @@ import jakarta.inject.Singleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.slf4j.Logger;
+import org.swdc.fx.FXResources;
 import org.swdc.fx.view.ViewController;
 import org.swdc.rmdisk.client.ClientDescriptor;
 import org.swdc.rmdisk.client.protocol.ClientFileProtocol;
+import org.swdc.rmdisk.core.LanguageKeys;
 
 import java.net.URL;
 import java.util.List;
@@ -34,6 +36,8 @@ public class ClientLoginController extends ViewController<ClientLoginView> {
     @FXML
     private PasswordField txtPassword;
 
+    @Inject
+    private FXResources resources;
 
     @Override
     protected void viewReady(URL url, ResourceBundle resourceBundle) {
@@ -48,13 +52,19 @@ public class ClientLoginController extends ViewController<ClientLoginView> {
         if (txtHost.getText().isEmpty()) {
             return;
         }
+
+        ResourceBundle bundle = resources.getResourceBundle();
         ClientDescriptor descriptor = cbxProtocol.getSelectionModel().getSelectedItem();
         ClientFileProtocol protocol = descriptor.createClient(txtHost.getText());
         if(!protocol.registerable()) {
-            Alert alert = getView().alert("提示", "不支持注册操作", Alert.AlertType.WARNING);
+            Alert alert = getView().alert(
+                    bundle.getString(LanguageKeys.WARN),
+                    bundle.getString(LanguageKeys.CLIENT_LOGIN_NO_REG),
+                    Alert.AlertType.WARNING
+            );
             alert.showAndWait();
-            return;
         }
+        // todo 显示注册界面
     }
 
     @FXML
@@ -62,11 +72,17 @@ public class ClientLoginController extends ViewController<ClientLoginView> {
         if (txtHost.getText().isEmpty() || txtUserName.getText().isEmpty() || txtPassword.getText().isEmpty()) {
             return;
         }
+
+        ResourceBundle bundle = resources.getResourceBundle();
         ClientDescriptor descriptor = cbxProtocol.getSelectionModel().getSelectedItem();
         ClientFileProtocol protocol = descriptor.createClient(txtHost.getText());
         String token = protocol.login(txtUserName.getText(), txtPassword.getText());
         if (token == null || token.isEmpty()) {
-            Alert alert = getView().alert("提示", "登录失败，请检查用户名和密码是否正确！", Alert.AlertType.ERROR);
+            Alert alert = getView().alert(
+                    bundle.getString(LanguageKeys.WARN),
+                    bundle.getString(LanguageKeys.CLIENT_LOGIN_FAILED),
+                    Alert.AlertType.ERROR
+            );
             alert.showAndWait();
             return;
         }

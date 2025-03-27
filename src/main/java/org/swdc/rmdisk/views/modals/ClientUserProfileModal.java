@@ -4,10 +4,11 @@ import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
 import org.swdc.rmdisk.client.RemoteUser;
 import org.swdc.rmdisk.client.protocol.ClientFileProtocol;
+import org.swdc.rmdisk.core.LanguageKeys;
 
 @View(
         viewLocation = "views/modals/ClientUserProfileModal.fxml",
-        title = "用户信息",
+        title = LanguageKeys.UI_CLIENT_DLG_USER_PROFILE,
         dialog = true,
         resizeable = false
 )

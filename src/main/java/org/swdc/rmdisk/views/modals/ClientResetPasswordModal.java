@@ -3,8 +3,13 @@ package org.swdc.rmdisk.views.modals;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
 import org.swdc.rmdisk.client.protocol.ClientFileProtocol;
+import org.swdc.rmdisk.core.LanguageKeys;
 
-@View(viewLocation = "views/modals/ClientResetPasswordModal.fxml",title = "修改密码",dialog = true)
+@View(
+        viewLocation = "views/modals/ClientResetPasswordModal.fxml",
+        title = LanguageKeys.UI_CLIENT_RESET_PASSWORD,
+        dialog = true
+)
 public class ClientResetPasswordModal extends AbstractView {
 
     @Override

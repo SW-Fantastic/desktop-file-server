@@ -15,11 +15,13 @@ import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 import org.swdc.dependency.annotations.EventListener;
+import org.swdc.fx.FXResources;
 import org.swdc.fx.font.Fontawsome5Service;
 import org.swdc.fx.view.ViewController;
 import org.swdc.ours.common.network.CancelledException;
 import org.swdc.rmdisk.client.RemoteResource;
 import org.swdc.rmdisk.client.protocol.ClientFileProtocol;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.views.cells.ClientUpDownloadCell;
 import org.swdc.rmdisk.views.events.ClientLogoutEvent;
 import org.swdc.rmdisk.views.events.ClientUserRefreshEvent;
@@ -49,8 +51,12 @@ public class ClientMainController extends ViewController<ClientMainView> {
     @Inject
     private Fontawsome5Service fontawsome5Service;
 
+    @Inject
+    private FXResources resources;
+
     @FXML
     private TextField pathField;
+
 
     private RemoteResource currentFolder;
 
@@ -121,19 +127,20 @@ public class ClientMainController extends ViewController<ClientMainView> {
 
         fileViewContextMenu.setAutoHide(true);
 
-        MenuItem itemOpen = new MenuItem("打开");
+        ResourceBundle bundle = resources.getResourceBundle();
+        MenuItem itemOpen = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_OPEN));
         itemOpen.disableProperty().bind(selectionDisabled);
-        MenuItem itemRename = new MenuItem("重命名");
+        MenuItem itemRename = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_RENAME));
         itemRename.disableProperty().bind(selectionDisabled);
         itemRename.setOnAction(this::renameResource);
-        MenuItem itemDelete = new MenuItem("删除");
+        MenuItem itemDelete = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_TRASH));
         itemDelete.setOnAction(this::trashResource);
         itemDelete.disableProperty().bind(selectionDisabled);
-        MenuItem itemProperty = new MenuItem("属性");
+        MenuItem itemProperty = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_PROP));
         itemProperty.setOnAction(this::showProperties);
         itemProperty.disableProperty().bind(selectionDisabled);
 
-        MenuItem itemDownload = new MenuItem("下载至...");
+        MenuItem itemDownload = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_DOWNLOAD));
         itemDownload.setOnAction(this::downloadResource);
 
         fileViewContextMenu.getItems().addAll(
@@ -154,30 +161,32 @@ public class ClientMainController extends ViewController<ClientMainView> {
      */
     private void initContextMenu() {
 
+        ResourceBundle bundle = resources.getResourceBundle();
+
         folderViewContextMenu.setAutoHide(true);
 
-        MenuItem itemUpload = new MenuItem("上传");
+        MenuItem itemUpload = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_UPLOAD));
         itemUpload.setOnAction(this::uploadResource);
 
-        MenuItem itemOpen = new MenuItem("打开");
+        MenuItem itemOpen = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_OPEN));
         itemOpen.setOnAction(this::openFolder);
         itemOpen.disableProperty().bind(selectionDisabled);
 
-        MenuItem itemCreateFolder = new MenuItem("新建文件夹");
+        MenuItem itemCreateFolder = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_NEW_FOLDER));
         itemCreateFolder.setOnAction(this::addFolder);
 
-        MenuItem itemRefresh = new MenuItem("刷新");
+        MenuItem itemRefresh = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_REFRESH));
         itemRefresh.setOnAction(e -> refreshFolder());
 
-        MenuItem itemRename = new MenuItem("重命名");
+        MenuItem itemRename = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_RENAME));
         itemRename.setOnAction(this::renameResource);
         itemRename.disableProperty().bind(selectionDisabled);
 
-        MenuItem itemDelete = new MenuItem("删除");
+        MenuItem itemDelete = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_TRASH));
         itemDelete.setOnAction(this::trashResource);
         itemDelete.disableProperty().bind(selectionDisabled);
 
-        MenuItem itemProperty = new MenuItem("属性");
+        MenuItem itemProperty = new MenuItem(bundle.getString(LanguageKeys.CLIENT_MAIN_MENU_PROP));
         itemProperty.disableProperty().bind(selectionDisabled);
         itemProperty.setOnAction(this::showProperties);
 
@@ -313,8 +322,10 @@ public class ClientMainController extends ViewController<ClientMainView> {
         ClientMainView view = getView();
         RemoteResource currentFolder = this.currentFolder;
 
+        ResourceBundle bundle = resources.getResourceBundle();
+
         FileChooser chooser = new FileChooser();
-        chooser.setTitle("上传到 " + currentFolder.getName());
+        chooser.setTitle(bundle.getString(LanguageKeys.CLIENT_MAIN_UPLOAD_TO) + currentFolder.getName());
         List<File> files = chooser.showOpenMultipleDialog(view.getStage());
         if (files == null) {
             return;
@@ -331,7 +342,8 @@ public class ClientMainController extends ViewController<ClientMainView> {
                 targetPath = targetPath + file.getName();
                 RemoteResource resource = clientFiles.getResource(token,targetPath);
                 if (resource != null) {
-                    Alert alert = view.alert("文件已存在", "目标位置已经有一个 < " + file.getName() + " > 文件，是否覆盖？", Alert.AlertType.CONFIRMATION);
+                    String text = String.format(bundle.getString(LanguageKeys.CLIENT_MAIN_REPLACE), file.getName());
+                    Alert alert = view.alert(bundle.getString(LanguageKeys.WARN), text, Alert.AlertType.CONFIRMATION);
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isEmpty() || result.get() != ButtonType.OK) {
                         continue;
@@ -378,8 +390,11 @@ public class ClientMainController extends ViewController<ClientMainView> {
         if (resource == null) {
             return;
         }
+
+        ResourceBundle bundle = resources.getResourceBundle();
+
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("保存到 " + resource.getName());
+        chooser.setTitle(bundle.getString(LanguageKeys.CLIENT_MAIN_SAVE_INTO) + resource.getName());
         File dir = chooser.showDialog(getView().getStage());
         if (dir == null) {
             return;
@@ -387,7 +402,8 @@ public class ClientMainController extends ViewController<ClientMainView> {
 
         File file = new File(dir, resource.getName());
         if (file.exists()) {
-            Alert alert = getView().alert("文件已存在", "目标位置已经有一个同名文件，是否覆盖？", Alert.AlertType.CONFIRMATION);
+            String text = String.format(bundle.getString(LanguageKeys.CLIENT_MAIN_REPLACE), resource.getName());
+            Alert alert = getView().alert(bundle.getString(LanguageKeys.CLIENT_MAIN_SAVE_INTO), text, Alert.AlertType.CONFIRMATION);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isEmpty() || result.get() != ButtonType.OK) {
                 return;
@@ -450,7 +466,12 @@ public class ClientMainController extends ViewController<ClientMainView> {
             if (resource != null) {
                 refreshFolder();
             } else {
-                Alert alert = getView().alert("创建文件夹失败", "无法在服务器上创建文件夹。", Alert.AlertType.ERROR);
+                ResourceBundle bundle = resources.getResourceBundle();
+                Alert alert = getView().alert(
+                        bundle.getString(LanguageKeys.WARN),
+                        bundle.getString(LanguageKeys.CLIENT_MAIN_NEW_FOLDER_FAILED),
+                        Alert.AlertType.ERROR
+                );
                 alert.showAndWait();
             }
         } catch (ConnectException e) {
@@ -473,7 +494,12 @@ public class ClientMainController extends ViewController<ClientMainView> {
             if(clientFiles.renameResource(token, resource.getPath(), newName)) {
                 refreshFolder();
             } else {
-                Alert alert = getView().alert("重命名失败", "无法在服务器上重命名指定资源。", Alert.AlertType.ERROR);
+                ResourceBundle bundle = resources.getResourceBundle();
+                Alert alert = getView().alert(
+                        bundle.getString(LanguageKeys.WARN),
+                        bundle.getString(LanguageKeys.CLIENT_MAIN_RENAME_FAILED),
+                        Alert.AlertType.ERROR
+                );
                 alert.showAndWait();
             }
         } catch (ConnectException e) {
@@ -489,7 +515,14 @@ public class ClientMainController extends ViewController<ClientMainView> {
                 return;
             }
 
-            Alert alertConfirm = getView().alert("确认删除", "你确定要删除《" + resource.getName() + "》吗？这将无法恢复。", Alert.AlertType.CONFIRMATION);
+            ResourceBundle bundle = resources.getResourceBundle();
+
+            String text = String.format(
+                    bundle.getString(LanguageKeys.CLIENT_MAIN_DELETE_CONFIRM),
+                    resource.getName()
+            );
+            Alert alertConfirm = getView().alert(
+                    bundle.getString(LanguageKeys.WARN), text, Alert.AlertType.CONFIRMATION);
             Optional<ButtonType> buttonType = alertConfirm.showAndWait();
             if (buttonType.isEmpty()) {
                 return;
@@ -500,7 +533,11 @@ public class ClientMainController extends ViewController<ClientMainView> {
                 if (result) {
                     refreshFolder();
                 } else {
-                    Alert alert = getView().alert("删除失败", "无法在服务器上删除指定资源。", Alert.AlertType.ERROR);
+                    Alert alert = getView().alert(
+                            bundle.getString(LanguageKeys.WARN),
+                            bundle.getString(LanguageKeys.CLIENT_MAIN_DELETE_FAILED),
+                            Alert.AlertType.ERROR
+                    );
                     alert.showAndWait();
                 }
             }
@@ -569,7 +606,8 @@ public class ClientMainController extends ViewController<ClientMainView> {
 
     public void serverDisconnected() {
 
-        this.onLogout(new ClientLogoutEvent("网络错误：无法链接到服务器！"));
+        ResourceBundle bundle = resources.getResourceBundle();
+        this.onLogout(new ClientLogoutEvent(bundle.getString(LanguageKeys.CLIENT_MAIN_NETWORK_ERROR)));
     }
 
     @EventListener(type = ClientLogoutEvent.class)
@@ -577,8 +615,10 @@ public class ClientMainController extends ViewController<ClientMainView> {
 
         Platform.runLater(() -> {
 
+            ResourceBundle bundle = resources.getResourceBundle();
+
             ClientMainView view = getView();
-            Alert alert = view.alert("提示",event.getMessage(), Alert.AlertType.WARNING);
+            Alert alert = view.alert(bundle.getString(LanguageKeys.WARN),event.getMessage(), Alert.AlertType.WARNING);
             alert.showAndWait();
             this.token = null;
             this.clientFiles = null;

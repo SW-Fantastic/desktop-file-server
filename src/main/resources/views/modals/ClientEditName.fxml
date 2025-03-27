@@ -11,7 +11,7 @@
    <top>
       <HBox alignment="BOTTOM_LEFT" prefHeight="46.0" prefWidth="471.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="输入名称：" />
+            <Label text="%disk.client.dlg.edit.text" />
          </children>
          <padding>
             <Insets left="24.0" right="24.0" />
@@ -24,8 +24,8 @@
             <Insets left="24.0" right="24.0" />
          </padding>
          <children>
-            <Button id="btnOk" defaultButton="true" minHeight="32.0" minWidth="80.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" styleClass="button-accept" text="确定" />
-            <Button id="btnCancel" cancelButton="true" minHeight="32.0" minWidth="80.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" styleClass="button-cancel" text="取消" />
+            <Button id="btnOk" defaultButton="true" minHeight="32.0" minWidth="80.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" styleClass="button-accept" text="%disk.save" />
+            <Button id="btnCancel" cancelButton="true" minHeight="32.0" minWidth="80.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="80.0" styleClass="button-cancel" text="%disk.cancel" />
          </children>
       </HBox>
    </bottom>

@@ -28,9 +28,9 @@
           <RowConstraints minHeight="42.0" prefHeight="42.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="用户名：" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="密码：" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="地址：" GridPane.columnIndex="1" />
+            <Label text="%disk.client.login.username" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="%disk.client.login.password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="%disk.client.login.address" GridPane.columnIndex="1" />
             <TextField fx:id="txtHost" maxHeight="32.0" minHeight="32.0" prefHeight="32.0" styleClass="field" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets left="8.0" right="8.0" />
@@ -57,8 +57,8 @@
    <bottom>
       <HBox alignment="TOP_CENTER" prefHeight="92.0" prefWidth="503.0" spacing="8.0" BorderPane.alignment="CENTER">
          <children>
-            <Button id="btnRegister" mnemonicParsing="false" onAction="#register" prefHeight="40.0" prefWidth="150.0" styleClass="primary-button" text="注册" />
-            <Button id="btnLogin" layoutX="131.0" layoutY="36.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="150.0" styleClass="button-accept" text="登录" />
+            <Button id="btnRegister" mnemonicParsing="false" onAction="#register" prefHeight="40.0" prefWidth="150.0" styleClass="primary-button" text="%disk.client.login.reg" />
+            <Button id="btnLogin" layoutX="131.0" layoutY="36.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="150.0" styleClass="button-accept" text="%disk.client.login.login" />
          </children>
          <BorderPane.margin>
             <Insets />

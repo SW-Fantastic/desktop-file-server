@@ -1,11 +1,16 @@
 package org.swdc.rmdisk.views.modals;
 
+import jakarta.inject.Inject;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.swdc.fx.FXResources;
 import org.swdc.fx.view.AbstractView;
 import org.swdc.fx.view.View;
 import org.swdc.rmdisk.client.RemoteResource;
+import org.swdc.rmdisk.core.LanguageKeys;
+
+import java.util.ResourceBundle;
 
 @View(
         viewLocation = "views/modals/ClientPropertiesView.fxml",
@@ -13,19 +18,27 @@ import org.swdc.rmdisk.client.RemoteResource;
 )
 public class ClientPropertiesModal extends AbstractView {
 
+    @Inject
+    private FXResources resources;
+
     public void show(RemoteResource resource) {
         if (resource == null) {
             return;
         }
 
+        ResourceBundle bundle = resources.getResourceBundle();
+
         Stage stage = getStage();
-        stage.setTitle("属性 - " + resource.getName());
+        stage.setTitle(bundle.getString(LanguageKeys.CLIENT_DLG_PROP) + " - " + resource.getName());
         TextField txtName = findById("txtName");
         TextField txtSize = findById("txtSize");
         TextField txtType = findById("txtType");
 
         txtName.setText(resource.getName());
-        txtType.setText(resource.isFolder() ? "文件夹" : "文件");
+        txtType.setText(resource.isFolder() ?
+                bundle.getString(LanguageKeys.CLIENT_DLG_PROP_FOLDER) :
+                bundle.getString(LanguageKeys.CLIENT_DLG_PROP_FILE)
+        );
         if (resource.isFolder()) {
             txtSize.setText("N/A");
         } else {

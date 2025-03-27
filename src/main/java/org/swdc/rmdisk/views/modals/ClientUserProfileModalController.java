@@ -10,15 +10,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import org.swdc.dependency.annotations.EventListener;
+import org.swdc.fx.FXResources;
 import org.swdc.fx.view.ViewController;
 import org.swdc.rmdisk.client.RemoteUser;
 import org.swdc.rmdisk.client.protocol.ClientFileProtocol;
+import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.views.events.ClientLogoutEvent;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.ConnectException;
 import java.util.Base64;
+import java.util.ResourceBundle;
 
 public class ClientUserProfileModalController extends ViewController<ClientUserProfileModal> {
 
@@ -36,6 +39,9 @@ public class ClientUserProfileModalController extends ViewController<ClientUserP
 
     @FXML
     private ImageView avatar;
+
+    @Inject
+    private FXResources resources;
 
     @Inject
     private ClientResetPasswordModal resetPasswordModal;
@@ -59,13 +65,9 @@ public class ClientUserProfileModalController extends ViewController<ClientUserP
             totalSpaceField.setText(user.getTotalSize() / (1000.0 * 1000.0) + "MB" );
             String avatar = user.getAvatar();
 
-            if (avatar.contains("://")) {
-                // TODO: load avatar from URL
-            } else {
-                byte[] avatarData = Base64.getDecoder().decode(avatar);
-                Image image = new Image(new ByteArrayInputStream(avatarData));
-                this.avatar.setImage(image);
-            }
+            byte[] avatarData = Base64.getDecoder().decode(avatar);
+            Image image = new Image(new ByteArrayInputStream(avatarData));
+            this.avatar.setImage(image);
 
             Rectangle clip = new Rectangle(0,0,this.avatar.getFitWidth(),this.avatar.getFitHeight());
             clip.setArcHeight(16);
@@ -88,10 +90,15 @@ public class ClientUserProfileModalController extends ViewController<ClientUserP
     @FXML
     private void updateAvatar() {
 
+        ResourceBundle bundle = resources.getResourceBundle();
         ClientUserProfileModal modal = getView();
 
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("图片", "*.png", "*.jpg","*.jpeg"));
+        chooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(bundle.getString(LanguageKeys.CLIENT_IMAGE),
+                        "*.png", "*.jpg","*.jpeg"
+                )
+        );
         File avatarFile = chooser.showOpenDialog(modal.getStage());
         if (avatarFile == null) {
             return;
@@ -107,7 +114,11 @@ public class ClientUserProfileModalController extends ViewController<ClientUserP
                     this.update(protocol,token);
                 }
             } catch (Exception e) {
-                Alert alert = view.alert("失败", "头像更换失败，未知错误", Alert.AlertType.ERROR);
+                Alert alert = view.alert(
+                        bundle.getString(LanguageKeys.ERROR),
+                        bundle.getString(LanguageKeys.CLIENT_DLG_UPDATE_INFO_FAILED),
+                        Alert.AlertType.ERROR
+                );
                 alert.showAndWait();
             }
         }
@@ -131,7 +142,14 @@ public class ClientUserProfileModalController extends ViewController<ClientUserP
             }
 
         } catch (ConnectException e) {
-            Alert alert = getView().alert("失败", "昵称更新失败，未知错误", Alert.AlertType.ERROR);
+
+            ResourceBundle bundle = resources.getResourceBundle();
+
+            Alert alert = getView().alert(
+                    bundle.getString(LanguageKeys.ERROR),
+                    bundle.getString(LanguageKeys.CLIENT_DLG_UPDATE_INFO_FAILED),
+                    Alert.AlertType.ERROR
+            );
             alert.showAndWait();
         }
     }
