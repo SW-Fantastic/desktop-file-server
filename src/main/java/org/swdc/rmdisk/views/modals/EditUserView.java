@@ -39,6 +39,7 @@ import java.util.ResourceBundle;
         viewLocation = "views/modals/EditUser.fxml",
         multiple = true,
         resizeable = false,
+        dialog = true,
         title = LanguageKeys.UI_SERVER_DLG_EDIT_USER
 )
 public class EditUserView extends AbstractView {

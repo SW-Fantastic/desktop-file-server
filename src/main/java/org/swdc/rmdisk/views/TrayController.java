@@ -28,6 +28,7 @@ public class TrayController extends ViewController<TrayView> {
 
     @FXML
     public void onServerView() {
+        getView().hide();
         if (startView.getStage().isShowing()) {
             startView.hide();
         }
@@ -36,6 +37,7 @@ public class TrayController extends ViewController<TrayView> {
 
     @FXML
     public void onDiskView() {
+        getView().hide();
         if (startView.getStage().isShowing()) {
             startView.hide();
         }

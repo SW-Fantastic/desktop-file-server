@@ -98,6 +98,8 @@ public interface LanguageKeys {
 
     String SERVER_DLG_EDIT_AVATAR_FILTER = "disk.server.dlg.edit_avatar.filter";
 
+    String SERVER_ALREADY_EXIST = "disk.server.already_exist";
+
     String SERVER_REG_MENU_ACCEPT = "disk.server.reg.menu.accept";
 
     String SERVER_REG_MENU_REJECT = "disk.server.reg.menu.reject";

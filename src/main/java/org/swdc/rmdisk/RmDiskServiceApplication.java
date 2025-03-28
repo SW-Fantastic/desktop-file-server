@@ -2,6 +2,7 @@ package org.swdc.rmdisk;
 
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -20,6 +21,12 @@ import org.swdc.rmdisk.views.TrayView;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileLock;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 @SWFXApplication(
@@ -30,6 +37,8 @@ import java.util.ResourceBundle;
 )
 public class RmDiskServiceApplication extends FXApplication {
 
+    private FileLock applicationLock;
+
     @Override
     public void onConfig(EnvironmentLoader environmentLoader) {
         environmentLoader.withProvider(EMFactory.class);
@@ -37,6 +46,28 @@ public class RmDiskServiceApplication extends FXApplication {
 
     @Override
     public void onStarted(DependencyContext dependencyContext) {
+
+        FXResources resources = dependencyContext.getByClass(FXResources.class);
+
+        try {
+            Path lock = Path.of(resources.getAssetsFolder().getAbsolutePath(),".lock");
+            if (!Files.exists(lock)) {
+                Files.createFile(lock);
+            }
+            RandomAccessFile file = new RandomAccessFile(lock.toAbsolutePath().toString(),"rw");
+            applicationLock = file.getChannel().tryLock();
+            if (applicationLock == null || !applicationLock.isValid() || applicationLock.isShared()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setContentText(resources.getResourceBundle().getString(LanguageKeys.SERVER_ALREADY_EXIST));
+                alert.showAndWait();
+                Platform.exit();
+                return;
+            }
+        } catch (Exception e) {
+            Platform.exit();
+            return;
+        }
 
         EMFProviderFactory factory = dependencyContext.getByClass(EMFProviderFactory.class);
         factory.create();
@@ -48,7 +79,6 @@ public class RmDiskServiceApplication extends FXApplication {
 
             TrayView trayView = dependencyContext.getByClass(TrayView.class);
 
-            FXResources resources = dependencyContext.getByClass(FXResources.class);
             ResourceBundle bundle = resources.getResourceBundle();
             Image image = resources.getIcons().get(0);
             TrayIcon icon = new TrayIcon(SwingFXUtils.fromFXImage(image, null));
@@ -73,4 +103,13 @@ public class RmDiskServiceApplication extends FXApplication {
 
     }
 
+    @Override
+    public void onShutdown(DependencyContext context) {
+        if (applicationLock != null) {
+            try {
+                applicationLock.release();
+            } catch (Exception ignore) {
+            }
+        }
+    }
 }

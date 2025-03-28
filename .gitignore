@@ -42,3 +42,4 @@ build/
 /assets/tmp/
 /.idea/
 /deploy/
+/assets/.lock
