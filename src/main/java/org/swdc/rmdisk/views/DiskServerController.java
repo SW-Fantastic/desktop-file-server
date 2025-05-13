@@ -51,6 +51,13 @@ public class DiskServerController extends ViewController<DiskServerView> {
     private ServerUserTabView serverUserTabView;
 
     /**
+     * 日志管理Tab视图,
+     * 显示用户的操作记录，例如用户登录、文件上传等操作。
+     */
+    @Inject
+    private ServerLogTabView serverLogTabView;
+
+    /**
      * 注册管理Tab视图
      */
     @Inject
@@ -101,6 +108,8 @@ public class DiskServerController extends ViewController<DiskServerView> {
         ObservableList<Tab> tabs = tabContainer.getTabs();
         tabs.add(new Tab(resourceBundle.getString(LanguageKeys.SERVER_USER_MGR), serverUserTabView.getView()));
         tabs.add(new Tab(resourceBundle.getString(LanguageKeys.SERVER_USER_REG), serverRegisterTabView.getView()));
+        tabs.add(new Tab(resourceBundle.getString(LanguageKeys.SERVER_LOGS_MGR), serverLogTabView.getView()));
+        serverConfigureView.reload();
     }
 
     @EventListener(type = ConfigureUpdateEvent.class)

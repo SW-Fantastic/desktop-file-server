@@ -15,7 +15,8 @@ public class EMFactory extends EMFProvider {
                 UserRegisterRequest.class,
                 TemplateFolder.class,
                 DiskFolder.class,
-                DiskFile.class
+                DiskFile.class,
+                Activity.class
         );
     }
 }

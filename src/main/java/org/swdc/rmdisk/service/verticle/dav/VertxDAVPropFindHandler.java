@@ -20,7 +20,7 @@ import org.swdc.rmdisk.service.SecureService;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +67,9 @@ public class VertxDAVPropFindHandler implements Handler<RoutingContext> {
             DiskFolder folder = diskFileService
                     .getFolderByPath(currentUser,path);
 
+            ZoneOffset offset = OffsetDateTime.now()
+                    .getOffset();
+
             if (folder == null) {
 
                 // 目录不存在，此时有两种情况，其一是正在访问文件，其二是正在访问目录（而目录不存在）
@@ -86,22 +89,21 @@ public class VertxDAVPropFindHandler implements Handler<RoutingContext> {
                     dProperties.setResourceType(null);
                     dProperties.setContentLength(file.getFileSize() == null ? 0 : file.getFileSize());
                     dProperties.setCreationDate(file.getCreatedOn()
-                            .atZone(ZoneId.of("UTC"))
+                            .atZone(offset)
+                            .withZoneSameInstant(ZoneId.of("GMT"))
                             .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
                     );
                     if (file.getUpdatedOn() == null) {
                         dProperties.setLastModified(file.getCreatedOn()
-                                .atZone(ZoneId.of("UTC"))
-                                .format(DateTimeFormatter
-                                        .ofPattern("EEE, dd MMM yyyy hh:mm:ss zzz", Locale.ENGLISH)
-                                )
+                                .atZone(offset)
+                                .withZoneSameInstant(ZoneId.of("GMT"))
+                                .format(DateTimeFormatter.RFC_1123_DATE_TIME.localizedBy(Locale.ENGLISH))
                         );
                     } else {
                         dProperties.setLastModified(file.getUpdatedOn()
-                                .atZone(ZoneId.of("UTC"))
-                                .format(DateTimeFormatter
-                                        .ofPattern("EEE, dd MMM yyyy hh:mm:ss zzz", Locale.ENGLISH)
-                                )
+                                .atZone(offset)
+                                .withZoneSameInstant(ZoneId.of("GMT"))
+                                .format(DateTimeFormatter.RFC_1123_DATE_TIME.localizedBy(Locale.ENGLISH))
                         );
                     }
 
@@ -136,7 +138,8 @@ public class VertxDAVPropFindHandler implements Handler<RoutingContext> {
                         properties.setDisplayName(item.getName());
                         properties.setResourceType(item instanceof DiskFolder ? DResourceType.COLLECTION : null);
                         properties.setCreationDate(item.getCreatedOn()
-                                .atZone(ZoneId.of("UTC"))
+                                .atZone(ZoneId.systemDefault())
+                                .withZoneSameInstant(ZoneId.of("GMT"))
                                 .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
                         );
 
@@ -149,17 +152,15 @@ public class VertxDAVPropFindHandler implements Handler<RoutingContext> {
                         }
                         if (item.getUpdatedOn() == null) {
                             properties.setLastModified(item.getCreatedOn()
-                                    .atZone(ZoneId.of("UTC"))
-                                    .format(DateTimeFormatter
-                                            .ofPattern("EEE, dd MMM yyyy hh:mm:ss zzz", Locale.ENGLISH)
-                                    )
+                                    .atZone(offset)
+                                    .withZoneSameInstant(ZoneId.of("GMT"))
+                                    .format(DateTimeFormatter.RFC_1123_DATE_TIME.localizedBy(Locale.ENGLISH))
                             );
                         } else {
                             properties.setLastModified(item.getUpdatedOn()
-                                    .atZone(ZoneId.of("UTC"))
-                                    .format(DateTimeFormatter
-                                            .ofPattern("EEE, dd MMM yyyy hh:mm:ss zzz", Locale.ENGLISH)
-                                    )
+                                    .atZone(offset)
+                                    .withZoneSameInstant(ZoneId.of("GMT"))
+                                    .format(DateTimeFormatter.RFC_1123_DATE_TIME.localizedBy(Locale.ENGLISH))
                             );
                         }
 

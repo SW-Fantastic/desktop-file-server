@@ -26,6 +26,10 @@ public interface LanguageKeys {
 
     String UI_SERVER_CONFIG_IP = "%disk.config.server_ip";
 
+    String UI_SERVER_CONFIG_REC_LOGS = "%disk.config.server_rec_logs";
+
+    String UI_SERVER_CONFIG_REC_LOGS_DESC = "%disk.config.server_rec_logs.desc";
+
     String UI_SERVER_CONFIG_IP_DESC = "%disk.config.server_ip.desc";
 
     String UI_SERVER_DLG_EDIT_GROUP_TITLE = "%disk.server.dlg.edit_group.title";
@@ -49,6 +53,8 @@ public interface LanguageKeys {
     String SERVER_USER_MGR = "disk.server.usermgr.title";
 
     String SERVER_USER_REG = "disk.server.userreg.title";
+
+    String SERVER_LOGS_MGR = "disk.server.logs.title";
 
     String SERVER_MENU_ADD_USER = "disk.server.menu.adduser";
 

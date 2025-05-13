@@ -5,6 +5,7 @@ import org.swdc.config.annotations.ConfigureSource;
 import org.swdc.config.annotations.Property;
 import org.swdc.config.configs.JsonConfigHandler;
 import org.swdc.fx.config.PropEditor;
+import org.swdc.fx.config.editors.CheckEditor;
 import org.swdc.fx.config.editors.TextEditor;
 import org.swdc.rmdisk.views.cells.PortPropertyEditor;
 import org.swdc.rmdisk.views.cells.PortRangePropertyEditor;
@@ -43,6 +44,22 @@ public class ServerConfigure extends AbstractConfig {
     )
     @Property("ftp-port-range")
     private String ftpPortRange;
+
+    @PropEditor(
+            editor = CheckEditor.class,
+            name = LanguageKeys.UI_SERVER_CONFIG_REC_LOGS,
+            description = LanguageKeys.UI_SERVER_CONFIG_REC_LOGS_DESC
+    )
+    @Property("record-server-logs")
+    private Boolean recordLogs;
+
+    public Boolean getRecordLogs() {
+        return recordLogs;
+    }
+
+    public void setRecordLogs(Boolean recordLogs) {
+        this.recordLogs = recordLogs;
+    }
 
     public String getFtpServerPort() {
         return ftpServerPort;

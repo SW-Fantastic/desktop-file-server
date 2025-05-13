@@ -12,9 +12,8 @@ import org.swdc.dependency.event.AbstractEvent;
 import org.swdc.dependency.event.Events;
 import org.swdc.rmdisk.core.DAVUtils;
 import org.swdc.rmdisk.core.SecureUtils;
-import org.swdc.rmdisk.core.entity.DiskFile;
-import org.swdc.rmdisk.core.entity.DiskFolder;
-import org.swdc.rmdisk.core.entity.User;
+import org.swdc.rmdisk.core.entity.*;
+import org.swdc.rmdisk.service.ActivityService;
 import org.swdc.rmdisk.service.DiskFileService;
 import org.swdc.rmdisk.service.DiskLockService;
 import org.swdc.rmdisk.service.SecureService;
@@ -43,8 +42,10 @@ public class VertxDAVPutHandler implements Handler<RoutingContext>, EventEmitter
     @Inject
     private ThreadPoolExecutor executor;
 
-    private Events events;
+    @Inject
+    private ActivityService activityService;
 
+    private Events events;
 
     @Override
     public void handle(RoutingContext ctx) {
@@ -139,11 +140,17 @@ public class VertxDAVPutHandler implements Handler<RoutingContext>, EventEmitter
                 }).endHandler(v -> {
                     try {
 
+                        Long oldSize = finalFile.getFileSize();
                         // 关闭输出流
                         os.close();
+
                         // 交换文件，更新文件信息
-                        if(!diskFileService.swapFile(finalFile) || !diskFileService.updateFileInfo(finalFile)) {
+                        if(!diskFileService.swapFile(finalFile) && !diskFileService.updateFileInfo(finalFile)) {
                             logger.error("failed to update file info : " + finalFile.getUuid());
+                            response.setStatusCode(500);
+                            response.setStatusMessage("Internal Error");
+                            response.end();
+                            return;
                         } else {
                             // 刷新用户信息
                             emit(new UserStateChangeEvent(currentUser));
@@ -152,6 +159,15 @@ public class VertxDAVPutHandler implements Handler<RoutingContext>, EventEmitter
                         response.setStatusCode(200);
                         response.setStatusMessage("OK");
                         response.end();
+
+
+                        activityService.createUploadActivity(
+                                currentUser,
+                                request.remoteAddress().hostAddress(),
+                                oldSize,
+                                finalFile.getFileSize(),
+                                finalFile
+                        );
 
                     } catch (Exception e) {
 
@@ -191,6 +207,11 @@ public class VertxDAVPutHandler implements Handler<RoutingContext>, EventEmitter
                     String name = path.substring(path.lastIndexOf("/") + 1);
                     target = diskFileService.createFile(folder,name);
                     if (target != null) {
+                        activityService.createAddResourceActivity(
+                                currentUser,
+                                target,
+                                request.remoteAddress().hostAddress()
+                        );
                         response.setStatusCode(201);
                         response.setStatusMessage("Created");
                         response.end();
@@ -218,4 +239,6 @@ public class VertxDAVPutHandler implements Handler<RoutingContext>, EventEmitter
     public void setEvents(Events events) {
         this.events = events;
     }
+
+
 }

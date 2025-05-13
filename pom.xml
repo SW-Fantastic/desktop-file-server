@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.swdc</groupId>
             <artifactId>mariadb-embedded</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
         <dependency>

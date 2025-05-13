@@ -19,6 +19,7 @@ public class LockedResource {
     private Long ownerId;
 
     private String cacheId;
+
     public LockedResource(User requester, DLockInfo request, DiskResource resource) {
 
         this.lockShare = request.getLockScope();

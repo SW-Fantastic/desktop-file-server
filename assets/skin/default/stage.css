@@ -334,6 +334,18 @@
 .dialog-pane .context-menu .menu-item:focused {
   -fx-background-color: #4ea3f4;
 }
+.scroll-bar {
+  -fx-background-color: #ffffff;
+  -fx-font-size: 8;
+}
+.scroll-bar .track {
+  -fx-background-color: #ffffff;
+}
+.scroll-bar .thumb {
+  -fx-background-color: #cfd1dc;
+  -fx-background-radius: 4;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 6, 0, 0, 3);
+}
 .stage-client {
   -fx-font-family: "Source Han Sans CN Normal";
   -fx-background-color: #ffffff;
@@ -603,6 +615,9 @@
 }
 .stage-server .split-pane .user-table .column-header-background {
   -fx-background-color: rgba(255, 255, 255, 0);
+  -fx-border-color: #cfd1dc;
+  -fx-border-width: 0 0 0.4 0;
+  -fx-border-style: solid;
 }
 .stage-server .split-pane .user-table .column-header-background .filler {
   -fx-background-color: #ffffff;
@@ -612,7 +627,7 @@
   -fx-font-size: 14;
   -fx-background-color: transparent;
   -fx-border-color: #cfd1dc;
-  -fx-border-width: 0 1 1 0;
+  -fx-border-width: 0 0.6 0.6 0;
   -fx-border-style: solid;
 }
 .stage-server .split-pane .user-table .column-header .label {

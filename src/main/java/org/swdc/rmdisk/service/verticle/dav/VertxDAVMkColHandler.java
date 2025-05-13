@@ -9,8 +9,10 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.swdc.rmdisk.core.DAVUtils;
 import org.swdc.rmdisk.core.SecureUtils;
+import org.swdc.rmdisk.core.entity.ActivityType;
 import org.swdc.rmdisk.core.entity.DiskFolder;
 import org.swdc.rmdisk.core.entity.User;
+import org.swdc.rmdisk.service.ActivityService;
 import org.swdc.rmdisk.service.DiskFileService;
 import org.swdc.rmdisk.service.DiskLockService;
 import org.swdc.rmdisk.service.SecureService;
@@ -36,6 +38,9 @@ public class VertxDAVMkColHandler implements Handler<RoutingContext> {
 
     @Inject
     private DiskLockService lockService;
+
+    @Inject
+    private ActivityService activityService;
 
     @Override
     public void handle(RoutingContext ctx) {
@@ -98,6 +103,13 @@ public class VertxDAVMkColHandler implements Handler<RoutingContext> {
 
                 DiskFolder created = diskFileService.createFolder(parentFolder,name);
                 if (created != null) {
+
+                    activityService.createAddResourceActivity(
+                            currentUser,
+                            created,
+                            request.remoteAddress().hostAddress()
+                    );
+
                     // 目录已经被创建了。
                     response.setStatusCode(201);
                     response.setStatusMessage("Created");
@@ -115,4 +127,5 @@ public class VertxDAVMkColHandler implements Handler<RoutingContext> {
         }
 
     }
+
 }

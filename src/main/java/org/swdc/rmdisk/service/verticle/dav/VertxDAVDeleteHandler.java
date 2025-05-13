@@ -12,13 +12,12 @@ import org.swdc.dependency.event.Events;
 import org.swdc.rmdisk.core.DAVUtils;
 import org.swdc.rmdisk.core.SecureUtils;
 import org.swdc.rmdisk.core.dav.ResponseStatus;
-import org.swdc.rmdisk.core.entity.DiskFile;
-import org.swdc.rmdisk.core.entity.DiskFolder;
-import org.swdc.rmdisk.core.entity.User;
+import org.swdc.rmdisk.core.entity.*;
 import org.swdc.rmdisk.core.xmlns.XMLMapper;
 import org.swdc.rmdisk.core.dav.multiple.DMultiStatus;
 import org.swdc.rmdisk.core.dav.multiple.DPropertyStatus;
 import org.swdc.rmdisk.core.dav.multiple.DResponse;
+import org.swdc.rmdisk.service.ActivityService;
 import org.swdc.rmdisk.service.DiskFileService;
 import org.swdc.rmdisk.service.DiskLockService;
 import org.swdc.rmdisk.service.SecureService;
@@ -39,6 +38,9 @@ public class VertxDAVDeleteHandler implements Handler<RoutingContext>, EventEmit
 
     @Inject
     private DiskLockService lockService;
+
+    @Inject
+    private ActivityService activityService;
 
     @Inject
     private Events events;
@@ -99,11 +101,25 @@ public class VertxDAVDeleteHandler implements Handler<RoutingContext>, EventEmit
 
                                 hasUnRemovableFile = true;
                             } else {
-                                diskFileService.trashFile(file.getId());
+                                if(diskFileService.trashFile(file.getId())) {
+                                    activityService.createDeleteActivity(
+                                            currentUser,
+                                            file,
+                                            request.remoteAddress().hostAddress()
+                                    );
+                                }
                             }
                         }
                     }
-                    diskFileService.trashFolder(diskFolder.getId());
+
+                    if(diskFileService.trashFolder(diskFolder.getId())) {
+                        activityService.createDeleteActivity(
+                                currentUser,
+                                diskFolder,
+                                request.remoteAddress().hostAddress()
+                        );
+                    }
+
                 }
 
                 if (hasUnRemovableFile) {
@@ -151,4 +167,5 @@ public class VertxDAVDeleteHandler implements Handler<RoutingContext>, EventEmit
     public void setEvents(Events events) {
         this.events = events;
     }
+
 }

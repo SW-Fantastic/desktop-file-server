@@ -2,31 +2,30 @@ package org.swdc.rmdisk.core.repo.filters;
 
 import org.swdc.data.SQLFactory;
 import org.swdc.data.SQLParams;
-import org.swdc.rmdisk.core.entity.UserRegisterRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.StringJoiner;
 
-public class FilteredRegisterQueryCountFactory implements SQLFactory {
+public class FilteredActivityQueryCountFactory implements SQLFactory {
 
     @Override
     public Query createQuery(EntityManager entityManager, SQLParams sqlParams) {
         StringJoiner joiner = new StringJoiner(" AND ");
         if (sqlParams.containsKey("keyword")) {
-            joiner.add("(name LIKE :keyword OR nickname LIKE :keyword)");
+            joiner.add(" (user.name LIKE :keyword OR user.nickname LIKE :keyword) ");
         }
-        if (sqlParams.containsKey("state")) {
-            joiner.add("state = :state");
+        if (sqlParams.containsKey("operation")) {
+            joiner.add(" operation = :operation ");
         }
         if (sqlParams.containsKey("start")) {
-            joiner.add("createdOn >= :start");
+            joiner.add(" createdOn >= :start ");
         }
         if (sqlParams.containsKey("end")) {
-            joiner.add("createdOn <= :end");
+            joiner.add(" createdOn <= :end" );
         }
 
-        StringBuilder queryBuilder = new StringBuilder("SELECT count(id) FROM UserRegisterRequest WHERE ");
+        StringBuilder queryBuilder = new StringBuilder("SELECT count(id) FROM Activity WHERE ");
         queryBuilder.append(joiner);
 
         Query query = entityManager.createQuery(queryBuilder.toString(), Long.class);
