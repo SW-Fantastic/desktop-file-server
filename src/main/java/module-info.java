@@ -35,6 +35,7 @@ module swdc.rmdisk {
     requires jjwt.impl;
     requires jjwt.jackson;
     requires org.apache.tika.core;
+    requires org.apache.commons.io;
 
     requires ch.qos.logback.classic;
     requires ch.qos.logback.core;

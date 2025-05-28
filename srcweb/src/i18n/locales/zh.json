@@ -1,0 +1,40 @@
+{
+  "system": {
+    "name": "繁星云存储"
+  },
+  "views": {
+    "login": {
+      "title": "登录",
+      "username": "用户名",
+      "password": "密码",
+      "placeholder-username": "请输入用户名...",
+      "placeholder-password": "请输入密码...",
+      "placeholder-reg": "没有账号？",
+      "reg": "注册一个",
+      "reg-off": "联系管理员",
+      "login": "登录",
+      "login-failed": "登录失败，用户名或密码可能不正确。",
+      "not-blank": "用户名和密码不能为空。"
+    },
+    "main": {
+      "welcome": "欢迎回来：",
+      "type": "类型",
+      "name": "名称",
+      "date": "修改时间",
+      "size": "大小",
+      "ok": "确定",
+      "cancel": "取消",
+      "rename": "重命名",
+      "dir": "文件夹",
+      "file": "文件",
+      "download": "下载",
+      "rename-desc": "输入名称以重命名此文件:",
+      "delete": "删除",
+      "delete-desc": "被删除的内容无法还原，你确定要删除",
+      "add-folder": "创建文件夹",
+      "add-folder-desc": "输入名称以创建文件夹：",
+      "add-file": "添加文件...",
+      "not-previewable": "此文件尚不支持在线预览"
+    }
+  }
+}

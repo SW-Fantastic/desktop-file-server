@@ -24,10 +24,17 @@
 |           |-- icons                 // 图标，启动后的JavaFX窗口需要它们
 |           |-- lang                  // 语言文件，暂时不支持多语言，但是预留了接口
 |           |-- views                 // JavaFX的FXML文件
-|           |-- webcontent            // WebDAV的WebUI，基于Vue3和Tailwindcss构建
+|           |-- webcontent            // 请首先构建srcweb的前端，它的dist目录的内容就是这里的内容。
 |-- assets                            // 应用的资源目录，包含配置文件和主题
 |-- data                              // 应用的运行时数据目录，这里存放的是MySQL的数据库文件，它的内容会在首次启动后自动初始化。
 |-- logs                              // 日志目录
+|-- srcweb                            // WebDAV的Web前端源码目录
+|   |-- dist                          // Web打包目录，需要放到到webcontent中。
+|   |-- node_modules                  // nodejs类库，通常可以通过npm下载到。
+|   |-- public                        // Web资源目录
+|   |-- src                           // Web源码，本项目使用Vue3 这里存放Vue组件
+
+
 ```
 
 ## 依赖的项目
@@ -57,4 +64,6 @@
 - caffeine：缓存框架
 - jjwt：令牌和Token的生成及验证
 - apache-tika：Metadata以及MimeType的检测
+- Vue3: Web前端基础框架
+- Antd-Vue：Ant design组件库
 

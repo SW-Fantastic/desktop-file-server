@@ -1,0 +1,40 @@
+{
+  "system": {
+    "name": "Star Could"
+  },
+  "views": {
+    "login": {
+      "title": "Login",
+      "username": "Username",
+      "password": "Password",
+      "placeholder-username": "Please enter username..",
+      "placeholder-password": "Please enter password..",
+      "placeholder-reg": "Need an account ?",
+      "reg": "Get a new one",
+      "reg-off": "Connect us",
+      "login": "Login",
+      "login-failed": "Login failed, please check your username and password.",
+      "not-blank": "Username and password can not be null"
+    },
+    "main": {
+      "welcome": "Welcome:",
+      "type": "Type",
+      "name": "Name",
+      "date": "Last modified",
+      "size": "Size",
+      "ok": "OK",
+      "cancel": "CANCEL",
+      "rename": "Rename",
+      "dir": "Folder",
+      "file": "File",
+      "download": "Download",
+      "rename-desc": "Enter new name for current file:",
+      "delete": "Delete",
+      "delete-desc": "Files was deleted can not be restore, do you want to delete",
+      "add-folder": "Create folder",
+      "add-folder-desc": "Enter name to create a folder:",
+      "add-file": "Add file..",
+      "not-previewable": "The file is not previewable now"
+    }
+  }
+}

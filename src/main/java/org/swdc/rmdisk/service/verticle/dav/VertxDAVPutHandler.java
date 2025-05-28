@@ -145,15 +145,15 @@ public class VertxDAVPutHandler implements Handler<RoutingContext>, EventEmitter
                         os.close();
 
                         // 交换文件，更新文件信息
-                        if(!diskFileService.swapFile(finalFile) && !diskFileService.updateFileInfo(finalFile)) {
+                        if(diskFileService.swapFile(finalFile) && diskFileService.updateFileInfo(finalFile)) {
+                            // 刷新用户信息
+                            emit(new UserStateChangeEvent(currentUser));
+                        } else {
                             logger.error("failed to update file info : " + finalFile.getUuid());
                             response.setStatusCode(500);
                             response.setStatusMessage("Internal Error");
                             response.end();
                             return;
-                        } else {
-                            // 刷新用户信息
-                            emit(new UserStateChangeEvent(currentUser));
                         }
                         // 返回结果
                         response.setStatusCode(200);

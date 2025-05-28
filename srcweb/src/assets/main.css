@@ -1,0 +1,20 @@
+@import './base.css';
+
+body {
+
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 0;
+  margin: 0;
+
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+}
+
