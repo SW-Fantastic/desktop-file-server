@@ -138,46 +138,52 @@ public class VertxDAVPutHandler implements Handler<RoutingContext>, EventEmitter
                         logger.error("failed to write file : ", e);
                     }
                 }).endHandler(v -> {
-                    try {
 
-                        Long oldSize = finalFile.getFileSize();
-                        // 关闭输出流
-                        os.close();
+                    executor.submit(() -> {
 
-                        // 交换文件，更新文件信息
-                        if(diskFileService.swapFile(finalFile) && diskFileService.updateFileInfo(finalFile)) {
-                            // 刷新用户信息
-                            emit(new UserStateChangeEvent(currentUser));
-                        } else {
-                            logger.error("failed to update file info : " + finalFile.getUuid());
+                        try {
+
+                            Long oldSize = finalFile.getFileSize();
+                            // 关闭输出流
+                            os.close();
+
+                            // 交换文件，更新文件信息
+                            if(diskFileService.swapFile(finalFile) && diskFileService.updateFileInfo(finalFile)) {
+                                // 刷新用户信息
+                                emit(new UserStateChangeEvent(currentUser));
+                            } else {
+                                logger.error("failed to update file info : " + finalFile.getUuid());
+                                response.setStatusCode(500);
+                                response.setStatusMessage("Internal Error");
+                                response.end();
+                                return;
+                            }
+                            // 返回结果
+                            response.setStatusCode(200);
+                            response.setStatusMessage("OK");
+                            response.end();
+
+
+                            activityService.createUploadActivity(
+                                    currentUser,
+                                    request.remoteAddress().hostAddress(),
+                                    oldSize,
+                                    finalFile.getFileSize(),
+                                    finalFile
+                            );
+
+                        } catch (Exception e) {
+
+                            logger.error("failed to close files", e);
+
                             response.setStatusCode(500);
                             response.setStatusMessage("Internal Error");
                             response.end();
-                            return;
+
                         }
-                        // 返回结果
-                        response.setStatusCode(200);
-                        response.setStatusMessage("OK");
-                        response.end();
 
+                    });
 
-                        activityService.createUploadActivity(
-                                currentUser,
-                                request.remoteAddress().hostAddress(),
-                                oldSize,
-                                finalFile.getFileSize(),
-                                finalFile
-                        );
-
-                    } catch (Exception e) {
-
-                        logger.error("failed to close files", e);
-
-                        response.setStatusCode(500);
-                        response.setStatusMessage("Internal Error");
-                        response.end();
-
-                    }
                 }).exceptionHandler(e -> {
                     executor.submit(() -> {
 
