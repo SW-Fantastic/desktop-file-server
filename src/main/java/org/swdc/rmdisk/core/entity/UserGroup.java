@@ -2,7 +2,7 @@ package org.swdc.rmdisk.core.entity;
 
 import org.swdc.data.anno.StatelessIgnore;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity

@@ -45,8 +45,9 @@ public class UserManageService {
     private ManagedServerConfigure serverConfigure;
 
 
+    @Transactional
     public List<UserGroup> getGroupsByState(State state){
-        List<UserGroup> groups = groupRepo.findGroupByState(state.name());
+        List<UserGroup> groups = groupRepo.findGroupByState(state);
         if (groups == null || groups.isEmpty()) {
             return Collections.emptyList();
         }
@@ -57,7 +58,7 @@ public class UserManageService {
 
     @Transactional
     public List<UserRegisterRequest> getRegisterRequestByState(CommonState state){
-        List<UserRegisterRequest> requests = requestRepo.findByState(state.name());
+        List<UserRegisterRequest> requests = requestRepo.findByState(state);
         if (requests == null || requests.isEmpty()) {
             return Collections.emptyList();
         }
@@ -123,6 +124,7 @@ public class UserManageService {
      * @param name 用户名
      * @return 用户是否存在
      */
+    @Transactional
     public boolean checkUserExist(String name) {
         User user = userRepo.findByUserName(name);
         if (user != null) {
@@ -251,6 +253,7 @@ public class UserManageService {
         return true;
     }
 
+    @Transactional
     public User findByName(String userName) {
         User user = userRepo.findByUserName(userName);
         if (user == null) {
@@ -276,6 +279,7 @@ public class UserManageService {
     }
 
 
+    @Transactional
     public int countUserFiltered(UserGroup group, LocalDate start, LocalDate end, String keyword) {
         if (group == null || group.getId() == null) {
             return 0;
@@ -289,7 +293,7 @@ public class UserManageService {
 
     @Transactional
     public List<UserRegisterRequest> getRegisterRequestsFiltered(LocalDate start, LocalDate end, String keyword, CommonState state, int page, int size) {
-        List<UserRegisterRequest> requests = requestRepo.searchByFilters(keyword,start,end,state.name(),page,size);
+        List<UserRegisterRequest> requests = requestRepo.searchByFilters(keyword,start,end,state,page,size);
         if (requests == null || requests.isEmpty()) {
             return Collections.emptyList();
         }
@@ -298,8 +302,9 @@ public class UserManageService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public int countRegisterRequestFiltered(LocalDate start, LocalDate end, String keyword, CommonState state) {
-        Long count = requestRepo.countByFilters(keyword,start,end,state.name());
+        Long count = requestRepo.countByFilters(keyword,start,end,state);
         if (count == null) {
             return 0;
         }

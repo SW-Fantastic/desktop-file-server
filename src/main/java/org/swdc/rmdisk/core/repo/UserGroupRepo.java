@@ -17,7 +17,7 @@ public interface UserGroupRepo extends JPARepository<UserGroup,Long> {
     UserGroup findByName(@Param("name")String name);
 
     @SQLQuery("FROM UserGroup where state = :state")
-    List<UserGroup> findGroupByState(@Param("state")String state);
+    List<UserGroup> findGroupByState(@Param("state")State state);
 
     @SQLQuery("FROM UserGroup where state = 'NORMAL' and registrable = true")
     List<UserGroup> findRegistrable();

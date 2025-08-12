@@ -1,6 +1,8 @@
 package org.swdc.rmdisk.core.entity;
 
-import javax.persistence.*;
+
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity

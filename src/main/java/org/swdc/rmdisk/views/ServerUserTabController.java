@@ -438,9 +438,11 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
     private void refreshGroupByState(State state) {
         List<UserGroup> groups = userManageService.getGroupsByState(state);
         groupListView.getItems().clear();
-        groupListView.getItems().addAll(groups);
-        groupListView.refresh();
-        selectionGroupPurgeDisabled.set(state != State.TRASHED);
+        if (groups != null) {
+            groupListView.getItems().addAll(groups);
+            groupListView.refresh();
+            selectionGroupPurgeDisabled.set(state != State.TRASHED);
+        }
     }
 
 

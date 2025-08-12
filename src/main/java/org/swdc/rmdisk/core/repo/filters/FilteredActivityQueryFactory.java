@@ -5,8 +5,8 @@ import org.swdc.data.SQLParams;
 import org.swdc.rmdisk.core.entity.Activity;
 import org.swdc.rmdisk.core.entity.UserRegisterRequest;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.util.StringJoiner;
 
 public class FilteredActivityQueryFactory implements SQLFactory {

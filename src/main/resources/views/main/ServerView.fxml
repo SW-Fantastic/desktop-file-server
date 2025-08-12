@@ -22,7 +22,6 @@
             <Label text="Web：" />
             <TextField fx:id="portField" minHeight="30.0" prefHeight="30.0" prefWidth="60.0" styleClass="field" />
             <Button id="startButton" minHeight="28.0" minWidth="28.0" mnemonicParsing="false" onAction="#serverDAVStartStop" prefHeight="28.0" prefWidth="28.0" styleClass="tool-button" text="Button" />
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
             <Label text="FTP：" />
             <TextField fx:id="portFTPField" minHeight="30.0" prefHeight="30.0" prefWidth="60.0" styleClass="field" />
             <Button id="ftpStartButton" minHeight="28.0" minWidth="28.0" mnemonicParsing="false" onAction="#serverFTPStartStop" prefHeight="28.0" prefWidth="28.0" styleClass="tool-button" text="Button" />

@@ -1,12 +1,12 @@
 package org.swdc.rmdisk.core.repo.filters;
 
+import jakarta.persistence.TypedQuery;
 import org.swdc.data.SQLFactory;
 import org.swdc.data.SQLParams;
 import org.swdc.rmdisk.core.entity.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.util.StringJoiner;
 
 public class FilteredUserQueryCountFactory implements SQLFactory {

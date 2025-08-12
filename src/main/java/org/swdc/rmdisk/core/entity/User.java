@@ -2,7 +2,7 @@ package org.swdc.rmdisk.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity

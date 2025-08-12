@@ -94,6 +94,7 @@ public class TemplateService {
                 .stateless(folder);
     }
 
+    @Transactional
     public List<TemplateFolder> getTemplateFolders(Long parentId) {
         if (parentId == null) {
             return Collections.emptyList();
