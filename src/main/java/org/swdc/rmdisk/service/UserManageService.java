@@ -5,6 +5,10 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.swdc.data.StatelessHelper;
 import org.swdc.data.anno.Transactional;
+import org.swdc.fx.FXResources;
+import org.swdc.ours.common.type.JSONMapper;
+import org.swdc.rmdisk.core.CoreSecurityKey;
+import org.swdc.rmdisk.core.DAVUtils;
 import org.swdc.rmdisk.core.ManagedServerConfigure;
 import org.swdc.rmdisk.core.ServerConfigure;
 import org.swdc.rmdisk.core.entity.*;
@@ -12,6 +16,17 @@ import org.swdc.rmdisk.core.repo.UserGroupRepo;
 import org.swdc.rmdisk.core.repo.UserRegisterRequestRepo;
 import org.swdc.rmdisk.core.repo.UserRepo;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -43,6 +58,14 @@ public class UserManageService {
 
     @Inject
     private ManagedServerConfigure serverConfigure;
+
+    @Inject
+    private ActivityService activityService;
+
+    @Inject
+    private FXResources resources;
+
+    private CoreSecurityKey masterKey;
 
 
     @Transactional
@@ -346,10 +369,11 @@ public class UserManageService {
             user.setUsedSize(0L);
             user.setCreatedOn(LocalDateTime.now());
             user.setState(State.NORMAL);
-            if(user.getAvatar() == null || user.getAvatar().isBlank()) {
+            user.setPassword(encodePassword(user.getPassword()));
+            if(user.getAvatar() == null) {
                 byte[] defaultAvatar = commonService.getDefaultAvatar();
                 if (defaultAvatar != null) {
-                    user.setAvatar(Base64.getEncoder().encodeToString(defaultAvatar));
+                    user.setAvatar(defaultAvatar);
                 }
             }
 
@@ -366,8 +390,10 @@ public class UserManageService {
             // exist user
             User exist = userRepo.getOne(user.getId());
             if (user.getPassword() != null && !user.getPassword().isBlank()) {
-                if (!exist.getPassword().equals(user.getPassword())) {
-                    exist.setPassword(user.getPassword());
+                String password = decodePassword(exist.getPassword());
+                String newPassword = decodePassword(user.getPassword());
+                if (!password.equals(newPassword)) {
+                    exist.setPassword(encodePassword(user.getPassword()));
                 }
             }
 
@@ -388,7 +414,7 @@ public class UserManageService {
                 exist.setGroup(newGroup);
             }
 
-            if (user.getAvatar() != null && !user.getAvatar().isBlank()) {
+            if (user.getAvatar() != null) {
                 exist.setAvatar(user.getAvatar());
             }
 
@@ -422,10 +448,14 @@ public class UserManageService {
         }
 
         if (update.getPassword() != null && !update.getPassword().isBlank()) {
-            user.setPassword(update.getPassword());
+            String nextPassword = decodePassword(update.getPassword());
+            String existPassword = decodePassword(user.getPassword());
+            if (!nextPassword.equals(existPassword)) {
+                user.setPassword(encodePassword(update.getPassword()));
+            }
         }
 
-        if (update.getAvatar() != null && !update.getAvatar().isBlank()) {
+        if (update.getAvatar() != null) {
             user.setAvatar(update.getAvatar());
         }
 
@@ -470,22 +500,84 @@ public class UserManageService {
         if (user == null || user.getId() == null) {
             return false;
         }
-        DiskFolder rootFolder = fileService.getRoot(user);
+        user = userRepo.getOne(user.getId());
+        DiskFolder rootFolder = fileService.getRoot(user, false);
         if(rootFolder != null) {
-            List<DiskFolder> subFolders = new ArrayList<>();
-            fileService.collectionResources(rootFolder,subFolders);
-            for (DiskFolder folder : subFolders) {
-                List<DiskFile> files = fileService.getFilesByParent(folder);
-                if (files != null && !files.isEmpty()) {
-                    for (DiskFile file : files) {
-                        fileService.trashFile(file.getId());
-                    }
+            fileService.trashFolder(rootFolder.getId());
+            File userRoot = fileService.getUserRootFolder(user);
+            if(userRoot.exists()) {
+                try {
+                    DAVUtils.deleteFolder(userRoot);
+                } catch (Exception e) {
+                    logger.error("Failed to delete user root folder : {}", userRoot.getAbsolutePath());
                 }
             }
-            fileService.trashFolder(rootFolder.getId());
         }
+        activityService.clearByUser(user.getId());
         userRepo.remove(user);
+
         return true;
+    }
+
+    public String encodePassword(String password) {
+        try {
+            SecretKey secretKey = getMasterKey();
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey,new IvParameterSpec(Base64.getDecoder().decode(masterKey.getIv())));
+            byte[] encoded = cipher.doFinal(password.getBytes(StandardCharsets.UTF_8));
+            return  "(" + Base64.getEncoder().encodeToString(encoded) + ")";
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String decodePassword(String password) {
+        try {
+            SecretKey secretKey = getMasterKey();
+
+            if (password.startsWith("(") && password.endsWith(")")) {
+
+                String encoded = password.substring(1,password.length()-1);
+                Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+                cipher.init(Cipher.DECRYPT_MODE, secretKey,new IvParameterSpec(Base64.getDecoder().decode(masterKey.getIv())));
+                byte[] decoded = cipher.doFinal(Base64.getDecoder().decode(encoded));
+                return new String(decoded);
+
+            } else {
+                return password;
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    public SecretKey getMasterKey() {
+        try {
+            if (masterKey == null) {
+                File masterKey = new File(resources.getAssetsFolder(), "master-key.json");
+                if (!masterKey.exists()) {
+
+                    this.masterKey = new CoreSecurityKey();
+                    this.masterKey.generateAndSave(masterKey);
+
+                } else {
+
+                    this.masterKey = JSONMapper.readAsType(
+                            Files.readAllBytes(masterKey.toPath()),
+                            CoreSecurityKey.class
+                    );
+
+                }
+            }
+            return masterKey.getSecretKey();
+        } catch (Exception e) {
+            logger.error("Failed to load master key.", e);
+            return null;
+        }
+
     }
 
 }

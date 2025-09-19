@@ -74,6 +74,8 @@ module swdc.rmdisk {
             swdc.application.dependency;
 
     opens org.swdc.rmdisk.core to
+            com.fasterxml.jackson.databind,
+            com.fasterxml.jackson.core,
             org.controlsfx.controls,
             swdc.application.configs,
             swdc.application.dependency,

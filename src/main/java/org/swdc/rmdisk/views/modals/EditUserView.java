@@ -172,7 +172,7 @@ public class EditUserView extends AbstractView {
             ByteArrayInputStream bin = new ByteArrayInputStream(avatar);
             Image image = new Image(bin);
             imageView.setImage(image);
-            editingUser.setAvatar(Base64.getEncoder().encodeToString(avatar));
+            editingUser.setAvatar(avatar);
         }
 
         txtPassword.setText(request.getPassword());
@@ -207,9 +207,7 @@ public class EditUserView extends AbstractView {
         }
 
         if (this.avatar != null) {
-            editingUser.setAvatar(
-                    Base64.getEncoder().encodeToString(this.avatar)
-            );
+            editingUser.setAvatar(this.avatar);
         }
 
         if(!txtNickname.getText().isBlank()) {
@@ -271,9 +269,9 @@ public class EditUserView extends AbstractView {
             txtNickname.setText(editingUser.getNickname());
         }
 
-        if (editingUser.getAvatar() != null && !editingUser.getAvatar().isBlank()) {
+        if (editingUser.getAvatar() != null) {
 
-            byte[] avatar = Base64.getDecoder().decode(editingUser.getAvatar());
+            byte[] avatar = editingUser.getAvatar();
             ByteArrayInputStream bin = new ByteArrayInputStream(avatar);
             Image image = new Image(bin);
             imageView.setImage(image);
@@ -285,7 +283,7 @@ public class EditUserView extends AbstractView {
                 ByteArrayInputStream bin = new ByteArrayInputStream(avatar);
                 Image image = new Image(bin);
                 imageView.setImage(image);
-                editingUser.setAvatar(Base64.getEncoder().encodeToString(avatar));
+                editingUser.setAvatar(avatar);
             }
 
         }
@@ -316,9 +314,7 @@ public class EditUserView extends AbstractView {
         }
 
         if (this.avatar != null) {
-            editingUser.setAvatar(
-                    Base64.getEncoder().encodeToString(this.avatar)
-            );
+            editingUser.setAvatar(this.avatar);
         }
 
         if(!txtNickname.getText().isBlank()) {

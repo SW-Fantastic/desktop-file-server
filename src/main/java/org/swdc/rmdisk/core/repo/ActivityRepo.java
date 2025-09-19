@@ -1,9 +1,7 @@
 package org.swdc.rmdisk.core.repo;
 
 import org.swdc.data.JPARepository;
-import org.swdc.data.anno.Param;
-import org.swdc.data.anno.Repository;
-import org.swdc.data.anno.SQLQueryFactory;
+import org.swdc.data.anno.*;
 import org.swdc.rmdisk.core.entity.Activity;
 import org.swdc.rmdisk.core.entity.ActivityType;
 import org.swdc.rmdisk.core.repo.filters.FilteredActivityQueryCountFactory;
@@ -32,5 +30,9 @@ public interface ActivityRepo extends JPARepository<Activity,Long> {
             @Param("end") LocalDate end,
             @Param("operation") ActivityType op
     );
+
+    @Modify
+    @SQLQuery("delete from Activity where user.id = :userId")
+    void deleteByUserId(@Param("userId") Long userId);
 
 }

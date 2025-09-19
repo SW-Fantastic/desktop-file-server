@@ -1,6 +1,9 @@
 package org.swdc.rmdisk.core.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.time.LocalDateTime;
 
 /**
@@ -19,15 +22,12 @@ public class DiskResource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(columnDefinition = "parent_id")
     @ManyToOne
+    @JoinColumn(name = "parent_id")
     private DiskFolder parent;
 
-    @JoinColumn(
-            columnDefinition = "owner_id",
-            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
-    )
     @ManyToOne
+    @JoinColumn(name = "owner_id")
     private User owner;
 
     private String name;

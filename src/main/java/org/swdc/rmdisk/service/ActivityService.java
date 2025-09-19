@@ -3,6 +3,7 @@ package org.swdc.rmdisk.service;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.swdc.data.StatelessHelper;
+import org.swdc.data.anno.Transactional;
 import org.swdc.rmdisk.core.ServerConfigure;
 import org.swdc.rmdisk.core.entity.*;
 import org.swdc.rmdisk.core.repo.ActivityRepo;
@@ -25,6 +26,7 @@ public class ActivityService {
     @Inject
     private ServerConfigure config;
 
+    @Transactional
     public Activity createActivity(Long userId, String address, ActivityType activityType, Class resource, Long resourceId,String property, String oldValue, String newValue) {
 
         if (!config.getRecordLogs()) {
@@ -62,6 +64,7 @@ public class ActivityService {
 
     }
 
+    @Transactional
     public Activity createActivity(Long userId, String address, ActivityType type, String description) {
 
         if (!config.getRecordLogs()) {
@@ -84,6 +87,7 @@ public class ActivityService {
 
     }
 
+    @Transactional
     public void createUploadActivity(User current, String host,Long oldSize, Long newSize, DiskResource resource) {
 
         String oldSizeStr = oldSize != null ? (oldSize / (1000.0 * 1000.0)) + " MB" : "0 MB";
@@ -102,6 +106,7 @@ public class ActivityService {
 
     }
 
+    @Transactional
     public void createAddResourceActivity(User current, DiskResource newRes, String host) {
 
         createActivity(
@@ -117,6 +122,7 @@ public class ActivityService {
 
     }
 
+    @Transactional
     public void createMoveActivity(User current, DiskFolder oldParent, DiskFolder newParent, String host, DiskResource fileOrFolder) {
         createActivity(
                 current.getId(),
@@ -129,6 +135,7 @@ public class ActivityService {
         );
     }
 
+    @Transactional
     public void createRenameActivity(User current, String oldName, String newName,String host, DiskResource fileOrFolder) {
         createActivity(
                 current.getId(),
@@ -141,6 +148,7 @@ public class ActivityService {
         );
     }
 
+    @Transactional
     public void createDeleteActivity(User current, DiskResource target,String host) {
         createActivity(
                 current.getId(),
@@ -154,6 +162,7 @@ public class ActivityService {
         );
     }
 
+    @Transactional
     public int countLogFiltered(LocalDate startDate, LocalDate endDate, String keyword, ActivityType type) {
         Long count = activityRepo.countByFilters(keyword,startDate,endDate,type);
         if (count == null) {
@@ -162,6 +171,7 @@ public class ActivityService {
         return count.intValue();
     }
 
+    @Transactional
     public List<Activity> getLogsFiltered(LocalDate startDate,LocalDate endDate, String keyword, ActivityType type, int page, int size) {
         List<Activity> activities = activityRepo.searchByFilters(keyword,startDate,endDate,type,page,size);
         if (activities == null) {
@@ -172,10 +182,16 @@ public class ActivityService {
                 .toList();
     }
 
+    @Transactional
     public void removeLogs(List<Activity> activities) {
         for (Activity activity: activities) {
             activityRepo.remove(activity);
         }
+    }
+
+    @Transactional
+    public void clearByUser(Long userId) {
+        activityRepo.deleteByUserId(userId);
     }
 
 }

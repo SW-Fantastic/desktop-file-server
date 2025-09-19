@@ -43,3 +43,4 @@ build/
 /.idea/
 /deploy/
 /assets/.lock
+/assets/master-key.json

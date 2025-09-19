@@ -81,7 +81,7 @@ public class VertxDAVMkColHandler implements Handler<RoutingContext> {
                 if (parentFolder == null) {
                     if (parent.isBlank()) {
                         // root folder
-                        parentFolder = diskFileService.getRoot(currentUser);
+                        parentFolder = diskFileService.getRoot(currentUser,true);
                     } else {
                         // no such parent folder
                         // 服务器不应当自动创建缺少的中间目录

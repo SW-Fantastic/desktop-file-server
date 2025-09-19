@@ -56,23 +56,26 @@ public class DiskFileService implements EventEmitter {
         this.events = events;
     }
 
-    public DiskFolder getRoot(User user) {
+    @Transactional
+    public DiskFolder getRoot(User user, boolean create) {
 
         if (user == null){
             return null;
         }
         DiskFolder folder = folderRepo.getUserRootFolder(user.getId());
-        if (folder == null) {
+        if (folder == null && create) {
             if(createFolderStructure(user)) {
                 folder = folderRepo.getUserRootFolder(user.getId());
                 if (folder == null){
                     return null;
                 }
-            } else {
-                return null;
+                return StatelessHelper.stateless(folder);
             }
+        } else if (folder != null) {
+            return StatelessHelper.stateless(folder);
         }
-        return StatelessHelper.stateless(folder);
+
+        return null;
     }
 
     @Transactional
@@ -245,13 +248,18 @@ public class DiskFileService implements EventEmitter {
         try {
 
             DiskFile file = fileRepo.getOne(fileId);
-            User owner = file.getOwner();
+            Long ownerId = file.getOwner().getId();
             File target = getSystemFile(file);
+
+            file.setParent(null);
+            file.setOwner(null);
+            file = fileRepo.save(file);
             fileRepo.remove(file);
 
             if (target != null) {
                 long length = target.length();
                 if(target.delete()) {
+                    User owner = userRepo.getOne(ownerId);
                     owner.setUsedSize(owner.getUsedSize() - length);
                     userRepo.save(owner);
                 }
@@ -282,6 +290,10 @@ public class DiskFileService implements EventEmitter {
 
     }
 
+    public void clearFolders(Long userId) {
+
+    }
+
     @Transactional
     public boolean trashFolder(Long folderId) {
 
@@ -290,16 +302,26 @@ public class DiskFileService implements EventEmitter {
         }
 
         DiskFolder folder = folderRepo.getOne(folderId);
-        List<DiskFile> files = fileRepo.getFilesByParent(folder.getId());
-        if (files != null &&  !files.isEmpty()) {
-            return false;
+        if (folder == null) {
+            return true;
         }
 
-        List<DiskFolder> subFolders = folderRepo.getByParent(folder.getId());
-        if (subFolders != null && !subFolders.isEmpty()) {
-            return false;
+
+        List<DiskFolder> subFolders = new ArrayList<>();
+        collectionResources(folder,subFolders);
+
+        for (DiskFolder diskFolder: subFolders) {
+            List<DiskFile> files = fileRepo.getFilesByParent(diskFolder.getId());
+            if (files != null) {
+                for (DiskFile file: files) {
+                    trashFile(file.getId());
+                }
+            }
         }
 
+        folder.setParent(null);
+        folder.setOwner(null);
+        folder = folderRepo.save(folder);
         folderRepo.remove(folder);
         return true;
     }
@@ -394,9 +416,28 @@ public class DiskFileService implements EventEmitter {
                 .collect(Collectors.toList());
     }
 
+    public File getUserRootFolder(User user) {
+        if (user == null || user.getId() < 0) {
+            return null;
+        }
+
+        String userRootPath = resource.getAssetsFolder().getAbsolutePath() +
+                File.separator +
+                "blocks" +
+                File.separator +
+                "uid-" +
+                user.getId();
+
+        File target = new File(userRootPath);
+        if (!target.exists() && !target.mkdirs()) {
+            return null;
+        }
+        return target;
+    }
+
     public File getSystemFile(DiskFile input) {
-        String file = resource.getAssetsFolder().getAbsolutePath() + File.separator + "blocks";
-        File target = new File(file);
+
+        File target = getUserRootFolder(input.getOwner());
         if (!target.exists() && !target.mkdirs()) {
             return null;
         }
@@ -471,8 +512,7 @@ public class DiskFileService implements EventEmitter {
         }
 
         // 获取被替换文件的目录
-        String fileReplace = resource.getAssetsFolder().getAbsolutePath() + File.separator + "blocks";
-        File fileRepo = new File(fileReplace);
+        File fileRepo = getUserRootFolder(target.getOwner());
         if (!fileRepo.exists() && !fileRepo.mkdirs()) {
             return false;
         }
@@ -530,12 +570,9 @@ public class DiskFileService implements EventEmitter {
     @Transactional
     public boolean updateFileInfo(DiskFile theFile) {
 
-        String file = resource.getAssetsFolder().getAbsolutePath() + File.separator + "blocks";
-        File target = new File(file);
-        if (!target.exists() && !target.mkdirs()) {
-            return false;
-        }
-        File outputFile = new File(target.getAbsolutePath() + File.separator + theFile.getUuid());
+        File userRoot = getUserRootFolder(theFile.getOwner());
+        File outputFile = new File(userRoot, theFile.getUuid());
+
         theFile = fileRepo.getOne(theFile.getId());
         long length = 0;
         if (theFile.getFileSize() != null) {

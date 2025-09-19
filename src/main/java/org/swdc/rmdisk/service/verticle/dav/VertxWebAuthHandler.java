@@ -46,6 +46,7 @@ public class VertxWebAuthHandler implements Handler<RoutingContext>, EventEmitte
         request.bodyHandler(body -> {
             try {
 
+                String remoteAddress = request.remoteAddress().hostAddress();
                 String content = body.toString(StandardCharsets.UTF_8);
                 BarerLoginRequest loginRequest = mapper.readValue(content, BarerLoginRequest.class);
                 User user = userManageService.findByName(loginRequest.getUsername());
@@ -55,7 +56,7 @@ public class VertxWebAuthHandler implements Handler<RoutingContext>, EventEmitte
                 }
 
                 String token = secureService.loginWithPassword(
-                        loginRequest.getUsername(), loginRequest.getPassword()
+                        remoteAddress,loginRequest.getUsername(), loginRequest.getPassword()
                 );
 
                 if (token != null) {

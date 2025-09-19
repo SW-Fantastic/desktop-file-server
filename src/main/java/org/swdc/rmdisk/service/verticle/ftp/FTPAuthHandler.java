@@ -82,7 +82,8 @@ public class FTPAuthHandler extends VertxFTPAbstractHandler implements EventEmit
         }
         try {
 
-            String sessionKey = secureService.loginWithPassword(session.getUserName(), password);
+            String remoteAddress = sender.remoteAddress().hostAddress();
+            String sessionKey = secureService.loginWithPassword(remoteAddress,session.getUserName(), password);
             if (sessionKey == null) {
                 FTPMsg error = new FTPMsg(FTPRespCode.USER_NOT_LOGGED, "Password is incorrect");
                 sender.write(error.prepare());

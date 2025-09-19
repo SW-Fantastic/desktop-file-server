@@ -3,6 +3,10 @@ package org.swdc.rmdisk.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.password4j.Argon2Function;
+import com.password4j.Hash;
+import com.password4j.SaltGenerator;
+import com.password4j.types.Argon2;
 import io.jsonwebtoken.Jwts;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpServerRequest;
@@ -14,23 +18,36 @@ import org.slf4j.Logger;
 import org.swdc.dependency.EventEmitter;
 import org.swdc.dependency.event.AbstractEvent;
 import org.swdc.dependency.event.Events;
+import org.swdc.fx.FXResources;
+import org.swdc.ours.common.type.JSONMapper;
 import org.swdc.rmdisk.core.AuthType;
+import org.swdc.rmdisk.core.CoreSecurityKey;
 import org.swdc.rmdisk.core.SecureUtils;
 import org.swdc.rmdisk.core.entity.LoginedUser;
 import org.swdc.rmdisk.core.entity.User;
 import org.swdc.rmdisk.service.events.UserStateChangeEvent;
 
+import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.time.Duration;
 import java.util.*;
 
 @Singleton
 public class SecureService implements EventEmitter {
+
+    private static final int MAX_ATTEMPTS = 5;
 
     @Inject
     private UserManageService userManageService;
@@ -38,14 +55,22 @@ public class SecureService implements EventEmitter {
     @Inject
     private Logger logger;
 
+    /**
+     * 在线用户ID映射表，用于快速查找用户信息。
+     */
     private Map<Long,String> onLineUserId = new HashMap<>();
 
 
+    /**
+     * 缓存的NTLM挑战信息，用于验证用户身份。
+     */
     private Cache<String, byte[]> ntlmChallenges = Caffeine.newBuilder()
             .expireAfterWrite(Duration.ofSeconds(60 * 5))
             .build();
 
-
+    /**
+     * 在线用户缓存，用于存储当前登录的用户信息。
+     */
     private Cache<String,User> onlineUsers = Caffeine.newBuilder()
             .expireAfterWrite(Duration.ofHours(6))
             .removalListener((key, value, cause) -> {
@@ -56,6 +81,13 @@ public class SecureService implements EventEmitter {
                 onLineUserId.remove(removed.getId());
                 emit(new UserStateChangeEvent(removed));
             })
+            .build();
+
+    /**
+     * 用户密码错误次数缓存，用于限制登录尝试。
+     */
+    private Cache<String, Long> wrongPasswordAttempts = Caffeine.newBuilder()
+            .expireAfterWrite(Duration.ofMinutes(5))
             .build();
 
     private Events events;
@@ -81,9 +113,20 @@ public class SecureService implements EventEmitter {
 
     public User requestAuth(HttpServerRequest request, HttpServerResponse response) throws IOException, NoSuchAlgorithmException {
 
+        wrongPasswordAttempts.cleanUp();
         onlineUsers.cleanUp();
         Cookie sessionKey = request.getCookie("SESSION_KEY");
         Cookie challengeCookie = request.getCookie("NTLM_CHID");
+        String remoteAddress = request.remoteAddress().hostAddress();
+
+        Long count = wrongPasswordAttempts.getIfPresent(remoteAddress);
+        if (count != null && count >= MAX_ATTEMPTS) {
+            SecureUtils.setupAuthHeader(response,true);
+            response.end();
+            return null;
+        } else if (count == null) {
+            count = 0L;
+        }
 
         AuthType type = AuthType.Unknown;
         if (challengeCookie != null) {
@@ -149,12 +192,13 @@ public class SecureService implements EventEmitter {
                             domain,
                             clientHash,
                             user.getUsername(),
-                            user.getPassword(),
+                            userManageService.decodePassword(user.getPassword()),
                             challenge
                     );
                     if (!passwordIsCorrect) {
                         SecureUtils.setupAuthHeader(response,true);
                         response.end();
+                        wrongPasswordAttempts.put(remoteAddress, count + 1);
                         return null;
                     }
                     // 认证完毕，添加Cookie
@@ -169,6 +213,7 @@ public class SecureService implements EventEmitter {
                     cookie = Cookie.cookie("SESSION_KEY", token);
                     response.addCookie(cookie);
                     emit(new UserStateChangeEvent(user));
+                    wrongPasswordAttempts.invalidate(remoteAddress);
                     return user;
                 }
             } else if (type == AuthType.Bearer) {
@@ -181,12 +226,14 @@ public class SecureService implements EventEmitter {
                 // Bearer令牌，通常是JWT，解析之。
                 User user = onlineUsers.getIfPresent(header);
                 if (user == null) {
+                    wrongPasswordAttempts.put(remoteAddress, count + 1);
                     response.removeCookie("SESSION_KEY");
                     response.removeCookie("NTLM_CHID");
                     SecureUtils.setupAuthHeader(response,true);
                     response.end();
                     return null;
                 }
+                wrongPasswordAttempts.invalidate(remoteAddress);
                 return user;
             } else {
                 if (SecureUtils.isBrowser(request)) {
@@ -213,13 +260,22 @@ public class SecureService implements EventEmitter {
         }
     }
 
+    /**
+     * 生成JWT令牌, 用作SessionId。
+     * @param user 用户对象
+     * @return JWT令牌
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     */
     public String generateJWT(User user) throws IOException, NoSuchAlgorithmException {
         ObjectMapper mapper = new ObjectMapper();
         LoginedUser loginedUser = new LoginedUser(user);
         String payload = mapper.writeValueAsString(loginedUser);
 
         KeyGenerator generator = KeyGenerator.getInstance("HmacSHA256");
-        generator.init(new SecureRandom(user.getPassword().getBytes(StandardCharsets.UTF_8)));
+        generator.init(new SecureRandom(userManageService.decodePassword(user.getPassword())
+                .getBytes(StandardCharsets.UTF_8))
+        );
         Key key = generator.generateKey();
 
         return Jwts.builder()
@@ -228,6 +284,11 @@ public class SecureService implements EventEmitter {
                 .compact();
     }
 
+    /**
+     * 获取用户登录的Token。
+     * @param user 用户对象
+     * @return JWT令牌
+     */
     public String getLoginedUserToken(User user) {
         for (Map.Entry<String,User> entry: onlineUsers.asMap().entrySet()) {
             User onlineUser = entry.getValue();
@@ -239,13 +300,29 @@ public class SecureService implements EventEmitter {
     }
 
 
-    public String loginWithPassword(String userName, String password) throws Exception {
+    /**
+     * 用户登录，使用用户名和密码。
+     * @param address 远程地址, 用于限制登录尝试次数，抵抗暴力破解。
+     * @param userName 用户名，用于查找用户。
+     * @param password 密码，用于验证用户。
+     * @return JWT令牌，用于后续的会话。
+     * @throws Exception 异常，未知错误。
+     */
+    public String loginWithPassword(String address, String userName, String password) throws Exception {
         if (userName == null || userName.isBlank() || password == null || password.isBlank()) {
             return null;
         }
+        wrongPasswordAttempts.cleanUp();
         onlineUsers.cleanUp();
+        Long count = wrongPasswordAttempts.getIfPresent(address);
+        if (count != null && count > MAX_ATTEMPTS) {
+            return null;
+        } else {
+            count = 0L;
+        }
+
         User user = userManageService.findByName(userName);
-        if(user != null && user.getPassword().equals(password)) {
+        if(user != null && checkPassword(user.getPassword(), password)) {
             String token = getLoginedUserToken(user);
             if (token != null) {
                 return token;
@@ -255,7 +332,13 @@ public class SecureService implements EventEmitter {
             onLineUserId.put(user.getId(),token);
             return token;
         }
+        wrongPasswordAttempts.put(address, count + 1);
         return null;
+    }
+
+    public boolean checkPassword(String encodedPassword, String userInputPassword) {
+        String password = userManageService.decodePassword(encodedPassword);
+        return password.equals(userInputPassword);
     }
 
     public boolean isOnline(Long userId) {

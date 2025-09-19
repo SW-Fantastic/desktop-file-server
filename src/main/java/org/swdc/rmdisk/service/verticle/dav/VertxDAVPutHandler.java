@@ -70,7 +70,7 @@ public class VertxDAVPutHandler implements Handler<RoutingContext>, EventEmitter
             if (target == null) {
                 String parent = path.substring(0, path.lastIndexOf("/"));
                 if (parent.isBlank()) {
-                    folder = diskFileService.getRoot(currentUser);
+                    folder = diskFileService.getRoot(currentUser,true);
                 } else {
                     folder = diskFileService.getFolderByPath(currentUser,parent);
                 }

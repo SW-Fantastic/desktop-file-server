@@ -16,7 +16,7 @@ public class UserGroup {
     private String groupName;
 
     @OneToOne
-    @JoinColumn(columnDefinition = "template_root_id")
+    @JoinColumn(name = "template_root_id")
     private TemplateFolder templateRoot;
 
     @OneToMany(mappedBy = "group",cascade = CascadeType.REMOVE)

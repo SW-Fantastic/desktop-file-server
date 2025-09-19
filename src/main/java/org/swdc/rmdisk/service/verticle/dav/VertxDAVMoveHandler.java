@@ -126,7 +126,7 @@ public class VertxDAVMoveHandler implements Handler<RoutingContext> {
                 DiskFolder targetFolder = diskFileService.getFolderByPath(currentUser,targetLocation);
                 if (targetFolder == null) {
                     if (targetLocation.isBlank()) {
-                        targetFolder = diskFileService.getRoot(currentUser);
+                        targetFolder = diskFileService.getRoot(currentUser,true);
                     } else {
                         // no such target folder.
                         response.setStatusCode(404);

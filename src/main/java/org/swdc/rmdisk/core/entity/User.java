@@ -55,10 +55,10 @@ public class User {
     private String password;
 
     /**
-     * Base64编码的头像图片数据
+     * 头像图片数据
      */
-    @Column(columnDefinition = "MEDIUMTEXT")
-    private String avatar;
+    @Lob
+    private byte[] avatar;
 
     /**
      * 用户组的状态
@@ -131,11 +131,11 @@ public class User {
         this.createdOn = createdOn;
     }
 
-    public String getAvatar() {
+    public byte[] getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
     }
 

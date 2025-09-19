@@ -15,7 +15,7 @@ public class TemplateFolder {
     private String name;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(columnDefinition = "parent_id")
+    @JoinColumn(name = "parent_id")
     private TemplateFolder parent;
 
     @OneToMany(cascade = CascadeType.REMOVE,mappedBy = "parent")
