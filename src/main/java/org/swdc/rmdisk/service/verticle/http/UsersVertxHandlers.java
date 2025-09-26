@@ -7,7 +7,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.swdc.rmdisk.core.ManagedServerConfigure;
 import org.swdc.rmdisk.core.SecureUtils;
-import org.swdc.rmdisk.core.ServerConfigure;
 import org.swdc.rmdisk.core.entity.User;
 import org.swdc.rmdisk.core.entity.UserGroup;
 import org.swdc.rmdisk.core.entity.UserRegisterRequest;
@@ -17,7 +16,6 @@ import org.swdc.rmdisk.service.SecureService;
 import org.swdc.rmdisk.service.UserManageService;
 import org.swdc.rmdisk.service.verticle.VertxHttpAbstractHandler;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Singleton
@@ -64,6 +62,11 @@ public class UsersVertxHandlers extends VertxHttpAbstractHandler {
 
     }
 
+    /**
+     * 获取用户信息
+     * @param request
+     * @param response
+     */
     @RequestMapping(value = "/user-info", method = "GET")
     public void getUserInfo(HttpServerRequest request, HttpServerResponse response) {
 
@@ -85,6 +88,11 @@ public class UsersVertxHandlers extends VertxHttpAbstractHandler {
 
     }
 
+    /**
+     * 更新用户信息
+     * @param request
+     * @param response
+     */
     @RequestMapping(value = "/user-info", method = "POST")
     public void updateUserInfo(HttpServerRequest request, HttpServerResponse response) {
 
@@ -105,7 +113,7 @@ public class UsersVertxHandlers extends VertxHttpAbstractHandler {
                     return;
                 }
 
-                User updated = manageService.updateUser(
+                User updated = manageService.clientUpdateUser(
                         current.getId(), updateInfo
                 );
 
@@ -132,6 +140,11 @@ public class UsersVertxHandlers extends VertxHttpAbstractHandler {
 
     }
 
+    /**
+     * 重置密码
+     * @param request
+     * @param response
+     */
     @RequestMapping(value = "/reset-pwd", method = "POST")
     public void resetPassword(HttpServerRequest request, HttpServerResponse response) {
 
@@ -164,7 +177,7 @@ public class UsersVertxHandlers extends VertxHttpAbstractHandler {
                 User update = new User();
                 update.setPassword(newPassword);
 
-                update = manageService.updateUser(current.getId(),update);
+                update = manageService.clientUpdateUser(current.getId(),update);
                 update.setPassword(null);
 
                 secureService.logout(current.getId());

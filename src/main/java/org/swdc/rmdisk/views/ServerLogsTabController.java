@@ -27,6 +27,8 @@ import org.swdc.rmdisk.views.events.ConfigureUpdateEvent;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -140,6 +142,15 @@ public class ServerLogsTabController extends ViewController<ServerLogTabView> {
             range = new LocalDate[]{null, null};
         }
 
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+        if (range[0] != null) {
+            start = LocalDateTime.of(range[0], LocalTime.MIN);
+        }
+        if (range[1] != null) {
+            end = LocalDateTime.of(range[1],LocalTime.MIN);
+        }
+
         StringBuilder text = new StringBuilder();
         for (int idx = 0; idx < range.length; ++idx) {
             if(range[idx] == null) {
@@ -153,7 +164,7 @@ public class ServerLogsTabController extends ViewController<ServerLogTabView> {
         }
         txtDateFilter.setText(text.toString());
 
-        int resultCount = activityService.countLogFiltered(range[0],range[1],txtSearch.getText(),null);
+        int resultCount = activityService.countLogFiltered(start,end,txtSearch.getText(),null);
         int pageCount = resultCount / RECORD_COUNT_PRE_PAGE + 1;
         if (pagination.getCurrentPage() > pageCount) {
             pagination.setCurrentPage(pageCount);
@@ -162,7 +173,7 @@ public class ServerLogsTabController extends ViewController<ServerLogTabView> {
         }
 
         List<Activity> activities = activityService.getLogsFiltered(
-                range[0],range[1],txtSearch.getText(),null,pagination.getCurrentPage(),RECORD_COUNT_PRE_PAGE
+                start,end,txtSearch.getText(),null,pagination.getCurrentPage(),RECORD_COUNT_PRE_PAGE
         );
 
         ObservableList<Activity> logTableItems = logTable.getItems();

@@ -105,7 +105,7 @@ public class VertxDAVDeleteHandler implements Handler<RoutingContext>, EventEmit
                                     activityService.createDeleteActivity(
                                             currentUser,
                                             file,
-                                            request.remoteAddress().hostAddress()
+                                            SecureUtils.remoteAddress(request)
                                     );
                                 }
                             }
@@ -116,7 +116,7 @@ public class VertxDAVDeleteHandler implements Handler<RoutingContext>, EventEmit
                         activityService.createDeleteActivity(
                                 currentUser,
                                 diskFolder,
-                                request.remoteAddress().hostAddress()
+                                SecureUtils.remoteAddress(request)
                         );
                     }
 

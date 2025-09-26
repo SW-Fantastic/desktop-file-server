@@ -89,7 +89,7 @@ public class VertxDAVMoveHandler implements Handler<RoutingContext> {
                                 currentUser,
                                 oldName,
                                 newName,
-                                request.remoteAddress().hostAddress(),
+                                SecureUtils.remoteAddress(request),
                                 folder
                         );
 
@@ -110,7 +110,7 @@ public class VertxDAVMoveHandler implements Handler<RoutingContext> {
                                 currentUser,
                                 oldName,
                                 newName,
-                                request.remoteAddress().hostAddress(),
+                                SecureUtils.remoteAddress(request),
                                 file
                         );
 
@@ -159,7 +159,7 @@ public class VertxDAVMoveHandler implements Handler<RoutingContext> {
                                 currentUser,
                                 parentOld,
                                 targetFolder,
-                                request.remoteAddress().hostAddress(),
+                                SecureUtils.remoteAddress(request),
                                 result
                         );
 
@@ -182,7 +182,7 @@ public class VertxDAVMoveHandler implements Handler<RoutingContext> {
                                 currentUser,
                                 parentOld,
                                 targetFolder,
-                                request.remoteAddress().hostAddress(),
+                                SecureUtils.remoteAddress(request),
                                 result
                         );
 

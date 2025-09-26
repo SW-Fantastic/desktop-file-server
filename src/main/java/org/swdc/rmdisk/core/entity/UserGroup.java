@@ -3,6 +3,8 @@ package org.swdc.rmdisk.core.entity;
 import org.swdc.data.anno.StatelessIgnore;
 
 import jakarta.persistence.*;
+import org.swdc.data.anno.StatelessPrivate;
+
 import java.util.Set;
 
 @Entity
@@ -17,8 +19,10 @@ public class UserGroup {
 
     @OneToOne
     @JoinColumn(name = "template_root_id")
+    @StatelessPrivate
     private TemplateFolder templateRoot;
 
+    @StatelessPrivate
     @OneToMany(mappedBy = "group",cascade = CascadeType.REMOVE)
     private Set<User> users;
 

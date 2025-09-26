@@ -3,6 +3,8 @@ package org.swdc.rmdisk.core.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import jakarta.persistence.*;
+import org.swdc.data.anno.StatelessPrivate;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -50,8 +52,9 @@ public class User {
     private String nickname;
 
     /**
-     * 密码（明文密码）
+     * 密码（已被密钥加密）
      */
+    @StatelessPrivate
     private String password;
 
     /**
@@ -65,6 +68,12 @@ public class User {
      */
     @Enumerated(EnumType.STRING)
     private State state;
+
+    /**
+     * 用户权限，使用分号分割。
+     */
+    @Enumerated(EnumType.STRING)
+    private Permission permissions;
 
 
     public Long getId() {
@@ -146,4 +155,13 @@ public class User {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public Permission getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Permission permissions) {
+        this.permissions = permissions;
+    }
+
 }

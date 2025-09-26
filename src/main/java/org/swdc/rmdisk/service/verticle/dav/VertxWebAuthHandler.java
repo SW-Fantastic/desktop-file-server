@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.swdc.dependency.EventEmitter;
 import org.swdc.dependency.event.AbstractEvent;
 import org.swdc.dependency.event.Events;
+import org.swdc.rmdisk.core.SecureUtils;
 import org.swdc.rmdisk.core.dav.BarerLoginRequest;
 import org.swdc.rmdisk.core.entity.User;
 import org.swdc.rmdisk.service.SecureService;
@@ -46,7 +47,7 @@ public class VertxWebAuthHandler implements Handler<RoutingContext>, EventEmitte
         request.bodyHandler(body -> {
             try {
 
-                String remoteAddress = request.remoteAddress().hostAddress();
+                String remoteAddress =  SecureUtils.remoteAddress(request);
                 String content = body.toString(StandardCharsets.UTF_8);
                 BarerLoginRequest loginRequest = mapper.readValue(content, BarerLoginRequest.class);
                 User user = userManageService.findByName(loginRequest.getUsername());

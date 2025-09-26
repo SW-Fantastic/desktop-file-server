@@ -107,7 +107,7 @@ public class VertxDAVMkColHandler implements Handler<RoutingContext> {
                     activityService.createAddResourceActivity(
                             currentUser,
                             created,
-                            request.remoteAddress().hostAddress()
+                            SecureUtils.remoteAddress(request)
                     );
 
                     // 目录已经被创建了。

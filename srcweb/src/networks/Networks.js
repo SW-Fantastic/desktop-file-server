@@ -49,4 +49,9 @@ export class Networks {
     let theUrl = Networks.getURL(url)
     return Networks.request(theUrl, data, 'POST', token, json)
   }
+
+  static put(url, data, token, json = true) {
+    let theUrl = Networks.getURL(url)
+    return Networks.request(theUrl, data, 'PUT', token, json)
+  }
 }

@@ -163,7 +163,7 @@ public class ActivityService {
     }
 
     @Transactional
-    public int countLogFiltered(LocalDate startDate, LocalDate endDate, String keyword, ActivityType type) {
+    public int countLogFiltered(LocalDateTime startDate, LocalDateTime endDate, String keyword, ActivityType type) {
         Long count = activityRepo.countByFilters(keyword,startDate,endDate,type);
         if (count == null) {
             return 0;
@@ -172,7 +172,7 @@ public class ActivityService {
     }
 
     @Transactional
-    public List<Activity> getLogsFiltered(LocalDate startDate,LocalDate endDate, String keyword, ActivityType type, int page, int size) {
+    public List<Activity> getLogsFiltered(LocalDateTime startDate,LocalDateTime endDate, String keyword, ActivityType type, int page, int size) {
         List<Activity> activities = activityRepo.searchByFilters(keyword,startDate,endDate,type,page,size);
         if (activities == null) {
             return Collections.emptyList();

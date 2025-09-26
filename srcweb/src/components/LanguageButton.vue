@@ -1,6 +1,6 @@
 <template>
   <a-dropdown :placement="placement" trigger="click">
-    <a-button>
+    <a-button :size="size">
       <template #icon>
         <GlobalOutlined />
       </template>
@@ -24,6 +24,9 @@ export default {
   props: {
     placement: {
       default: 'bottom',
+    },
+    size: {
+      default: 'default',
     },
   },
   data() {

@@ -166,7 +166,7 @@ public class VertxDAVPutHandler implements Handler<RoutingContext>, EventEmitter
 
                             activityService.createUploadActivity(
                                     currentUser,
-                                    request.remoteAddress().hostAddress(),
+                                    SecureUtils.remoteAddress(request),
                                     oldSize,
                                     finalFile.getFileSize(),
                                     finalFile
@@ -216,7 +216,7 @@ public class VertxDAVPutHandler implements Handler<RoutingContext>, EventEmitter
                         activityService.createAddResourceActivity(
                                 currentUser,
                                 target,
-                                request.remoteAddress().hostAddress()
+                                SecureUtils.remoteAddress(request)
                         );
                         response.setStatusCode(201);
                         response.setStatusMessage("Created");

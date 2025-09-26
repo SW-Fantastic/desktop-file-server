@@ -117,7 +117,7 @@ public class SecureService implements EventEmitter {
         onlineUsers.cleanUp();
         Cookie sessionKey = request.getCookie("SESSION_KEY");
         Cookie challengeCookie = request.getCookie("NTLM_CHID");
-        String remoteAddress = request.remoteAddress().hostAddress();
+        String remoteAddress = SecureUtils.remoteAddress(request);
 
         Long count = wrongPasswordAttempts.getIfPresent(remoteAddress);
         if (count != null && count >= MAX_ATTEMPTS) {
@@ -317,7 +317,7 @@ public class SecureService implements EventEmitter {
         Long count = wrongPasswordAttempts.getIfPresent(address);
         if (count != null && count > MAX_ATTEMPTS) {
             return null;
-        } else {
+        } else if (count == null) {
             count = 0L;
         }
 
@@ -364,6 +364,7 @@ public class SecureService implements EventEmitter {
         onLineUserId.clear();
         onlineUsers.invalidateAll();
         ntlmChallenges.invalidateAll();
+        wrongPasswordAttempts.invalidateAll();
         emit(new UserStateChangeEvent(null));
     }
 

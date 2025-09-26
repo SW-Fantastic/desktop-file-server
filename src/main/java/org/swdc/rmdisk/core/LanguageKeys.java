@@ -191,4 +191,12 @@ public interface LanguageKeys {
     String ERR_STOP_FTP_SERVER = "disk.server.ftp.cannot_stop";
 
     String ERR_STOP_HTTP_SERVER = "disk.server.web.cannot_stop";
+
+    String PERMISSION_SUPER_ADMIN = "disk.config.perm.admin";
+
+    String PERMISSION_USER = "disk.config.perm.user";
+
+    String SYSTEM_GROUP_NAME = "disk.super-admin-group";
+
+    String DEFAULT_SYSTEM_ADMIN_NAME = "disk.super-admin-name";
 }

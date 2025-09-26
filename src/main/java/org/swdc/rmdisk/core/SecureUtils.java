@@ -5,21 +5,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.vertx.core.MultiMap;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import jcifs.ntlmssp.Type1Message;
 import jcifs.ntlmssp.Type2Message;
 import jcifs.ntlmssp.Type3Message;
 import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.util.Base64;
+import org.hibernate.validator.HibernateValidator;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
 public class SecureUtils {
 
     private static ObjectMapper mapper;
+
+    private static ValidatorFactory validatorFactory = Validation
+            .byDefaultProvider()
+            .configure()
+            .ignoreXmlConfiguration()
+            .messageInterpolator(new ParameterMessageInterpolator())
+            .buildValidatorFactory();
+
+    public static Validator createValidator() {
+        return validatorFactory.getValidator();
+    }
 
     /**
      * 本方法用于判断用户的身份认证类型。
@@ -209,6 +227,33 @@ public class SecureUtils {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    }
+
+
+
+    public static String remoteAddress(HttpServerRequest request) {
+        MultiMap headers = request.headers();
+        if (headers.contains("X-Forwarded-Host")) {
+            return headers.get("X-Forwarded-Host");
+        }
+        if (headers.contains("X-Real-IP")) {
+            return headers.get("X-Real-IP");
+        }
+        if (headers.contains("X-Forwarded-For")) {
+            String forwardedFor = headers.get("X-Forwarded-For");
+            String [] ips = forwardedFor.split(",");
+            return ips[0];
+        }
+        if (headers.contains("Forwarded")) {
+            String forwarded = headers.get("Forwarded");
+            String [] parts = forwarded.split(";");
+            for (String part : parts) {
+                if (part.startsWith("for=")) {
+                    return part.replace("for=", "").trim();
+                }
+            }
+        }
+        return request.remoteAddress().hostAddress();
     }
 
 }

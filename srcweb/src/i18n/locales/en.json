@@ -35,6 +35,41 @@
       "add-folder-desc": "Enter name to create a folder:",
       "add-file": "Add file..",
       "not-previewable": "The file is not previewable now"
+    },
+    "admin": {
+      "user-and-group": "Users",
+      "register-requests": "Registers",
+      "system-logs": "Logs",
+      "search-placeholder": "Type to search...",
+      "usertable": {
+        "avatar": "Avatar",
+        "username": "Username",
+        "nickname": "Nickname",
+        "state": "Status",
+        "manage": "Management"
+      },
+      "groups": {
+        "create-title": "Create a new group",
+        "create-desc": "Please input group name:",
+        "allow-reg": "Allow users to register",
+        "delete-title": "Delete user group",
+        "delete-desc": "Do you want to delete group:",
+        "edit-title": "Rename user group"
+      },
+      "users": {
+        "new-user-title": "Create new user",
+        "edit-user-title": "Edit a user",
+        "trash-user-title": "Trash a user",
+        "purge-user-title": "Purge a user",
+        "trash-user-desc": "Do you want to trash the user: ",
+        "purge-user-desc": "This will delete all the user's data, and this operation is irreversible",
+        "group": "Group",
+        "username": "Username",
+        "nickname": "Nickname",
+        "password": "Password",
+        "repeat": "Repeat password",
+        "total-space": "Total space "
+      }
     }
   }
 }

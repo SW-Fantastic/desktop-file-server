@@ -35,6 +35,41 @@
       "add-folder-desc": "输入名称以创建文件夹：",
       "add-file": "添加文件...",
       "not-previewable": "此文件尚不支持在线预览"
+    },
+    "admin": {
+      "user-and-group": "用户和组",
+      "register-requests": "注册请求",
+      "system-logs": "系统日志",
+      "search-placeholder": "输入以搜索...",
+      "usertable": {
+        "avatar": "头像",
+        "username": "用户名",
+        "nickname": "昵称",
+        "state": "状态",
+        "manage": "管理"
+      },
+      "groups": {
+        "create-title": "创建新的分组",
+        "create-desc": "输入分组的名称：",
+        "allow-reg": "允许用户注册",
+        "delete-title": "删除用户分组",
+        "delete-desc": "你的确要删除分组:",
+        "edit-title": "修改用户分组"
+      },
+      "users": {
+        "new-user-title": "添加新用户",
+        "edit-user-title": "编辑用户",
+        "trash-user-title": "删除用户",
+        "purge-user-title": "彻底删除用户",
+        "trash-user-desc": "你确实想要删除用户：",
+        "purge-user-desc": "这将会删除用户全部数据，本操作不可逆",
+        "group": "分组 ",
+        "username": "用户名 ",
+        "nickname": "昵称 ",
+        "password": "密码 ",
+        "repeat": "重复密码 ",
+        "total-space": "总空间 "
+      }
     }
   }
 }

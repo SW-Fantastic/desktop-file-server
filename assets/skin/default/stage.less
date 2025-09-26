@@ -616,29 +616,40 @@
 
                 -fx-background-color: @background;
                 -fx-font-size: 14;
+
+                &:filled {
+                    -fx-border-color: @shadow;
+                    -fx-border-width: 0 0 0.6 0;
+                    -fx-border-style: solid;
+                }
+
                 .progress-bar {
                     .progress(@success)
                 }
                 .cell {
                     -fx-alignment: center;
+                    &:empty {
+                        -fx-table-cell-border-color: transparent;
+                    }
                     .normal {
                         -fx-background-color: @background;
-                        -fx-background-radius: 9999;
+                        -fx-background-radius: 6;
                         .label {
                             -fx-text-fill: @success;
                         }
                     }
                     .trashed {
                         -fx-background-color: @background;
-                        -fx-background-radius: 9999;
+                        -fx-background-radius: 6;
                         .label {
                             -fx-text-fill: @warn;
                         }
                     }
                 }
                 &:selected {
-                    -fx-background-color: @info;
-                    -fx-text-background-color: @background;
+                    -fx-background-color: lighten(@shadow, 10%);
+                    -fx-table-cell-border-color: @shadow;
+                    -fx-text-background-color: @info;
                 }
             }
         }

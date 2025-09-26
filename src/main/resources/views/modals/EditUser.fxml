@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="334.0" prefWidth="545.0" styleClass="stage-dialog" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="385.0" prefWidth="545.0" styleClass="stage-dialog" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <GridPane prefHeight="200.0" prefWidth="502.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -31,6 +31,7 @@
           <RowConstraints maxHeight="42.0" minHeight="42.0" prefHeight="42.0" vgrow="ALWAYS" />
           <RowConstraints maxHeight="42.0" minHeight="42.0" prefHeight="42.0" vgrow="ALWAYS" />
             <RowConstraints maxHeight="42.0" minHeight="42.0" prefHeight="42.0" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="42.0" minHeight="42.0" prefHeight="42.0" valignment="CENTER" vgrow="ALWAYS" />
             <RowConstraints maxHeight="42.0" minHeight="42.0" prefHeight="42.0" valignment="CENTER" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
@@ -61,7 +62,9 @@
             <Label text="%disk.server.nick_name" GridPane.columnIndex="2" />
             <TextField id="txtNickName" minHeight="30.0" prefHeight="30.0" styleClass="field" GridPane.columnIndex="3" GridPane.columnSpan="2" />
             <Label text="%disk.server.group" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <ComboBox id="cbxGroup" prefHeight="30.0" prefWidth="259.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+            <ComboBox id="cbxGroup" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="259.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+            <Label text="%disk.config.perm.label" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <ComboBox id="cbxPermission" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </center>

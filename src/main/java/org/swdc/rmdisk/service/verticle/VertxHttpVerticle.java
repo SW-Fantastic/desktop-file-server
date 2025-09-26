@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.swdc.dependency.annotations.Prototype;
 import org.swdc.rmdisk.service.SecureService;
 import org.swdc.rmdisk.service.verticle.dav.*;
+import org.swdc.rmdisk.service.verticle.http.AdminVertxHandlers;
 import org.swdc.rmdisk.service.verticle.http.UsersVertxHandlers;
 
 import java.util.HashSet;
@@ -62,7 +63,10 @@ public class VertxHttpVerticle extends AbstractVerticle {
     private VertxWebAuthHandler authHandler;
 
     @Inject
-    private UsersVertxHandlers registerVertxHandlers;
+    private UsersVertxHandlers usersVertxHandlers;
+
+    @Inject
+    private AdminVertxHandlers adminVertxHandlers;
 
     @Inject
     private SecureService secureService;
@@ -103,7 +107,8 @@ public class VertxHttpVerticle extends AbstractVerticle {
         router.route("/@auth/login").method(HttpMethod.POST)
                 .handler(authHandler);
 
-        registerVertxHandlers.initialize(router);
+        usersVertxHandlers.initialize(router);
+        adminVertxHandlers.initialize(router);
 
         // DAV Handlers
 

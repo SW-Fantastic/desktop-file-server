@@ -23,6 +23,7 @@ import org.swdc.rmdisk.core.entity.User;
 import org.swdc.rmdisk.core.entity.UserGroup;
 import org.swdc.rmdisk.service.SecureService;
 import org.swdc.rmdisk.service.UserManageService;
+import org.swdc.rmdisk.service.events.GroupListRefreshEvent;
 import org.swdc.rmdisk.views.cells.GroupListCell;
 import org.swdc.rmdisk.views.cells.OnlineTableCell;
 import org.swdc.rmdisk.views.cells.StateTableCell;
@@ -36,6 +37,8 @@ import org.swdc.rmdisk.views.modals.FolderStructureView;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -257,7 +260,16 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
 
         dateFilterField.setText(text.toString());
 
-        int resultCount = userManageService.countUserFiltered(group,range[0],range[1],keyword);
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+        if (range[0] != null) {
+            start = LocalDateTime.of(range[0],LocalTime.MIN);
+        }
+        if (range[1] != null) {
+            end = LocalDateTime.of(range[1],LocalTime.MIN);
+        }
+
+        int resultCount = userManageService.countUserFiltered(group,start,end,keyword);
         int pageCount = resultCount / RECORD_COUNT_PRE_PAGE + 1;
         pagination.setTotalPage(pageCount);
         if (pagination.getCurrentPage() > pageCount) {
@@ -266,8 +278,9 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
             pagination.setCurrentPage(1);
         }
 
+
         users = userManageService.getUserFiltered(
-                group,range[0],range[1], keyword,
+                group, start,end, keyword,
                 pagination.getCurrentPage() - 1, RECORD_COUNT_PRE_PAGE
         );
 
@@ -278,6 +291,22 @@ public class ServerUserTabController extends ViewController<ServerUserTabView> {
     @EventListener(type = UserStateChangeEvent.class)
     public void onUserTableRefresh(UserStateChangeEvent event) {
         Platform.runLater(this::refreshUserTable);
+    }
+
+    @EventListener(type = GroupListRefreshEvent.class)
+    public void onGroupListRefresh(GroupListRefreshEvent event) {
+        Platform.runLater(() -> {
+
+            ServerUserTabView view = getView();
+            ToggleGroup group = view.getUserGroupToggle();
+            ToggleButton button = (ToggleButton) group.getSelectedToggle();
+            if (button.getId().equals("gpNormal")) {
+                refreshGroupByState(State.NORMAL);
+            } else {
+                refreshGroupByState(State.TRASHED);
+            }
+
+        });
     }
 
     /**

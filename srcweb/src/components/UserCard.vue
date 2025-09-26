@@ -19,6 +19,11 @@
         <a-progress :percent="useage" :showInfo="false" />
         <a-flex gap="small" justify="center" align="center" style="padding: 12px">
           <LanguageButton />
+          <a-button @click="goesAdminConsole" v-if="userInfo.permissions === 'SUPER_ADMIN'">
+            <template #icon>
+              <CodeOutlined />
+            </template>
+          </a-button>
           <a-button @click="logout">
             <template #icon>
               <LogoutOutlined />
@@ -31,13 +36,13 @@
 </template>
 <script>
 import { Session } from '@/networks/Session'
-import { LogoutOutlined } from '@ant-design/icons-vue'
+import { LogoutOutlined, CodeOutlined } from '@ant-design/icons-vue'
 import { useSessionStore } from '@/stores/SessionStore'
 import LanguageButton from './LanguageButton.vue'
 export default {
   name: 'UserCard',
 
-  components: { LogoutOutlined, LanguageButton },
+  components: { LogoutOutlined, CodeOutlined, LanguageButton },
 
   data() {
     return {
@@ -64,6 +69,9 @@ export default {
   },
 
   methods: {
+    goesAdminConsole() {
+      this.$router.replace('/admin')
+    },
     logout() {
       let store = useSessionStore()
       store.clearToken()

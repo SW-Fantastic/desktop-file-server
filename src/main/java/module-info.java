@@ -41,6 +41,10 @@ module swdc.rmdisk {
     requires ch.qos.logback.classic;
     requires ch.qos.logback.core;
 
+    requires org.hibernate.validator;
+    requires jakarta.validation;
+    requires jakarta.el;
+
     opens org.swdc.rmdisk.client to
             com.fasterxml.jackson.databind,
             com.fasterxml.jackson.core;
@@ -72,6 +76,11 @@ module swdc.rmdisk {
             com.fasterxml.jackson.databind,
             com.fasterxml.jackson.core,
             swdc.application.dependency;
+
+    opens org.swdc.rmdisk.service.verticle.http.dto to
+            com.fasterxml.jackson.databind,
+            com.fasterxml.jackson.core,
+            org.hibernate.validator;
 
     opens org.swdc.rmdisk.core to
             com.fasterxml.jackson.databind,

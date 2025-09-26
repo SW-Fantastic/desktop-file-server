@@ -8,6 +8,7 @@ import org.swdc.rmdisk.core.repo.filters.FilteredActivityQueryCountFactory;
 import org.swdc.rmdisk.core.repo.filters.FilteredActivityQueryFactory;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -16,8 +17,8 @@ public interface ActivityRepo extends JPARepository<Activity,Long> {
     @SQLQueryFactory(FilteredActivityQueryFactory.class)
     List<Activity> searchByFilters(
             @Param("keyword")String keyword,
-            @Param("start") LocalDate start,
-            @Param("end") LocalDate end,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end,
             @Param("operation") ActivityType op,
             @Param("pageNo") Integer pageNo,
             @Param("pageSize") Integer pageSize
@@ -26,8 +27,8 @@ public interface ActivityRepo extends JPARepository<Activity,Long> {
     @SQLQueryFactory(FilteredActivityQueryCountFactory.class)
     Long countByFilters(
             @Param("keyword")String keyword,
-            @Param("start")LocalDate start,
-            @Param("end") LocalDate end,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end,
             @Param("operation") ActivityType op
     );
 

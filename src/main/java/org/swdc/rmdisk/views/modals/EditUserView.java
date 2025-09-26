@@ -20,10 +20,7 @@ import org.swdc.fx.view.View;
 import org.swdc.rmdisk.core.LanguageKeys;
 import org.swdc.rmdisk.core.ManagedServerConfigure;
 import org.swdc.rmdisk.core.ServerConfigure;
-import org.swdc.rmdisk.core.entity.State;
-import org.swdc.rmdisk.core.entity.User;
-import org.swdc.rmdisk.core.entity.UserGroup;
-import org.swdc.rmdisk.core.entity.UserRegisterRequest;
+import org.swdc.rmdisk.core.entity.*;
 import org.swdc.rmdisk.service.CommonService;
 import org.swdc.rmdisk.service.UserManageService;
 
@@ -91,6 +88,35 @@ public class EditUserView extends AbstractView {
         Button avatarButton = findById("btnAvatar");
         avatarButton.setOnAction(this::onSelectAvatar);
 
+        ComboBox<Permission> cbxPermission = findById("cbxPermission");
+        cbxPermission.getItems().addAll(Permission.values());
+        cbxPermission.getSelectionModel().select(Permission.USER);
+        cbxPermission.setConverter(new StringConverter<>() {
+
+            @Override
+            public String toString(Permission object) {
+                if (object == null) {
+                    return "";
+                }
+                ResourceBundle bundle = resources.getResourceBundle();
+                return bundle.getString(object.getKey());
+            }
+
+            @Override
+            public Permission fromString(String string) {
+                try {
+                    return Permission.valueOf(string);
+                } catch (Exception e) {
+                    for (Permission perm : Permission.values()) {
+                        if (perm.getKey().equals(string)) {
+                            return perm;
+                        }
+                    }
+                }
+                return Permission.USER;
+            }
+        });
+
         ComboBox<UserGroup> groupComboBox = findById("cbxGroup");
         groupComboBox.getSelectionModel()
                 .selectedItemProperty()
@@ -149,6 +175,12 @@ public class EditUserView extends AbstractView {
             }
         }
 
+        ComboBox<Permission> cbxPermission = findById("cbxPermission");
+        Permission permission = cbxPermission.getSelectionModel().getSelectedItem();
+        if (permission == null) {
+            permission = Permission.USER;
+        }
+
         editingUser = new User();
         editingUser.setPassword(request.getPassword());
         editingUser.setGroup(request.getGroup());
@@ -156,6 +188,7 @@ public class EditUserView extends AbstractView {
         editingUser.setUsername(request.getName());
         editingUser.setPassword(request.getPassword());
         editingUser.setTotalSize(serverConfigure.getDefaultSpaceSize() * 1000L * 1000L * 1000L);
+        editingUser.setPermissions(permission);
 
         ImageView imageView = findById("avatar");
         Rectangle clip = new Rectangle(0,0,imageView.getFitWidth(),imageView.getFitHeight());
@@ -288,6 +321,9 @@ public class EditUserView extends AbstractView {
 
         }
 
+        ComboBox<Permission> cbxPermission = findById("cbxPermission");
+        cbxPermission.getSelectionModel().select(editingUser.getPermissions());
+
         this.show();
         if (this.canceled) {
             return null;
@@ -320,6 +356,12 @@ public class EditUserView extends AbstractView {
         if(!txtNickname.getText().isBlank()) {
             editingUser.setNickname(txtNickname.getText());
         }
+
+        Permission permission = cbxPermission.getSelectionModel().getSelectedItem();
+        if (permission == null) {
+            permission = Permission.USER;
+        }
+        editingUser.setPermissions(permission);
 
         return editingUser;
     }

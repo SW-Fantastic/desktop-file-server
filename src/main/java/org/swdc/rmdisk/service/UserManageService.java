@@ -1,5 +1,6 @@
 package org.swdc.rmdisk.service;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
@@ -7,10 +8,7 @@ import org.swdc.data.StatelessHelper;
 import org.swdc.data.anno.Transactional;
 import org.swdc.fx.FXResources;
 import org.swdc.ours.common.type.JSONMapper;
-import org.swdc.rmdisk.core.CoreSecurityKey;
-import org.swdc.rmdisk.core.DAVUtils;
-import org.swdc.rmdisk.core.ManagedServerConfigure;
-import org.swdc.rmdisk.core.ServerConfigure;
+import org.swdc.rmdisk.core.*;
 import org.swdc.rmdisk.core.entity.*;
 import org.swdc.rmdisk.core.repo.UserGroupRepo;
 import org.swdc.rmdisk.core.repo.UserRegisterRequestRepo;
@@ -20,19 +18,11 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -66,6 +56,47 @@ public class UserManageService {
     private FXResources resources;
 
     private CoreSecurityKey masterKey;
+
+
+    /**
+     * 初始化，如果没有超级管理员，则创建超级管理员用户和组。
+     */
+    @PostConstruct
+    @Transactional
+    public void initService() {
+
+        List<User> admins = userRepo.findSuperAdmins();
+        if (admins == null || admins.isEmpty()) {
+
+            logger.warn("No super admin found, creating one...");
+            ResourceBundle resourceBundle = resources.getResourceBundle();
+            String superAdminLabel = resourceBundle.getString(LanguageKeys.SYSTEM_GROUP_NAME);
+
+            UserGroup groupForAdmin = groupRepo.findByName(superAdminLabel);
+            if (groupForAdmin == null) {
+                UserGroup group = new UserGroup();
+                group.setGroupName(superAdminLabel);
+                group.setState(State.NORMAL);
+                groupForAdmin= groupRepo.save(group);
+            }
+
+
+            User user = new User();
+            user.setUsername("superadmin");
+            user.setPassword(encodePassword("admin"));
+            user.setPermissions(Permission.SUPER_ADMIN);
+            user.setCreatedOn(LocalDateTime.now());
+            user.setAvatar(commonService.getDefaultAvatar());
+            user.setState(State.NORMAL);
+            user.setTotalSize(4 * 1024 * 1024L);
+            user.setUsedSize(0L);
+            user.setNickname(resourceBundle.getString(LanguageKeys.DEFAULT_SYSTEM_ADMIN_NAME));
+            user.setGroup(groupForAdmin);
+            user = userRepo.save(user);
+            fileService.createFolderStructure(user);
+        }
+
+    }
 
 
     @Transactional
@@ -288,7 +319,7 @@ public class UserManageService {
 
 
     @Transactional
-    public List<User> getUserFiltered(UserGroup group, LocalDate start, LocalDate end, String keyword, int page, int size) {
+    public List<User> getUserFiltered(UserGroup group, LocalDateTime start, LocalDateTime end, String keyword, int page, int size) {
         if (group == null || group.getId() == null) {
             return Collections.emptyList();
         }
@@ -303,7 +334,7 @@ public class UserManageService {
 
 
     @Transactional
-    public int countUserFiltered(UserGroup group, LocalDate start, LocalDate end, String keyword) {
+    public int countUserFiltered(UserGroup group, LocalDateTime start, LocalDateTime end, String keyword) {
         if (group == null || group.getId() == null) {
             return 0;
         }
@@ -334,6 +365,17 @@ public class UserManageService {
         return count.intValue();
     }
 
+    @Transactional
+    public UserGroup getGroup(Long groupId) {
+        if (groupId == null || groupId < 0) {
+            return null;
+        }
+        UserGroup group = groupRepo.getOne(groupId);
+        if (group == null) {
+            return null;
+        }
+        return StatelessHelper.stateless(group);
+    }
 
     @Transactional
     public User saveUser( User user) {
@@ -422,6 +464,10 @@ public class UserManageService {
                 exist.setNickname(user.getNickname());
             }
 
+            if (user.getPermissions() != null && !user.getPermissions().equals(exist.getPermissions())) {
+                exist.setPermissions(user.getPermissions());
+            }
+
             exist = userRepo.save(exist);
 
             return StatelessHelper.stateless(exist);
@@ -438,7 +484,7 @@ public class UserManageService {
     }
 
     @Transactional
-    public User updateUser(Long id, User update) {
+    public User clientUpdateUser(Long id, User update) {
         if (id == null || id < 0 || update == null) {
             return null;
         }

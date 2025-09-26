@@ -637,6 +637,11 @@
   -fx-background-color: #ffffff;
   -fx-font-size: 14;
 }
+.stage-server .split-pane .user-table .table-row-cell:filled {
+  -fx-border-color: #cfd1dc;
+  -fx-border-width: 0 0 0.6 0;
+  -fx-border-style: solid;
+}
 .stage-server .split-pane .user-table .table-row-cell .progress-bar .track {
   -fx-background-color: #ffffff;
   -fx-background-radius: 8;
@@ -652,21 +657,25 @@
 .stage-server .split-pane .user-table .table-row-cell .cell {
   -fx-alignment: center;
 }
+.stage-server .split-pane .user-table .table-row-cell .cell:empty {
+  -fx-table-cell-border-color: transparent;
+}
 .stage-server .split-pane .user-table .table-row-cell .cell .normal {
   -fx-background-color: #ffffff;
-  -fx-background-radius: 9999;
+  -fx-background-radius: 6;
 }
 .stage-server .split-pane .user-table .table-row-cell .cell .normal .label {
   -fx-text-fill: #a7d07c;
 }
 .stage-server .split-pane .user-table .table-row-cell .cell .trashed {
   -fx-background-color: #ffffff;
-  -fx-background-radius: 9999;
+  -fx-background-radius: 6;
 }
 .stage-server .split-pane .user-table .table-row-cell .cell .trashed .label {
   -fx-text-fill: #e68530;
 }
 .stage-server .split-pane .user-table .table-row-cell:selected {
-  -fx-background-color: #4ea3f4;
-  -fx-text-background-color: #ffffff;
+  -fx-background-color: #ecedf2;
+  -fx-table-cell-border-color: #cfd1dc;
+  -fx-text-background-color: #4ea3f4;
 }

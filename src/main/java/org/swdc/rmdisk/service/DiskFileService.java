@@ -290,9 +290,6 @@ public class DiskFileService implements EventEmitter {
 
     }
 
-    public void clearFolders(Long userId) {
-
-    }
 
     @Transactional
     public boolean trashFolder(Long folderId) {
@@ -341,6 +338,10 @@ public class DiskFileService implements EventEmitter {
             if (folder == null) {
                 return null;
             }
+        }
+
+        if (folder == null) {
+            return null;
         }
 
         return StatelessHelper.stateless(folder);
@@ -435,6 +436,11 @@ public class DiskFileService implements EventEmitter {
         return target;
     }
 
+    /**
+     * 获取存储在系统的文件。
+     * @param input DiskFile对象，用于指定要获取的文件
+     * @return 指向存储在系统的文件的File对象，如果文件不存在则返回null
+     */
     public File getSystemFile(DiskFile input) {
 
         File target = getUserRootFolder(input.getOwner());
@@ -599,10 +605,9 @@ public class DiskFileService implements EventEmitter {
         user = userRepo.getOne(user.getId());
         UserGroup userGroup = user.getGroup();
 
-
         TemplateFolder templateFolder = templateService.getRoot(userGroup.getId());
-
         DiskFolder userRootDir = folderRepo.getUserRootFolder(user.getId());
+
         if (userRootDir == null) {
             userRootDir = new DiskFolder();
             userRootDir.setOwner(user);

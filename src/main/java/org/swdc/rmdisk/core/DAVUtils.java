@@ -1,5 +1,8 @@
 package org.swdc.rmdisk.core;
 
+import io.vertx.core.MultiMap;
+import io.vertx.core.http.HttpServerRequest;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;

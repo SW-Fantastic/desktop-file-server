@@ -4,6 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetServer;
+import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.NetSocket;
 import jakarta.inject.Inject;
 import org.slf4j.Logger;
@@ -83,7 +84,9 @@ public class VertxFTPVerticle extends AbstractVerticle {
         foldersHandler.initialize(context);
         filesHandler.initialize(context);
 
-        NetServer server = vertx.createNetServer();
+        NetServerOptions options = new NetServerOptions();
+        options.setUseProxyProtocol(true);
+        NetServer server = vertx.createNetServer(options);
         server.connectHandler(socket -> {
 
             FTPMsg authMsg = new FTPMsg(FTPRespCode.SERVICE_READY, "Welcome to FTP Server");
@@ -104,6 +107,7 @@ public class VertxFTPVerticle extends AbstractVerticle {
     }
 
     private void handleClientMessage(Buffer buf, NetSocket socket) {
+
         String commandReceived = buf.toString(StandardCharsets.UTF_8);
         String[] commands = commandReceived.split("\r\n");
 
